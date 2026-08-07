@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+/* Interlink theme and font settings */
+:root {
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Orbitron', 'Space Grotesk', sans-serif;
+}
+
+/* Custom transitions and styling variables */
+.dark {
+  --bg-space: #03000a;
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --accent-color: #aa3bff;
+  --accent-glow: rgba(170, 59, 255, 0.4);
+}
+
+.light {
+  --bg-space: #f8fafc;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --accent-color: #6366f1;
+  --accent-glow: rgba(99, 102, 241, 0.2);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-space);
+  color: var(--text-main);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .font-orbitron {
+  font-family: var(--font-display);
+}
+
+/* Custom stars background animations */
+@keyframes space-drift {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes pulse-nebula {
+  0%, 100% { transform: scale(1) translate(0px, 0px); opacity: 0.6; }
+  33% { transform: scale(1.1) translate(15px, -10px); opacity: 0.8; }
+  66% { transform: scale(0.95) translate(-10px, 15px); opacity: 0.5; }
+}
+
+/* Cosmic classes */
+.stars-bg {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 150px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 150px 60px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 200px 220px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 250px 10px, rgba(255,100,255,0.6), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 300px 180px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 380px 320px, rgba(100,255,255,0.7), rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 400px 400px;
+  animation: space-drift 60s linear infinite;
+}
+
+.nebula-purple {
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.25) 0%, rgba(0,0,0,0) 70%);
+  animation: pulse-nebula 25s ease-in-out infinite alternate;
+}
+
+.nebula-pink {
+  background: radial-gradient(circle, rgba(219, 39, 119, 0.2) 0%, rgba(0,0,0,0) 75%);
+  animation: pulse-nebula 32s ease-in-out infinite alternate-reverse;
+}
+
+.nebula-cyan {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, rgba(0,0,0,0) 65%);
+  animation: pulse-nebula 20s ease-in-out infinite alternate;
+}
+
+/* Glassmorphism effects */
+.glass-panel {
+  background: rgba(15, 12, 30, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.light .glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+/* Hologram glows */
+.glow-text-purple {
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.6), 0 0 2px rgba(168, 85, 247, 0.9);
+}
+
+.glow-border-purple {
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.35);
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.light .glow-border-purple {
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+/* Orbital systems */
+.orbit-line {
+  border: 1.5px dashed rgba(255, 255, 255, 0.08);
+}
+
+.light .orbit-line {
+  border: 1.5px dashed rgba(0, 0, 0, 0.08);
+}
+
+@keyframes rotate-clockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-orbit {
+  animation: rotate-clockwise 120s linear infinite;
+}
+
+.animate-orbit-reverse {
+  animation: rotate-clockwise 180s linear infinite reverse;
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(168, 85, 247, 0.5);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: width 0.15s, height 0.15s, background-color 0.15s;
+}
+
+.custom-cursor-dot {
+  width: 4px;
+  height: 4px;
+  background-color: rgba(168, 85, 247, 0.9);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Responsiveness on Animations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: scroll !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+  .stars-bg, .nebula-purple, .nebula-pink, .nebula-cyan, .animate-orbit {
+    animation: none !important;
+  }
+}
