@@ -100,7 +100,9 @@ export const Header: React.FC = () => {
                     gain.gain.setValueAtTime(0.05, ctx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
                     osc.start(); osc.stop(ctx.currentTime + 0.2);
-                  } catch(e){}
+                  } catch {
+                    // Audio context blocked or not supported
+                  }
                 }, 50);
               }
             }}
