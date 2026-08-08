@@ -118,6 +118,20 @@ export const translations = {
     partnerTitle: "Espace Partenaires",
     partnerSubtitle: "Vous avez une idée à mettre en orbite ?",
     partnerIntro: "Projet innovant, partenariat stratégique, apport d'affaires, investissement ou collaboration locale : entrez en contact avec l'équipage IMUIA.",
+
+    // Contact Page spezifisch
+    contactTitle: "Vous avez une idée à mettre en orbite ?",
+    contactText: "Projet innovant, partenariat, investissement ou proposition de collaboration : entrez en contact avec l’équipage IMUIA.",
+    btnPresentProject: "Présenter mon projet",
+    btnBecomePartner: "Devenir partenaire",
+    btnInvestUniverse: "Investir dans un univers",
+    btnContactCrew: "Contacter IMUIA",
+    contactFormTitle: "Transmission d'un message direct",
+    contactFormName: "Nom complet",
+    contactFormSubject: "Objet du message",
+    contactFormMessage: "Votre message",
+    contactFormSuccess: "Votre message de transmission directe a été envoyé à l'équipage !",
+
     formFirstName: "Prénom",
     formLastName: "Nom",
     formCompany: "Société / Organisation",
@@ -380,6 +394,20 @@ export const translations = {
     partnerTitle: "Partnership Center",
     partnerSubtitle: "Have an innovative concept to launch into orbit?",
     partnerIntro: "Whether you are looking to invest, propose technical cooperation, introduce opportunities, or become a local operator: reach out to our IMUIA crew.",
+
+    // Contact Page specific
+    contactTitle: "Have an idea to launch into orbit?",
+    contactText: "Innovative project, partnership, investment or collaboration proposal: get in touch with the IMUIA crew.",
+    btnPresentProject: "Present my project",
+    btnBecomePartner: "Become a partner",
+    btnInvestUniverse: "Invest in a universe",
+    btnContactCrew: "Contact IMUIA",
+    contactFormTitle: "Transmit Direct Message",
+    contactFormName: "Full Name",
+    contactFormSubject: "Transmission Subject",
+    contactFormMessage: "Your Message",
+    contactFormSuccess: "Your direct transmission message has been sent to the crew!",
+
     formFirstName: "First Name",
     formLastName: "Last Name",
     formCompany: "Company / Organization",
