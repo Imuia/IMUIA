@@ -1,0 +1,8 @@
+# robots.txt for IMUIA.com
+# Allow all web crawlers to discover our space digital universes
+
+User-agent: *
+Allow: /
+
+# Sitemap coordinates
+Sitemap: https://imuia.com/sitemap.xml
