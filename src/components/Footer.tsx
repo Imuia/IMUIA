@@ -56,7 +56,27 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <button onClick={() => handleNav('vision')} className="hover:text-purple-400 transition-colors cursor-none text-left">
-                  {t.navVision}
+                  {t.navVision} / {t.navMethod}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('territories')} className="hover:text-purple-400 transition-colors cursor-none text-left">
+                  {t.navTerritories}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('partners')} className="hover:text-purple-400 transition-colors cursor-none text-left">
+                  {t.navPartners}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('news')} className="hover:text-purple-400 transition-colors cursor-none text-left">
+                  {t.navNews}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('contact')} className="hover:text-purple-400 transition-colors cursor-none text-left">
+                  {t.navContact}
                 </button>
               </li>
             </ul>
