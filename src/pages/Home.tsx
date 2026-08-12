@@ -2,6 +2,7 @@ import React from 'react';
 import { useAppState } from '../data/AppState';
 import { translations } from '../data/translations';
 import { ArrowRight, Compass, Shield, Rocket, Activity } from 'lucide-react';
+import { Contact } from './Contact';
 
 export const Home: React.FC = () => {
   const { language, playSound, setActiveSection } = useAppState();
@@ -114,6 +115,11 @@ export const Home: React.FC = () => {
             <div className="text-[10px] text-gray-400 font-mono tracking-widest uppercase">INNOVATION LABS</div>
           </div>
         </div>
+      </div>
+
+      {/* Spectacular Final Contact segment of Earth viewed from space */}
+      <div className="w-full border-t border-white/5 mt-16 pt-8">
+        <Contact />
       </div>
     </div>
   );

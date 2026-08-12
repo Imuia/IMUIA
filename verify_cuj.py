@@ -75,6 +75,13 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/07_partners_form.png")
             print("Screenshot 07 written.")
 
+            # Navigate to Contact Page
+            print("Navigating to Contact space...")
+            page.get_by_text("Contact").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/07_contact_page.png")
+            print("Screenshot Contact Page written.")
+
             # Navigate to Espace Client Space & Login
             print("Navigating to secure Client Space...")
             page.get_by_text("Espace Client").first.click()

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://imuia.com/sitemap.xml
