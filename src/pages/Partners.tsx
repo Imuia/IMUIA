@@ -21,6 +21,25 @@ export const Partners: React.FC = () => {
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
 
+  // Intent pre-fill handler from sessionStorage
+  React.useEffect(() => {
+    const storedPartnerType = sessionStorage.getItem('imuia_intent_partner_type');
+    const storedProposal = sessionStorage.getItem('imuia_intent_proposal');
+
+    if (storedPartnerType) {
+      setPartnerType(storedPartnerType);
+      sessionStorage.removeItem('imuia_intent_partner_type');
+    }
+    if (storedProposal) {
+      setProposal(storedProposal);
+      sessionStorage.removeItem('imuia_intent_proposal');
+    }
+
+    if (storedPartnerType || storedProposal) {
+      playSound('success');
+    }
+  }, [playSound]);
+
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);

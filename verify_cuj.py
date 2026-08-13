@@ -68,7 +68,21 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/06_vision_method.png")
             print("Screenshot 06 written.")
 
-            # Navigate to Partnerships
+            # Navigate to Contact Page
+            print("Navigating to Contact Page...")
+            page.get_by_text("Contact").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/10_contact_page.png")
+            print("Screenshot 10 written.")
+
+            # Click Investir dans un univers CTA to test sessionStorage redirect & prefill
+            print("Clicking Investir dans un univers CTA...")
+            page.get_by_text("Investir dans un univers").click()
+            page.wait_for_timeout(1200)
+            page.screenshot(path="/home/jules/verification/11_partners_prefilled.png")
+            print("Screenshot 11 written.")
+
+            # Navigate to Partnerships manually to clear / make sure
             print("Navigating to Partnership space...")
             page.get_by_text("Partenariats").first.click()
             page.wait_for_timeout(1000)
