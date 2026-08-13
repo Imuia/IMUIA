@@ -21,6 +21,21 @@ export const Partners: React.FC = () => {
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
 
+  // Auto pre-fill from Contact quick action triggers
+  React.useEffect(() => {
+    const prefillType = sessionStorage.getItem('prefill_partnerType');
+    const prefillProposal = sessionStorage.getItem('prefill_proposal');
+
+    if (prefillType) {
+      setPartnerType(prefillType);
+      sessionStorage.removeItem('prefill_partnerType');
+    }
+    if (prefillProposal) {
+      setProposal(prefillProposal);
+      sessionStorage.removeItem('prefill_proposal');
+    }
+  }, []);
+
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
