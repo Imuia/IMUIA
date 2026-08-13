@@ -75,7 +75,7 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/07_partners_form.png")
             print("Screenshot 07 written.")
 
-            # Navigate to Espace Client Space & Login
+            # Navigate to secure Client Space & Login
             print("Navigating to secure Client Space...")
             page.get_by_text("Espace Client").first.click()
             page.wait_for_timeout(1000)
@@ -93,6 +93,20 @@ def run_verification():
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/09_crm_cockpit.png")
             print("Screenshot 09 written.")
+
+            # Navigate to Contact Page
+            print("Navigating to Contact Page...")
+            page.get_by_text("Contact").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/10_contact_page_earth.png")
+            print("Screenshot 10 written.")
+
+            # Click Direct Message liaison
+            print("Opening direct messaging contact form...")
+            page.get_by_text("Contacter IMUIA").click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/11_contact_direct_form.png")
+            print("Screenshot 11 written.")
 
             # Close browser
             browser.close()
