@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://imuia.com/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://imuia.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://imuia.com/?lang=en" />
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://imuia.com/?section=universe</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://imuia.com/?section=universe" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://imuia.com/?lang=en&amp;section=universe" />
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://imuia.com/?section=platforms</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://imuia.com/?section=platforms" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://imuia.com/?lang=en&amp;section=platforms" />
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://imuia.com/?section=labs</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://imuia.com/?section=labs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://imuia.com/?lang=en&amp;section=labs" />
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://imuia.com/?section=vision</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://imuia.com/?section=vision" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://imuia.com/?lang=en&amp;section=vision" />
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://imuia.com/?section=territories</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://imuia.com/?section=territories" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://imuia.com/?lang=en&amp;section=territories" />
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://imuia.com/?section=partners</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://imuia.com/?section=partners" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://imuia.com/?lang=en&amp;section=partners" />
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://imuia.com/?section=news</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://imuia.com/?section=news" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://imuia.com/?lang=en&amp;section=news" />
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://imuia.com/?section=contact</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://imuia.com/?section=contact" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://imuia.com/?lang=en&amp;section=contact" />
+    <lastmod>2026-03-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>
