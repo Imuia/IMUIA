@@ -1,7 +1,8 @@
 import React from 'react';
 import { useAppState } from '../data/AppState';
 import { translations } from '../data/translations';
-import { ArrowRight, Compass, Shield, Rocket, Activity } from 'lucide-react';
+import { ArrowRight, Compass, Shield, Rocket, Activity, MessageSquare } from 'lucide-react';
+import { Contact } from './Contact';
 
 export const Home: React.FC = () => {
   const { language, playSound, setActiveSection } = useAppState();
@@ -13,7 +14,8 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-80px)] flex flex-col items-center justify-center py-12 px-4 overflow-hidden">
+    <div className="space-y-16">
+    <div className="relative min-h-[calc(100vh-120px)] flex flex-col items-center justify-center py-12 px-4 overflow-hidden">
       {/* Background atmosphere elements */}
       <div className="absolute inset-0 stars-bg opacity-40 pointer-events-none"></div>
 
@@ -65,7 +67,7 @@ export const Home: React.FC = () => {
         </div>
 
         {/* High-end Glowing Rounded Action Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 pt-4 max-w-3xl mx-auto">
+        <div className="flex flex-wrap justify-center gap-4 pt-4 max-w-4xl mx-auto">
           <button
             onClick={() => handleCTA('universe')}
             onMouseEnter={() => playSound('hover')}
@@ -93,6 +95,15 @@ export const Home: React.FC = () => {
             <Rocket className="w-4 h-4" />
             <span>{t.proposePartnership}</span>
           </button>
+
+          <button
+            onClick={() => handleCTA('contact')}
+            onMouseEnter={() => playSound('hover')}
+            className="flex items-center space-x-2.5 px-7 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-sm tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+          >
+            <MessageSquare className="w-4 h-4" />
+            <span>{t.contactUs}</span>
+          </button>
         </div>
 
         {/* Digital Hud Footer Stat indicators */}
@@ -115,6 +126,12 @@ export const Home: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Earth/Planet contact view as final visual closure on home page */}
+      <section className="border-t border-white/5 pt-12">
+        <Contact />
+      </section>
+    </div>
     </div>
   );
 };

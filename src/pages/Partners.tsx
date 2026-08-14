@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../data/AppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
@@ -20,6 +20,39 @@ export const Partners: React.FC = () => {
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
+
+  // Pre-fill form values based on sessionStorage intent
+  useEffect(() => {
+    const intent = sessionStorage.getItem('imuia_contact_intent');
+    if (intent) {
+      if (intent === 'project') {
+        setPartnerType('Other');
+        setProposal(language === 'fr'
+          ? "Bonjour, je souhaite présenter un projet innovant à l'équipage IMUIA. Voici les détails de mon concept..."
+          : "Hello, I would like to present an innovative project to the IMUIA flight crew. Here are the details of my concept..."
+        );
+      } else if (intent === 'partner') {
+        setPartnerType('Operator');
+        setProposal(language === 'fr'
+          ? "Bonjour, je souhaite devenir partenaire ou opérateur local au sein de la galaxie IMUIA..."
+          : "Hello, I would like to become a partner or a local operator in the IMUIA galaxy..."
+        );
+      } else if (intent === 'invest') {
+        setPartnerType('Investor');
+        setBudget('100000');
+        setProposal(language === 'fr'
+          ? "Bonjour, je souhaite explorer les opportunités d'investissement dans l'univers IMUIA..."
+          : "Hello, I would like to explore investment opportunities in the IMUIA universe..."
+        );
+      } else if (intent === 'contact') {
+        setProposal(language === 'fr'
+          ? "Bonjour, je souhaite contacter l'équipage IMUIA pour une demande générale..."
+          : "Hello, I would like to contact the IMUIA crew regarding a general request..."
+        );
+      }
+      sessionStorage.removeItem('imuia_contact_intent');
+    }
+  }, [language]);
 
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);
