@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../data/AppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
@@ -20,6 +20,36 @@ export const Partners: React.FC = () => {
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
+
+  // Listen to intent triggers from Contact Earth page
+  useEffect(() => {
+    const intent = sessionStorage.getItem('partnershipIntent');
+    if (intent) {
+      if (intent === 'project') {
+        setPartnerType('Other');
+        setProposal(language === 'fr'
+          ? "Bonjour l'équipage IMUIA, j'aimerais vous présenter un projet innovant à mettre en orbite..."
+          : "Hello IMUIA crew, I would like to submit an innovative project to launch into orbit...");
+      } else if (intent === 'partner') {
+        setPartnerType('Operator');
+        setProposal(language === 'fr'
+          ? "Bonjour l'équipage, je souhaite devenir partenaire pour l'un de vos univers et explorer des synergies opérationnelles..."
+          : "Hello crew, I want to become a partner for one of your universes and explore operational synergies...");
+      } else if (intent === 'invest') {
+        setPartnerType('Investor');
+        setBudget('150000');
+        setProposal(language === 'fr'
+          ? "Bonjour l'équipage IMUIA, je souhaite investir dans un de vos écosystèmes et co-financer de nouveaux territoires..."
+          : "Hello IMUIA crew, I am interested in investing in one of your ecosystems and co-funding new territories...");
+      } else if (intent === 'contact') {
+        setProposal(language === 'fr'
+          ? "Bonjour, j'aimerais entrer en contact avec l'équipage IMUIA pour une demande de renseignement général..."
+          : "Hello, I would like to reach out to the IMUIA crew for a general inquiry...");
+      }
+      setConsent(true);
+      sessionStorage.removeItem('partnershipIntent');
+    }
+  }, [language]);
 
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);
