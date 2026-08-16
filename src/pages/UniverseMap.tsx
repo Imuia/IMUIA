@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 import type { Platform } from '../data/AppState';
 import { translations } from '../data/translations';
 import { Orbit, Info } from 'lucide-react';
