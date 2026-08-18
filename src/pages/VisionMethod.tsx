@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Compass, Sparkles, Map, Network, ShieldCheck, Milestone, Orbit, Star } from 'lucide-react';
 
