@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 
 export const Cursor: React.FC = () => {
   const { theme } = useAppState();
