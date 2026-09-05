@@ -1,5 +1,6 @@
 import React from 'react';
-import { AppStateProvider, useAppState } from './data/AppState';
+import { AppStateProvider } from './data/AppState';
+import { useAppState } from './data/useAppState';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Cursor } from './components/Cursor';
