@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
-import type { Platform } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
+import type { Platform } from '../data/AppStateContext';
 import { translations } from '../data/translations';
 import { MapPin, ExternalLink, ArrowLeft, ShieldCheck, Heart, Cpu } from 'lucide-react';
 
@@ -19,7 +19,7 @@ export const Platforms: React.FC = () => {
   const [favorites, setFavorites] = useState<string[]>([]);
 
   // Open detailing modal directly if configured in state (e.g., from galaxy map clicks)
-  const detailPlatform = platforms.find(p => p.id === activePlatformForDetail);
+  const detailPlatform = platforms.find((p: Platform) => p.id === activePlatformForDetail);
 
   const toggleFavorite = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -37,7 +37,7 @@ export const Platforms: React.FC = () => {
 
   const filteredPlatforms = filter === 'all'
     ? platforms
-    : platforms.filter(p => p.sector === filter);
+    : platforms.filter((p: Platform) => p.sector === filter);
 
   const getSectorColor = (sect: Platform['sector']) => {
     switch (sect) {
@@ -100,7 +100,7 @@ export const Platforms: React.FC = () => {
 
       {/* Plateformes Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto relative z-10">
-        {filteredPlatforms.map((p) => {
+        {filteredPlatforms.map((p: Platform) => {
           const isFav = favorites.includes(p.id);
           const localizedShort = language === 'fr'
             ? (translations.fr as any)[p.shortDescKey] || t.platRSSDesc
