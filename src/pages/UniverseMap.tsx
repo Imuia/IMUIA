@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
-import type { Platform } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
+import type { Platform } from '../data/AppStateContext';
 import { translations } from '../data/translations';
 import { Orbit, Info } from 'lucide-react';
 
@@ -103,7 +103,7 @@ export const UniverseMap: React.FC = () => {
           const left = 50 + (radiusX * Math.cos(angle)) / 8; // % position
           const top = 50 + (radiusY * Math.sin(angle)) / 5; // % position
 
-          const sectorPlats = platforms.filter(p => p.sector === sec.id);
+          const sectorPlats = platforms.filter((p: Platform) => p.sector === sec.id);
           const isFaded = selectedSector !== null && selectedSector !== sec.id;
 
           return (
@@ -125,7 +125,7 @@ export const UniverseMap: React.FC = () => {
 
                 {/* Orbiting Planets (Platforms of this sector) */}
                 <div className="flex justify-center space-x-1.5 mt-2">
-                  {sectorPlats.map((plat) => {
+                  {sectorPlats.map((plat: Platform) => {
                     const isHovered = hoveredPlanet?.id === plat.id;
                     return (
                       <button
@@ -220,7 +220,7 @@ export const UniverseMap: React.FC = () => {
         </div>
 
         {sectors.map((sec) => {
-          const sectorPlats = platforms.filter(p => p.sector === sec.id);
+          const sectorPlats = platforms.filter((p: Platform) => p.sector === sec.id);
           const isFaded = selectedSector !== null && selectedSector !== sec.id;
           if (isFaded) return null;
 
@@ -236,7 +236,7 @@ export const UniverseMap: React.FC = () => {
               </div>
 
               <div className="space-y-2.5">
-                {sectorPlats.map((plat) => (
+                {sectorPlats.map((plat: Platform) => (
                   <button
                     key={plat.id}
                     onClick={() => handlePlanetClick(plat)}

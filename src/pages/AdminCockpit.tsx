@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
-import type { Contact } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
+import type { Contact, Platform, EmailCampaign, Task } from '../data/AppStateContext';
 import { translations } from '../data/translations';
 import { LayoutDashboard, Plus, Mail, CheckSquare, Trash2, Users, Send, Radio } from 'lucide-react';
 
@@ -102,7 +102,7 @@ export const AdminCockpit: React.FC = () => {
         <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-2">
           <div className="text-xs font-mono text-gray-500 uppercase">{t.statActivePlats}</div>
           <div className="text-3xl font-black font-orbitron text-white">
-            {platforms.filter(p => p.status === 'active').length}
+            {platforms.filter((p: Platform) => p.status === 'active').length}
           </div>
           <span className="text-[10px] text-green-400 font-mono">100% opérationnels</span>
         </div>
@@ -110,7 +110,7 @@ export const AdminCockpit: React.FC = () => {
         <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-2">
           <div className="text-xs font-mono text-gray-500 uppercase">{t.statDevPlats}</div>
           <div className="text-3xl font-black font-orbitron text-cyan-400">
-            {platforms.filter(p => p.status === 'development' || p.status === 'soon').length}
+            {platforms.filter((p: Platform) => p.status === 'development' || p.status === 'soon').length}
           </div>
           <span className="text-[10px] text-gray-400 font-mono">Modélisation moléculaire</span>
         </div>
@@ -149,7 +149,7 @@ export const AdminCockpit: React.FC = () => {
             </div>
 
             <div className="space-y-4 max-h-[450px] overflow-y-auto pr-1">
-              {contacts.map((c) => (
+              {contacts.map((c: Contact) => (
                 <div key={c.id} className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-3">
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div>
@@ -315,7 +315,7 @@ export const AdminCockpit: React.FC = () => {
 
             {/* List registry grid table */}
             <div className="space-y-2">
-              {platforms.map((p) => (
+              {platforms.map((p: Platform) => (
                 <div key={p.id} className="p-3 rounded-xl bg-black/40 border border-white/5 flex items-center justify-between text-xs">
                   <div className="flex items-center space-x-3">
                     <span className="text-xl">{p.logo}</span>
@@ -422,7 +422,7 @@ export const AdminCockpit: React.FC = () => {
             <div className="pt-2 border-t border-white/5 space-y-2">
               <span className="block text-[9px] font-mono text-gray-500 uppercase">{t.crmEmailLog}</span>
               <div className="space-y-1 max-h-32 overflow-y-auto pr-1">
-                {emailCampaigns.map((log) => (
+                {emailCampaigns.map((log: EmailCampaign) => (
                   <div key={log.id} className="p-2 rounded bg-black/40 text-[9px] font-mono border border-white/5 flex items-center justify-between text-gray-400">
                     <span className="truncate max-w-[150px]">{log.subject}</span>
                     <span className="text-green-400">SENT</span>
@@ -457,7 +457,7 @@ export const AdminCockpit: React.FC = () => {
             </form>
 
             <div className="space-y-1.5 max-h-48 overflow-y-auto">
-              {tasks.map((task) => (
+              {tasks.map((task: Task) => (
                 <div key={task.id} className="flex items-center justify-between p-2 rounded bg-black/40 text-xs border border-white/5">
                   <div className="flex items-center space-x-2 flex-1">
                     <input

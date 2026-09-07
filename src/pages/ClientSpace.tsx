@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { CheckCircle, Bell, BarChart2, UploadCloud, FileSignature, ShieldCheck } from 'lucide-react';
 
@@ -271,7 +271,7 @@ export const ClientSpace: React.FC = () => {
             </h3>
 
             <div className="space-y-3">
-              {contracts.map((con) => (
+              {contracts.map((con: { id: string; title: string; date: string; signed: boolean; signatureData?: string }) => (
                 <div key={con.id} className="p-4 rounded-xl bg-black/40 border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="space-y-1">
                     <span className="block text-sm text-white font-bold leading-tight">{con.title}</span>
