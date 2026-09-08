@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 
 export const Cursor: React.FC = () => {
   const { theme } = useAppState();
@@ -54,7 +54,7 @@ export const Cursor: React.FC = () => {
   return (
     <>
       <div
-        className="custom-cursor hidden md:block"
+        className="custom-cursor pointer-events-none hidden md:block"
         style={{
           left: `${position.x}px`,
           top: `${position.y}px`,
@@ -67,7 +67,7 @@ export const Cursor: React.FC = () => {
         }}
       />
       <div
-        className="custom-cursor-dot hidden md:block"
+        className="custom-cursor-dot pointer-events-none hidden md:block"
         style={{
           left: `${dotPosition.x}px`,
           top: `${dotPosition.y}px`,

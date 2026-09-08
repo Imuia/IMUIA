@@ -34,21 +34,21 @@ def run_verification():
 
             # Click Explorer notre univers (navigates to Map/Galaxy)
             print("Navigating to Galaxy Map...")
-            page.get_by_text("Explorer notre univers").click()
+            page.get_by_role("button", name="Explorer notre univers").click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/02_galaxy_map.png")
             print("Screenshot 02 written.")
 
             # Navigate to Platforms
             print("Navigating to Platforms Registry...")
-            page.get_by_text("Nos plateformes").first.click()
+            page.get_by_role("button", name="Nos plateformes").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/03_platforms.png")
             print("Screenshot 03 written.")
 
             # Navigate to IMUIA Labs
             print("Navigating to IMUIA Labs...")
-            page.get_by_text("IMUIA Labs").first.click()
+            page.get_by_role("button", name="IMUIA Labs").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/04_labs_locked.png")
             print("Screenshot 04 written.")
@@ -56,28 +56,28 @@ def run_verification():
             # Unlock incubator with credentials
             print("Unlocking Incubation chamber with key 'IMUIALAB'...")
             page.get_by_placeholder("Ex: IMUIALAB").fill("IMUIALAB")
-            page.get_by_text("Déverrouiller les Concepts").click()
+            page.get_by_role("button", name="Déverrouiller les Concepts").click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/05_labs_unlocked.png")
             print("Screenshot 05 written.")
 
             # Navigate to Vision / Method
             print("Navigating to Vision & Method Space Path...")
-            page.get_by_text("Notre vision").first.click()
+            page.get_by_role("button", name="Notre vision").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/06_vision_method.png")
             print("Screenshot 06 written.")
 
             # Navigate to Partnerships
             print("Navigating to Partnership space...")
-            page.get_by_text("Partenariats").first.click()
+            page.get_by_role("button", name="Partenariats").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/07_partners_form.png")
             print("Screenshot 07 written.")
 
             # Navigate to Espace Client Space & Login
             print("Navigating to secure Client Space...")
-            page.get_by_text("Espace Client").first.click()
+            page.get_by_role("button", name="Espace Client").first.click()
             page.wait_for_timeout(1000)
             # Login
             page.get_by_placeholder("partner@imuia.com").fill("partner@imuia.com")
@@ -89,7 +89,7 @@ def run_verification():
 
             # Navigate to CRM Cockpit
             print("Navigating to Central CRM Cockpit Dashboard...")
-            page.get_by_text("Cockpit CRM").first.click()
+            page.get_by_role("button", name="Cockpit CRM").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/09_crm_cockpit.png")
             print("Screenshot 09 written.")

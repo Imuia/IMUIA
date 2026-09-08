@@ -1,5 +1,6 @@
 import React from 'react';
-import { AppStateProvider, useAppState } from './data/AppState';
+import { AppStateProvider } from './data/AppState';
+import { useAppState } from './data/useAppState';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Cursor } from './components/Cursor';
@@ -57,7 +58,7 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between relative overflow-hidden transition-colors duration-500 bg-slate-950 text-gray-100 dark:bg-[#03000a] light:bg-[#f8fafc] light:text-slate-900 cursor-none">
+    <div className="min-h-screen flex flex-col justify-between relative overflow-hidden transition-colors duration-500 bg-slate-950 text-gray-100 dark:bg-[#03000a] light:bg-[#f8fafc] light:text-slate-900 md:cursor-none">
       {/* Background aesthetic blobs */}
       <div className="absolute top-10 right-10 w-[450px] h-[450px] bg-purple-900/10 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-20 left-10 w-[400px] h-[400px] bg-indigo-900/10 rounded-full blur-3xl pointer-events-none"></div>
