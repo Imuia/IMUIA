@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { ArrowRight, Compass, Shield, Rocket, Activity } from 'lucide-react';
+import { ArrowRight, Compass, Shield, Rocket, Activity, Send, Globe } from 'lucide-react';
 
 export const Home: React.FC = () => {
   const { language, playSound, setActiveSection } = useAppState();
@@ -64,7 +64,7 @@ export const Home: React.FC = () => {
           </p>
         </div>
 
-        {/* High-end Glowing Rounded Action Buttons */}
+        {/* High-end Glowing Rounded Action Buttons (4 Core Buttons from Specification) */}
         <div className="flex flex-wrap justify-center gap-4 pt-4 max-w-3xl mx-auto">
           <button
             onClick={() => handleCTA('universe')}
@@ -93,6 +93,15 @@ export const Home: React.FC = () => {
             <Rocket className="w-4 h-4" />
             <span>{t.proposePartnership}</span>
           </button>
+
+          <button
+            onClick={() => handleCTA('partners')}
+            onMouseEnter={() => playSound('hover')}
+            className="flex items-center space-x-2.5 px-7 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-sm tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+          >
+            <Send className="w-4 h-4" />
+            <span>{t.contactUs}</span>
+          </button>
         </div>
 
         {/* Digital Hud Footer Stat indicators */}
@@ -114,6 +123,77 @@ export const Home: React.FC = () => {
             <div className="text-[10px] text-gray-400 font-mono tracking-widest uppercase">INNOVATION LABS</div>
           </div>
         </div>
+
+        {/* Contact Orbit Planet Earth Section */}
+        <div className="mt-16 pt-12 border-t border-white/10 max-w-4xl mx-auto space-y-8 relative z-10 text-center">
+          <div className="relative flex justify-center items-center py-4">
+            <div className="absolute w-64 h-64 rounded-full bg-cyan-500/10 blur-3xl animate-pulse"></div>
+            {/* Interactive 3D Earth / IMUIA Planet Graphic */}
+            <div className="relative w-44 h-44 rounded-full bg-gradient-to-tr from-blue-950 via-indigo-900 to-cyan-700 p-1 shadow-[0_0_60px_rgba(34,211,238,0.3)] border border-cyan-400/30 flex items-center justify-center overflow-hidden group">
+              {/* Atmospheric halo */}
+              <div className="absolute inset-0 rounded-full border border-cyan-400/40 animate-pulse"></div>
+              {/* Continents / grid pattern */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-400/20 via-purple-600/10 to-transparent opacity-80"></div>
+              <div className="text-center p-4">
+                <Globe className="w-10 h-10 text-cyan-300 mx-auto animate-spin-slow mb-1" />
+                <span className="block text-[9px] font-mono tracking-widest text-cyan-200 uppercase font-bold">EARTH &amp; IMUIA ORBIT</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-2xl md:text-3xl font-black font-orbitron text-white uppercase tracking-tight">
+              {language === 'fr' ? 'Vous avez une idée à mettre en orbite ?' : 'Have an idea to put into orbit?'}
+            </h2>
+            <p className="text-sm text-gray-300 max-w-xl mx-auto leading-relaxed font-light">
+              Projet innovant, partenariat, investissement ou proposition de collaboration : entrez en contact avec l'équipage IMUIA.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-3 pt-2">
+            <button
+              onClick={() => {
+                sessionStorage.setItem('imuia_intent', 'Creator');
+                handleCTA('partners');
+              }}
+              onMouseEnter={() => playSound('hover')}
+              className="px-5 py-3 bg-purple-600 hover:bg-purple-500 text-white font-orbitron font-bold text-xs tracking-widest uppercase rounded-full transition-all shadow-md cursor-none"
+            >
+              {t.presentProject}
+            </button>
+            <button
+              onClick={() => {
+                sessionStorage.setItem('imuia_intent', 'Operator');
+                handleCTA('partners');
+              }}
+              onMouseEnter={() => playSound('hover')}
+              className="px-5 py-3 bg-white/5 hover:bg-white/10 text-cyan-300 border border-cyan-500/30 font-orbitron font-bold text-xs tracking-widest uppercase rounded-full transition-all cursor-none"
+            >
+              {t.becomePartner}
+            </button>
+            <button
+              onClick={() => {
+                sessionStorage.setItem('imuia_intent', 'Investor');
+                handleCTA('partners');
+              }}
+              onMouseEnter={() => playSound('hover')}
+              className="px-5 py-3 bg-white/5 hover:bg-white/10 text-pink-300 border border-pink-500/30 font-orbitron font-bold text-xs tracking-widest uppercase rounded-full transition-all cursor-none"
+            >
+              {t.investUniverse}
+            </button>
+            <button
+              onClick={() => {
+                sessionStorage.setItem('imuia_intent', 'Other');
+                handleCTA('partners');
+              }}
+              onMouseEnter={() => playSound('hover')}
+              className="px-5 py-3 bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 font-orbitron font-bold text-xs tracking-widest uppercase rounded-full transition-all cursor-none"
+            >
+              {t.contactUs}
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   );
