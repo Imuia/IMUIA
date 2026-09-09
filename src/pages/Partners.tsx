@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
 
 export const Partners: React.FC = () => {
   const { language, addContact, playSound } = useAppState();
   const t = translations[language];
+
+  React.useEffect(() => {
+    const storedIntent = sessionStorage.getItem('imuia_intent');
+    if (storedIntent) {
+      setPartnerType(storedIntent);
+      sessionStorage.removeItem('imuia_intent');
+    }
+  }, []);
 
   // Form Fields State
   const [firstName, setFirstName] = useState('');
