@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../data/AppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
@@ -29,6 +29,21 @@ export const Partners: React.FC = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  // Pre-fill partner type based on intent stored in sessionStorage
+  useEffect(() => {
+    try {
+      const intent = sessionStorage.getItem('imuia_intent');
+      if (intent) {
+        if (intent === 'invest') setPartnerType('Investor');
+        else if (intent === 'partner') setPartnerType('Operator');
+        else if (intent === 'project') setPartnerType('Developer');
+        else if (intent === 'contact') setPartnerType('Other');
+      }
+    } catch {
+      // Ignore if sessionStorage restricted
+    }
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -95,6 +110,12 @@ export const Partners: React.FC = () => {
       setProposal('');
       setFileName(null);
       setConsent(false);
+
+      try {
+        sessionStorage.removeItem('imuia_intent');
+      } catch {
+        // Ignore
+      }
     }, 1500);
   };
 
