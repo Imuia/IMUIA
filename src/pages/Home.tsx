@@ -1,7 +1,8 @@
 import React from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { ArrowRight, Compass, Shield, Rocket, Activity } from 'lucide-react';
+import { ContactSection } from '../components/ContactSection';
 
 export const Home: React.FC = () => {
   const { language, playSound, setActiveSection } = useAppState();
@@ -13,7 +14,7 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-80px)] flex flex-col items-center justify-center py-12 px-4 overflow-hidden">
+    <div className="relative min-h-[calc(100vh-80px)] flex flex-col items-center justify-center py-12 px-4 overflow-hidden space-y-16">
       {/* Background atmosphere elements */}
       <div className="absolute inset-0 stars-bg opacity-40 pointer-events-none"></div>
 
@@ -115,6 +116,9 @@ export const Home: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Render 3D Earth Contact Section on Landing Page */}
+      <ContactSection />
     </div>
   );
 };
