@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
+import React, { useState, useEffect } from 'react';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
 
@@ -20,6 +20,18 @@ export const Partners: React.FC = () => {
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
+
+  // Auto pre-fill intent from sessionStorage if set by CTA buttons
+  useEffect(() => {
+    try {
+      const storedIntent = sessionStorage.getItem('imuia_partner_intent');
+      if (storedIntent) {
+        setPartnerType(storedIntent);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
 
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);
@@ -81,7 +93,7 @@ export const Partners: React.FC = () => {
       setSuccess(true);
       playSound('success');
 
-      // Reset form fields
+      // Reset form fields and intent
       setFirstName('');
       setLastName('');
       setCompany('');
@@ -95,6 +107,7 @@ export const Partners: React.FC = () => {
       setProposal('');
       setFileName(null);
       setConsent(false);
+      try { sessionStorage.removeItem('imuia_partner_intent'); } catch {}
     }, 1500);
   };
 
