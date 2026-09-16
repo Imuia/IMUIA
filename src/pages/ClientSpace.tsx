@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { CheckCircle, Bell, BarChart2, UploadCloud, FileSignature, ShieldCheck } from 'lucide-react';
 
