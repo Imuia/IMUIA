@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Volume2, VolumeX, Sun, Moon, Menu, X, Rocket, Orbit, Cpu, BookOpen, Shield, HelpCircle, User, LayoutDashboard, Languages } from 'lucide-react';
 
