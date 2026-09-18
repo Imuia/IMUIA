@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppState } from '../data/AppState';
 import { translations } from '../data/translations';
-import { ArrowRight, Compass, Shield, Rocket, Activity } from 'lucide-react';
+import { ArrowRight, Compass, Shield, Rocket, Activity, MessageSquare } from 'lucide-react';
 
 export const Home: React.FC = () => {
   const { language, playSound, setActiveSection } = useAppState();
@@ -92,6 +92,15 @@ export const Home: React.FC = () => {
           >
             <Rocket className="w-4 h-4" />
             <span>{t.proposePartnership}</span>
+          </button>
+
+          <button
+            onClick={() => handleCTA('partners')}
+            onMouseEnter={() => playSound('hover')}
+            className="flex items-center space-x-2.5 px-7 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-sm tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+          >
+            <MessageSquare className="w-4 h-4 text-cyan-400" />
+            <span>{t.contactUs}</span>
           </button>
         </div>
 

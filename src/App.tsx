@@ -4,6 +4,7 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Cursor } from './components/Cursor';
 import { CookieBanner } from './components/CookieBanner';
+import { EarthContact } from './components/EarthContact';
 
 // Pages
 import { Home } from './pages/Home';
@@ -71,6 +72,7 @@ const MainLayout: React.FC = () => {
         </main>
       </div>
 
+      <EarthContact />
       <CookieBanner />
       <Footer />
     </div>
