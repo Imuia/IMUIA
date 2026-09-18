@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../data/AppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
@@ -20,6 +20,18 @@ export const Partners: React.FC = () => {
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
+
+  // Read intent from session if triggered from Earth Contact
+  useEffect(() => {
+    const savedType = sessionStorage.getItem('imuia_intent_type');
+    const savedTitle = sessionStorage.getItem('imuia_intent_title');
+    if (savedType) {
+      setPartnerType(savedType);
+    }
+    if (savedTitle) {
+      setProposal(`Demande au sujet de : ${savedTitle}. Nous souhaitons proposer...`);
+    }
+  }, []);
 
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);
@@ -115,7 +127,7 @@ export const Partners: React.FC = () => {
         </p>
       </div>
 
-      <div className="max-w-4xl mx-auto glass-panel p-6 md:p-8 rounded-3xl border border-purple-500/30 relative z-10">
+      <div id="partnership-form-anchor" className="max-w-4xl mx-auto glass-panel p-6 md:p-8 rounded-3xl border border-purple-500/30 relative z-10">
 
         {success && (
           <div className="mb-6 p-4 rounded-xl bg-green-500/10 border border-green-500/30 text-green-400 flex items-start space-x-3 text-left">
