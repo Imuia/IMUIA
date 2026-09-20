@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
-import type { Contact } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
+import type { Contact  } from '../data/AppStateContext';
 import { translations } from '../data/translations';
 import { LayoutDashboard, Plus, Mail, CheckSquare, Trash2, Users, Send, Radio } from 'lucide-react';
 
