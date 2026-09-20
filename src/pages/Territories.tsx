@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Globe, Award } from 'lucide-react';
 
