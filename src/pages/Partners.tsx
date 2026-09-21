@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
+import React, { useState, useEffect } from 'react';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
+import { ContactSection } from '../components/ContactSection';
 
 export const Partners: React.FC = () => {
   const { language, addContact, playSound } = useAppState();
@@ -20,6 +21,15 @@ export const Partners: React.FC = () => {
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
+
+  // Check intent on mount
+  useEffect(() => {
+    const intent = sessionStorage.getItem('imuia_intent');
+    if (intent) {
+      setPartnerType(intent);
+      sessionStorage.removeItem('imuia_intent');
+    }
+  }, []);
 
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);
@@ -99,7 +109,7 @@ export const Partners: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-80px)] py-12 px-4 space-y-12">
+    <div className="relative min-h-[calc(100vh-80px)] py-12 px-4 space-y-16">
       <div className="absolute inset-0 stars-bg opacity-30 pointer-events-none"></div>
 
       <div className="text-center max-w-3xl mx-auto space-y-4 relative z-10">
@@ -362,6 +372,8 @@ export const Partners: React.FC = () => {
         </div>
 
       </div>
+
+      <ContactSection />
     </div>
   );
 };
