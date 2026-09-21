@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Shield, Lock, Eye } from 'lucide-react';
 
