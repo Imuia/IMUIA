@@ -1,7 +1,8 @@
 import React from 'react';
-import { useAppState } from '../data/AppState';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { ArrowRight, Compass, Shield, Rocket, Activity } from 'lucide-react';
+import { EarthContactSection } from '../components/EarthContactSection';
+import { ArrowRight, Compass, Shield, Rocket, Mail, Activity } from 'lucide-react';
 
 export const Home: React.FC = () => {
   const { language, playSound, setActiveSection } = useAppState();
@@ -10,10 +11,11 @@ export const Home: React.FC = () => {
   const handleCTA = (section: string) => {
     setActiveSection(section);
     playSound('space');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-80px)] flex flex-col items-center justify-center py-12 px-4 overflow-hidden">
+    <div className="relative min-h-[calc(100vh-80px)] flex flex-col justify-between py-12 px-4 overflow-hidden space-y-16">
       {/* Background atmosphere elements */}
       <div className="absolute inset-0 stars-bg opacity-40 pointer-events-none"></div>
 
@@ -64,34 +66,47 @@ export const Home: React.FC = () => {
           </p>
         </div>
 
-        {/* High-end Glowing Rounded Action Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 pt-4 max-w-3xl mx-auto">
+        {/* High-end Glowing Rounded Action Buttons (4 Buttons as requested) */}
+        <div className="flex flex-wrap justify-center gap-4 pt-4 max-w-4xl mx-auto">
+          {/* 1. Explorer notre univers */}
           <button
             onClick={() => handleCTA('universe')}
             onMouseEnter={() => playSound('hover')}
-            className="flex items-center space-x-2.5 px-7 py-4 bg-purple-600 hover:bg-purple-500 text-white font-orbitron font-bold text-sm tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] cursor-none hover:translate-y-[-2px]"
+            className="flex items-center space-x-2.5 px-6 py-4 bg-purple-600 hover:bg-purple-500 text-white font-orbitron font-bold text-xs tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] cursor-none hover:-translate-y-0.5 uppercase"
           >
             <Compass className="w-4 h-4" />
             <span>{t.exploreUniverse}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
 
+          {/* 2. Découvrir nos plateformes */}
           <button
             onClick={() => handleCTA('platforms')}
             onMouseEnter={() => playSound('hover')}
-            className="flex items-center space-x-2.5 px-7 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-sm tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+            className="flex items-center space-x-2.5 px-6 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-xs tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:-translate-y-0.5 uppercase"
           >
             <Shield className="w-4 h-4" />
             <span>{t.discoverPlatforms}</span>
           </button>
 
+          {/* 3. Proposer un partenariat */}
           <button
             onClick={() => handleCTA('partners')}
             onMouseEnter={() => playSound('hover')}
-            className="flex items-center space-x-2.5 px-7 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-sm tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+            className="flex items-center space-x-2.5 px-6 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-xs tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:-translate-y-0.5 uppercase"
           >
             <Rocket className="w-4 h-4" />
             <span>{t.proposePartnership}</span>
+          </button>
+
+          {/* 4. Nous contacter */}
+          <button
+            onClick={() => handleCTA('partners')}
+            onMouseEnter={() => playSound('hover')}
+            className="flex items-center space-x-2.5 px-6 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-xs tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:-translate-y-0.5 uppercase"
+          >
+            <Mail className="w-4 h-4" />
+            <span>{t.contactUs}</span>
           </button>
         </div>
 
@@ -115,6 +130,9 @@ export const Home: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Earth Contact Section at bottom of page */}
+      <EarthContactSection />
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useAppState } from '../data/AppState';
+import React, { useState, useEffect } from 'react';
+import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
 
@@ -20,6 +20,15 @@ export const Partners: React.FC = () => {
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
+
+  // Check stored intent from Earth Contact buttons
+  useEffect(() => {
+    const savedIntent = sessionStorage.getItem('imuia_partner_intent');
+    if (savedIntent) {
+      setPartnerType(savedIntent);
+      sessionStorage.removeItem('imuia_partner_intent');
+    }
+  }, []);
 
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);
