@@ -1,87 +1,15 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import type {
+  Platform,
+  Contact,
+  EmailCampaign,
+  Task,
+  AppStateContextType
+} from './AppStateContext';
+import { AppStateContext } from './AppStateContext';
 
-// Types for our platforms
-export interface Platform {
-  id: string;
-  name: string;
-  logo: string; // Emoji or simple icon
-  sector: 'immo' | 'tourism' | 'events' | 'economy' | 'services' | 'tech';
-  zone: string; // e.g., "France", "Madagascar", "Maroc"
-  status: 'active' | 'development' | 'soon';
-  url: string;
-  shortDescKey: string; // references inside translations
-  fullDescKey: string;
-}
-
-// Contacts/leads
-export interface Contact {
-  id: string;
-  firstName: string;
-  lastName: string;
-  company: string;
-  function: string;
-  email: string;
-  phone: string;
-  country: string;
-  partnerType: string;
-  project: string;
-  budget: string;
-  proposal: string;
-  date: string;
-  source: string;
-  status: 'New' | 'In Discussion' | 'Partnered' | 'Closed';
-}
-
-export interface EmailCampaign {
-  id: string;
-  time: string;
-  subject: string;
-  body: string;
-  status: 'Sent';
-}
-
-export interface Task {
-  id: string;
-  text: string;
-  completed: boolean;
-}
-
-interface AppStateContextType {
-  language: 'fr' | 'en';
-  setLanguage: (l: 'fr' | 'en') => void;
-  theme: 'dark' | 'light';
-  setTheme: (t: 'dark' | 'light') => void;
-  soundEnabled: boolean;
-  setSoundEnabled: (b: boolean) => void;
-  playSound: (type: 'click' | 'hover' | 'success' | 'space') => void;
-  activeSection: string;
-  setActiveSection: (s: string) => void;
-  platforms: Platform[];
-  addPlatform: (p: Omit<Platform, 'id'>) => void;
-  updatePlatform: (id: string, updated: Partial<Platform>) => void;
-  deletePlatform: (id: string) => void;
-  contacts: Contact[];
-  addContact: (c: Omit<Contact, 'id' | 'date' | 'status' | 'source'>) => void;
-  updateContactStatus: (id: string, status: Contact['status']) => void;
-  userSession: null | { email: string; name: string; role: string; accredited: boolean };
-  login: (email: string, pass: string) => boolean;
-  register: (email: string, name: string) => void;
-  logout: () => void;
-  contracts: { id: string; title: string; date: string; signed: boolean; signatureData?: string }[];
-  signContractInState: (id: string, signature: string) => void;
-  emailCampaigns: EmailCampaign[];
-  sendEmailCampaign: (subject: string, body: string) => void;
-  tasks: Task[];
-  addTask: (text: string) => void;
-  toggleTask: (id: string) => void;
-  deleteTask: (id: string) => void;
-  cookieConsent: 'accepted' | 'declined' | 'pending';
-  setCookieConsent: (v: 'accepted' | 'declined' | 'pending') => void;
-  activePlatformForDetail: string | null;
-  setActivePlatformForDetail: (id: string | null) => void;
-}
-
-const AppStateContext = createContext<AppStateContextType | undefined>(undefined);
+export type { Platform, Contact, EmailCampaign, Task, AppStateContextType };
+export { useAppState } from './useAppState';
 
 export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<'fr' | 'en'>('fr');
@@ -370,7 +298,6 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [userSession, setUserSession] = useState<AppStateContextType['userSession']>(null);
 
   const login = (email: string, pass: string): boolean => {
-    // Highly forgiving mock authentication for demonstration
     if (email === 'partner@imuia.com' && pass === 'password') {
       setUserSession({
         email: 'partner@imuia.com',
@@ -381,7 +308,6 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       playSound('success');
       return true;
     } else if (email && pass) {
-      // Dynamic test user
       const computedName = email.split('@')[0];
       const capitalized = computedName.charAt(0).toUpperCase() + computedName.slice(1);
       setUserSession({
@@ -528,12 +454,4 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       {children}
     </AppStateContext.Provider>
   );
-};
-
-export const useAppState = () => {
-  const context = useContext(AppStateContext);
-  if (context === undefined) {
-    throw new Error('useAppState must be used within an AppStateProvider');
-  }
-  return context;
 };
