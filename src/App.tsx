@@ -18,6 +18,7 @@ import { Journal } from './pages/Journal';
 import { ClientSpace } from './pages/ClientSpace';
 import { AdminCockpit } from './pages/AdminCockpit';
 import { Legals } from './pages/Legals';
+import { ContactSection } from './components/ContactSection';
 
 import './App.css';
 
@@ -27,7 +28,12 @@ const MainLayout: React.FC = () => {
   const renderSection = () => {
     switch (activeSection) {
       case 'home':
-        return <Home />;
+        return (
+          <>
+            <Home />
+            <ContactSection />
+          </>
+        );
       case 'universe':
         return <UniverseMap />;
       case 'platforms':
@@ -40,6 +46,8 @@ const MainLayout: React.FC = () => {
         return <Territories />;
       case 'partners':
         return <Partners />;
+      case 'contact':
+        return <ContactSection />;
       case 'news':
         return <Journal />;
       case 'client':
@@ -53,7 +61,12 @@ const MainLayout: React.FC = () => {
       case 'cookies':
         return <Legals mode="cookies" />;
       default:
-        return <Home />;
+        return (
+          <>
+            <Home />
+            <ContactSection />
+          </>
+        );
     }
   };
 
