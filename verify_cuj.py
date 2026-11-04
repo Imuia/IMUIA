@@ -32,9 +32,30 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/01_landing_page.png")
             print("Screenshot 01 written.")
 
-            # Click Explorer notre univers (navigates to Map/Galaxy)
+            # Scroll to Earth Contact Section on Home Page
+            print("Scrolling down to Earth Contact Section on landing page...")
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/01b_earth_contact_section.png")
+            print("Screenshot 01b written.")
+
+            # Click on dedicated Contact in the Header menu
+            print("Navigating to Contact via Header...")
+            page.get_by_text("Contact").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/01c_contact_page_view.png")
+            print("Screenshot 01c written.")
+
+            # Click on CTA 'Investir dans un univers' to verify intent prefill in Partners form
+            print("Clicking 'Investir dans un univers' CTA button...")
+            page.get_by_text("Investir dans un univers").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/01d_partners_prefilled.png")
+            print("Screenshot 01d written.")
+
+            # Click L'univers IMUIA in Header (navigates to Map/Galaxy)
             print("Navigating to Galaxy Map...")
-            page.get_by_text("Explorer notre univers").click()
+            page.get_by_text("L'univers IMUIA").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/02_galaxy_map.png")
             print("Screenshot 02 written.")

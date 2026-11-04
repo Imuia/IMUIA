@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
@@ -20,6 +20,34 @@ export const Partners: React.FC = () => {
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
+
+  useEffect(() => {
+    const intent = sessionStorage.getItem('imuia_partner_intent');
+    if (intent) {
+      if (intent === 'invest') {
+        setPartnerType('Investor');
+        setProposal(language === 'fr'
+          ? "Bonjour, je souhaite échanger au sujet d'un investissement dans un univers ou une plateforme IMUIA."
+          : "Hello, I would like to discuss investing in an IMUIA universe or platform.");
+      } else if (intent === 'partner') {
+        setPartnerType('Operator');
+        setProposal(language === 'fr'
+          ? "Bonjour, je souhaite rejoindre l'écosystème IMUIA en tant que partenaire ou prestataire certifié."
+          : "Hello, I would like to join the IMUIA ecosystem as a partner or certified operator.");
+      } else if (intent === 'project') {
+        setPartnerType('Developer');
+        setProposal(language === 'fr'
+          ? "Bonjour, j'ai un projet / concept innovant à présenter à l'équipage IMUIA."
+          : "Hello, I have an innovative concept or project to submit to the IMUIA crew.");
+      } else if (intent === 'contact') {
+        setPartnerType('Other');
+        setProposal(language === 'fr'
+          ? "Bonjour, je souhaite entrer en contact direct avec l'équipage IMUIA."
+          : "Hello, I would like to get in touch directly with the IMUIA flight crew.");
+      }
+      sessionStorage.removeItem('imuia_partner_intent');
+    }
+  }, [language]);
 
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);

@@ -59,6 +59,11 @@ export const Footer: React.FC = () => {
                   {t.navVision}
                 </button>
               </li>
+              <li>
+                <button onClick={() => handleNav('contact')} className="hover:text-purple-400 transition-colors cursor-none text-left font-semibold text-cyan-400">
+                  {t.navContact}
+                </button>
+              </li>
             </ul>
           </div>
 
