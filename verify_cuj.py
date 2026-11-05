@@ -68,6 +68,29 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/06_vision_method.png")
             print("Screenshot 06 written.")
 
+            # Navigate to Territories
+            print("Navigating to Territories...")
+            page.get_by_text("Nos territoires").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/06b_territories.png")
+            print("Screenshot 06b written.")
+
+            # Navigate to Contact
+            print("Navigating to Contact Section...")
+            page.get_by_text("Contact").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/06c_contact.png")
+            print("Screenshot 06c written.")
+
+            # Click Contacter IMUIA modal
+            print("Opening direct contact transmission modal...")
+            page.get_by_role("button", name="Contacter IMUIA").click()
+            page.wait_for_timeout(800)
+            page.screenshot(path="/home/jules/verification/06d_contact_modal.png")
+            print("Screenshot 06d written.")
+            page.get_by_text("✕").click()
+            page.wait_for_timeout(500)
+
             # Navigate to Partnerships
             print("Navigating to Partnership space...")
             page.get_by_text("Partenariats").first.click()
