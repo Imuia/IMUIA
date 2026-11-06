@@ -24,12 +24,18 @@ export const Labs: React.FC = () => {
   };
 
   const researchAreas = [
-    { id: 'ai', title: 'Intelligence Artificielle', desc: 'Dispatching algorithmique, qualification automatique de leads et chatbots conversationnels immobiliers.' },
-    { id: 'autom', title: 'Automatisation', desc: 'Génération automatisée d\'accords de partenariat et relance de réservations dormantes.' },
-    { id: 'geo', title: 'Géolocalisation', desc: 'Réseau cartographique vectoriel en temps réel pour l\'amarrage nautique et le repérage de vélos.' },
-    { id: 'booking', title: 'Réservation en Temps Réel', desc: 'Moteurs de synchronisation instantanée de calendriers multidomaines hautement sécurisés.' },
-    { id: 'crm', title: 'Systèmes CRM Propriétaires', desc: 'Gestion d\'opportunités commerciales et centralisation de documents avec signature électronique.' },
-    { id: 'impact', title: 'Projets à Impact Social', desc: 'Réseau d\'acheminement de fournitures solidaires et de dons au profit de refuges animaliers.' }
+    { id: 'ai', title: language === 'fr' ? 'Intelligence Artificielle' : 'Artificial Intelligence', desc: language === 'fr' ? 'Dispatching algorithmique, qualification automatique de leads et chatbots conversationnels immobiliers.' : 'Algorithmic dispatching, automated lead scoring, and conversational real-estate AI.' },
+    { id: 'autom', title: language === 'fr' ? 'Automatisation' : 'Automation & Workflows', desc: language === 'fr' ? 'Génération automatisée d\'accords de partenariat et relance de réservations dormantes.' : 'Automated partner agreement generation and smart re-engagement workflows.' },
+    { id: 'geo', title: language === 'fr' ? 'Géolocalisation' : 'Geolocation Systems', desc: language === 'fr' ? 'Réseau cartographique vectoriel en temps réel pour l\'amarrage nautique et le repérage de flottes.' : 'Real-time vector mapping network for marine berthing and bike fleets.' },
+    { id: 'booking', title: language === 'fr' ? 'Réservation en Temps Réel' : 'Real-Time Booking Engines', desc: language === 'fr' ? 'Moteurs de synchronisation instantanée de calendriers multidomaines hautement sécurisés.' : 'Instant calendar synchronization engines engineered for high availability and low latency.' },
+    { id: 'payment', title: language === 'fr' ? 'Paiement en Ligne' : 'Online Payments & Escrow', desc: language === 'fr' ? 'Passerelles de transactions sécurisées multi-devises, séquestres et micro-paiements instantanés.' : 'Multi-currency secured gateways, automated escrow deposits, and split payouts.' },
+    { id: 'crm', title: language === 'fr' ? 'CRM & Gestion Commerciale' : 'CRM & Commercial Management', desc: language === 'fr' ? 'Suivi d\'opportunités commerciales, automatisation des relances et centralisation documentaire.' : 'Commercial deal management, pipeline reporting, and customer lifecycle intelligence.' },
+    { id: 'immersive', title: language === 'fr' ? 'Expériences Immersives' : 'Immersive 3D Experiences', desc: language === 'fr' ? 'Modélisation 3D WebGL de résidences haut de gamme et simulations interactives spatiales.' : 'WebGL 3D property tours, orbital previews, and immersive interactive spatial models.' },
+    { id: 'affiliation', title: language === 'fr' ? 'Affiliation & Génération de Prospects' : 'Affiliation & Lead Generation', desc: language === 'fr' ? 'Réseaux de tracking d\'apporteurs d\'affaires et scoring automatisé de conversion de leads.' : 'High-converting affiliate tracking engines, traffic attribution, and qualified prospect nurturing.' },
+    { id: 'pro_tools', title: language === 'fr' ? 'Outils pour les Professionnels' : 'Professional Operations Tools', desc: language === 'fr' ? 'Portails de gestion dédiés aux artisans, hôteliers, skippers et régisseurs événementiels.' : 'Specialized SaaS cockpits for craftsmen, concierges, skippers, and event sound operators.' },
+    { id: 'collaborative', title: language === 'fr' ? 'Plateformes Collaboratives' : 'Collaborative Marketplaces', desc: language === 'fr' ? 'Économie de partage appliquée aux pontons maritimes, à la mobilité douce et aux équipements.' : 'Sharing economies for private boat slips, urban electric bikes, and professional audio gear.' },
+    { id: 'new_models', title: language === 'fr' ? 'Nouveaux Modèles Économiques' : 'New Economic Models', desc: language === 'fr' ? 'Monétisation hybride combinant abonnements SaaS, commissions à la performance et mandats exclusifs.' : 'Hybrid monetization blending SaaS subscriptions, performance commissions, and exclusive brokerages.' },
+    { id: 'impact', title: language === 'fr' ? 'Projets à Impact Social & Environnemental' : 'Social & Environmental Impact', desc: language === 'fr' ? 'Réseau solidaire de transport pour animaux de refuges et compensation carbone pour le tourisme vert.' : 'Solidarity transit networks for animal shelters and carbon-conscious green travel initiatives.' }
   ];
 
   const incubatedProjects = [

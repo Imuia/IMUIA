@@ -32,8 +32,10 @@ export const Header: React.FC = () => {
     { id: 'platforms', label: t.navPlatforms, icon: Shield },
     { id: 'labs', label: t.navLabs, icon: Cpu },
     { id: 'vision', label: t.navVision, icon: HelpCircle },
+    { id: 'territories', label: t.navTerritories, icon: Languages },
     { id: 'news', label: t.navNews, icon: BookOpen },
     { id: 'partners', label: t.navPartners, icon: User },
+    { id: 'contact', label: t.navContact, icon: Rocket },
   ];
 
   return (

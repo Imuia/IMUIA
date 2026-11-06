@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { CheckCircle, Bell, BarChart2, UploadCloud, FileSignature, ShieldCheck } from 'lucide-react';
+import { CheckCircle, Bell, BarChart2, UploadCloud, FileSignature, ShieldCheck, MessageSquare, Download, Send } from 'lucide-react';
 
 export const ClientSpace: React.FC = () => {
   const {
@@ -23,6 +23,13 @@ export const ClientSpace: React.FC = () => {
   const [name, setName] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [authError, setAuthError] = useState(false);
+
+  // Messaging Simulator
+  const [messages, setMessages] = useState<{ sender: 'user' | 'crew'; text: string; time: string }[]>([
+    { sender: 'crew', text: 'Bienvenue sur la passerelle partenaire IMUIA. Un coordinateur étudie actuellement vos dossiers d\'accréditation.', time: '10:00' },
+    { sender: 'crew', text: 'Le contrat cadre de co-développement est disponible pour signature électronique.', time: '10:05' }
+  ]);
+  const [chatInput, setChatInput] = useState('');
 
   // File Upload local list simulator
   const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: string; date: string }[]>([
@@ -293,6 +300,102 @@ export const ClientSpace: React.FC = () => {
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Direct Messaging with IMUIA Crew */}
+          <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
+            <h3 className="font-orbitron font-bold text-sm uppercase text-cyan-400 flex items-center space-x-2">
+              <MessageSquare className="w-4.5 h-4.5" />
+              <span>{language === 'fr' ? 'Échanger avec l’équipe IMUIA' : 'Communicate with IMUIA Flight Crew'}</span>
+            </h3>
+
+            <div className="space-y-3 max-h-48 overflow-y-auto p-3 rounded-xl bg-black/50 border border-white/5">
+              {messages.map((m, idx) => (
+                <div key={idx} className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}>
+                  <div className={`p-3 rounded-2xl max-w-[80%] text-xs leading-relaxed ${
+                    m.sender === 'user'
+                      ? 'bg-purple-600 text-white rounded-br-none'
+                      : 'bg-white/10 text-gray-200 rounded-bl-none border border-white/10'
+                  }`}>
+                    {m.text}
+                  </div>
+                  <span className="text-[9px] text-gray-500 font-mono mt-1 px-1">{m.time} &middot; {m.sender === 'user' ? 'Vous' : 'Équipage IMUIA'}</span>
+                </div>
+              ))}
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!chatInput.trim()) return;
+                const now = new Date().toLocaleTimeString().slice(0, 5);
+                setMessages(prev => [...prev, { sender: 'user', text: chatInput, time: now }]);
+                setChatInput('');
+                playSound('success');
+                setTimeout(() => {
+                  setMessages(prev => [...prev, {
+                    sender: 'crew',
+                    text: 'Message bien reçu et transmis aux ingénieurs référents du projet.',
+                    time: new Date().toLocaleTimeString().slice(0, 5)
+                  }]);
+                  playSound('hover');
+                }, 1000);
+              }}
+              className="flex gap-2"
+            >
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder={language === 'fr' ? "Poser une question à l'équipage..." : "Send a message to the crew..."}
+                className="flex-1 bg-black/60 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-cyan-500"
+              />
+              <button
+                type="submit"
+                className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold font-orbitron uppercase cursor-none flex items-center space-x-1"
+              >
+                <Send className="w-3.5 h-3.5" />
+                <span>Envoyer</span>
+              </button>
+            </form>
+          </div>
+
+          {/* Downloadable Invoices & Commercial Proposals */}
+          <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
+            <h3 className="font-orbitron font-bold text-sm uppercase text-purple-400 flex items-center space-x-2">
+              <Download className="w-4.5 h-4.5" />
+              <span>{language === 'fr' ? 'Factures & Propositions Commerciales' : 'Invoices & Commercial Proposals'}</span>
+            </h3>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between p-3 rounded-xl bg-black/40 border border-white/5 text-xs">
+                <div>
+                  <span className="block font-bold text-white">Facture FA-2026-0042 &middot; Souscription Hub</span>
+                  <span className="block text-[10px] text-gray-500 font-mono">Date : 01/03/2026 &middot; Montant : 1 200 € HT</span>
+                </div>
+                <button
+                  onClick={() => playSound('success')}
+                  className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-purple-600 hover:text-white border border-white/10 text-gray-300 text-xs font-mono transition-colors flex items-center space-x-1"
+                >
+                  <Download className="w-3 h-3" />
+                  <span>PDF</span>
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between p-3 rounded-xl bg-black/40 border border-white/5 text-xs">
+                <div>
+                  <span className="block font-bold text-white">Proposition de Co-Investissement Taghazout Prestige</span>
+                  <span className="block text-[10px] text-gray-500 font-mono">Document confidentiel d'opportunité</span>
+                </div>
+                <button
+                  onClick={() => playSound('success')}
+                  className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-purple-600 hover:text-white border border-white/10 text-gray-300 text-xs font-mono transition-colors flex items-center space-x-1"
+                >
+                  <Download className="w-3 h-3" />
+                  <span>PDF</span>
+                </button>
+              </div>
             </div>
           </div>
 

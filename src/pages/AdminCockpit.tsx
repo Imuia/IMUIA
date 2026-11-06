@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
 import type { Contact } from '../data/AppState';
 import { translations } from '../data/translations';
-import { LayoutDashboard, Plus, Mail, CheckSquare, Trash2, Users, Send, Radio } from 'lucide-react';
+import { LayoutDashboard, Plus, Mail, CheckSquare, Trash2, Users, Send, Radio, PieChart, Globe } from 'lucide-react';
 
 export const AdminCockpit: React.FC = () => {
   const {
@@ -39,6 +39,10 @@ export const AdminCockpit: React.FC = () => {
   const [taskText, setTaskText] = useState('');
 
   const [isAddingPlat, setIsAddingPlat] = useState(false);
+  const [editingPlatId, setEditingPlatId] = useState<string | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editZone, setEditZone] = useState('');
+  const [hiddenPlatIds, setHiddenPlatIds] = useState<string[]>([]);
 
   const handleAddPlatform = (e: React.FormEvent) => {
     e.preventDefault();
@@ -313,55 +317,198 @@ export const AdminCockpit: React.FC = () => {
               </form>
             )}
 
-            {/* List registry grid table */}
+            {/* List registry grid table with hide/show, reordering, and direct edits */}
             <div className="space-y-2">
-              {platforms.map((p) => (
-                <div key={p.id} className="p-3 rounded-xl bg-black/40 border border-white/5 flex items-center justify-between text-xs">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-xl">{p.logo}</span>
-                    <div>
-                      <span className="block font-bold text-white">{p.name}</span>
-                      <span className="block text-[10px] text-gray-500 font-mono">ID: {p.id}</span>
+              {platforms.map((p) => {
+                const isHidden = hiddenPlatIds.includes(p.id);
+                return (
+                  <div key={p.id} className={`p-3 rounded-xl bg-black/40 border transition-all ${isHidden ? 'opacity-40 border-dashed border-gray-700' : 'border-white/5'} flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs`}>
+                    <div className="flex items-center space-x-3">
+                      <span className="text-xl">{p.logo}</span>
+                      <div>
+                        {editingPlatId === p.id ? (
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="text"
+                              value={editName}
+                              onChange={(e) => setEditName(e.target.value)}
+                              className="bg-black border border-purple-500 rounded px-2 py-0.5 text-xs text-white font-bold"
+                            />
+                            <input
+                              type="text"
+                              value={editZone}
+                              onChange={(e) => setEditZone(e.target.value)}
+                              className="bg-black border border-purple-500 rounded px-2 py-0.5 text-xs text-gray-300"
+                            />
+                            <button
+                              onClick={() => {
+                                updatePlatform(p.id, { name: editName || p.name, zone: editZone || p.zone });
+                                setEditingPlatId(null);
+                                playSound('success');
+                              }}
+                              className="px-2 py-0.5 bg-purple-600 text-white rounded text-[10px]"
+                            >
+                              OK
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <span className="block font-bold text-white">
+                              {p.name} {isHidden && <span className="text-amber-400 text-[10px]">(Masqué)</span>}
+                            </span>
+                            <span className="block text-[10px] text-gray-500 font-mono">
+                              {p.zone} &middot; {p.sector.toUpperCase()}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2 self-end sm:self-center">
+                      <span className={`text-[10px] font-mono px-2 py-0.5 border rounded-full uppercase ${
+                        p.status === 'active' ? 'text-green-400 border-green-500/20 bg-green-500/5' :
+                        p.status === 'development' ? 'text-amber-400 border-amber-500/20 bg-amber-500/5' :
+                        'text-blue-400 border-blue-500/20 bg-blue-500/5'
+                      }`}>
+                        {p.status}
+                      </span>
+
+                      {/* Edit Trigger */}
+                      <button
+                        onClick={() => {
+                          if (editingPlatId === p.id) {
+                            setEditingPlatId(null);
+                          } else {
+                            setEditingPlatId(p.id);
+                            setEditName(p.name);
+                            setEditZone(p.zone);
+                          }
+                          playSound('click');
+                        }}
+                        className="px-2 py-1 text-[10px] font-mono bg-white/5 hover:bg-white/10 rounded text-gray-300 cursor-none"
+                        title="Modifier"
+                      >
+                        {editingPlatId === p.id ? 'Annuler' : 'Éditer'}
+                      </button>
+
+                      {/* Hide/Show Toggle */}
+                      <button
+                        onClick={() => {
+                          setHiddenPlatIds(prev =>
+                            prev.includes(p.id) ? prev.filter(x => x !== p.id) : [...prev, p.id]
+                          );
+                          playSound('click');
+                        }}
+                        className="px-2 py-1 text-[10px] font-mono bg-white/5 hover:bg-white/10 rounded text-gray-400 hover:text-white cursor-none"
+                        title={isHidden ? "Afficher" : "Masquer"}
+                      >
+                        {isHidden ? 'Afficher' : 'Masquer'}
+                      </button>
+
+                      {/* Status toggle */}
+                      <button
+                        onClick={() => {
+                          const nextStatus = p.status === 'active' ? 'development' : p.status === 'development' ? 'soon' : 'active';
+                          updatePlatform(p.id, { status: nextStatus });
+                          playSound('click');
+                        }}
+                        className="p-1 rounded bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white cursor-none"
+                        title="Statut"
+                      >
+                        <Radio className="w-3.5 h-3.5" />
+                      </button>
+
+                      {/* Delete Platform */}
+                      <button
+                        onClick={() => {
+                          if (confirm(`Confirmer la suppression de ${p.name} ?`)) {
+                            deletePlatform(p.id);
+                          }
+                        }}
+                        className="p-1 rounded bg-red-950/20 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-none"
+                        title="Supprimer la plateforme"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </div>
+                );
+              })}
+            </div>
+          </div>
 
-                  <div className="flex items-center space-x-3">
-                    <span className={`text-[10px] font-mono px-2 py-0.5 border rounded-full uppercase ${
-                      p.status === 'active' ? 'text-green-400 border-green-500/20 bg-green-500/5' :
-                      p.status === 'development' ? 'text-amber-400 border-amber-500/20 bg-amber-500/5' :
-                      'text-blue-400 border-blue-500/20 bg-blue-500/5'
-                    }`}>
-                      {p.status}
-                    </span>
-
-                    {/* Quick status switch simulator */}
-                    <button
-                      onClick={() => {
-                        const nextStatus = p.status === 'active' ? 'development' : p.status === 'development' ? 'soon' : 'active';
-                        updatePlatform(p.id, { status: nextStatus });
-                        playSound('click');
-                      }}
-                      className="p-1.5 rounded bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white cursor-none"
-                      title="Changer le statut"
-                    >
-                      <Radio className="w-3.5 h-3.5" />
-                    </button>
-
-                    {/* Delete Platform */}
-                    <button
-                      onClick={() => {
-                        if (confirm(`Confirmer la destruction orbitale de ${p.name} ?`)) {
-                          deletePlatform(p.id);
-                        }
-                      }}
-                      className="p-1.5 rounded bg-red-950/20 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-none"
-                      title="Détruire la plateforme"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
+          {/* Revenue and Geographic Distribution Analytics Breakdown */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Revenue by Activity */}
+            <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-3">
+              <h4 className="font-orbitron font-bold text-xs uppercase text-purple-400 flex items-center space-x-2">
+                <PieChart className="w-4 h-4" />
+                <span>{language === 'fr' ? 'Revenus par Activité' : 'Revenue by Activity'}</span>
+              </h4>
+              <div className="space-y-2 text-xs font-mono">
+                <div>
+                  <div className="flex justify-between text-gray-400 text-[10px] mb-1">
+                    <span>IMMOBILIER (Corse, Mada)</span>
+                    <span className="text-purple-300 font-bold">45% (639 000 €)</span>
+                  </div>
+                  <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                    <div className="bg-purple-500 h-full w-[45%]"></div>
                   </div>
                 </div>
-              ))}
+                <div>
+                  <div className="flex justify-between text-gray-400 text-[10px] mb-1">
+                    <span>TOURISME & VOYAGES (Taghazout, Nosy Be)</span>
+                    <span className="text-pink-300 font-bold">25% (355 000 €)</span>
+                  </div>
+                  <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                    <div className="bg-pink-500 h-full w-[25%]"></div>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-gray-400 text-[10px] mb-1">
+                    <span>ÉVÉNEMENTIEL & SERVICES (RSS, Devis, Parking)</span>
+                    <span className="text-cyan-300 font-bold">20% (284 000 €)</span>
+                  </div>
+                  <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                    <div className="bg-cyan-500 h-full w-[20%]"></div>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-gray-400 text-[10px] mb-1">
+                    <span>TECH & ÉCONOMIE COLLABORATIVE</span>
+                    <span className="text-green-300 font-bold">10% (142 000 €)</span>
+                  </div>
+                  <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                    <div className="bg-green-500 h-full w-[10%]"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Geographic Breakdown */}
+            <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-3">
+              <h4 className="font-orbitron font-bold text-xs uppercase text-cyan-400 flex items-center space-x-2">
+                <Globe className="w-4 h-4" />
+                <span>{language === 'fr' ? 'Répartition Géographique' : 'Geographic Reach'}</span>
+              </h4>
+              <div className="space-y-2 text-xs font-mono">
+                <div className="flex items-center justify-between p-2 rounded bg-black/40 border border-white/5">
+                  <span className="text-white">France (Corse & Cannes)</span>
+                  <span className="text-cyan-300 font-bold">5 Plateformes actives</span>
+                </div>
+                <div className="flex items-center justify-between p-2 rounded bg-black/40 border border-white/5">
+                  <span className="text-white">Maroc (Taghazout & Agadir)</span>
+                  <span className="text-cyan-300 font-bold">2 Plateformes actives</span>
+                </div>
+                <div className="flex items-center justify-between p-2 rounded bg-black/40 border border-white/5">
+                  <span className="text-white">Madagascar (Nosy Be & Tana)</span>
+                  <span className="text-cyan-300 font-bold">2 Plateformes actives</span>
+                </div>
+                <div className="flex items-center justify-between p-2 rounded bg-black/40 border border-white/5">
+                  <span className="text-white">Europe & International</span>
+                  <span className="text-cyan-300 font-bold">3 Plateformes actives</span>
+                </div>
+              </div>
             </div>
           </div>
 
