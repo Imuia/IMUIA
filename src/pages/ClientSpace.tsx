@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { CheckCircle, Bell, BarChart2, UploadCloud, FileSignature, ShieldCheck } from 'lucide-react';
+import { CheckCircle, Bell, BarChart2, UploadCloud, FileSignature, ShieldCheck, MessageSquare, Download, Code, Send } from 'lucide-react';
 
 export const ClientSpace: React.FC = () => {
   const {
@@ -12,7 +12,9 @@ export const ClientSpace: React.FC = () => {
     logout,
     contracts,
     signContractInState,
-    playSound
+    playSound,
+    partnerMessages,
+    sendPartnerMessage
   } = useAppState();
 
   const t = translations[language];
@@ -23,6 +25,10 @@ export const ClientSpace: React.FC = () => {
   const [name, setName] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [authError, setAuthError] = useState(false);
+
+  // Workspace subtabs: overview | messages | downloads | resources
+  const [activeTab, setActiveTab] = useState<'overview' | 'messages' | 'downloads' | 'resources'>('overview');
+  const [chatInput, setChatInput] = useState('');
 
   // File Upload local list simulator
   const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: string; date: string }[]>([
@@ -232,7 +238,7 @@ export const ClientSpace: React.FC = () => {
 
   // Logged-in complete partner interface
   return (
-    <div className="relative min-h-[calc(100vh-80px)] py-12 px-4 space-y-12">
+    <div className="relative min-h-[calc(100vh-80px)] py-12 px-4 space-y-8">
       <div className="absolute inset-0 stars-bg opacity-35 pointer-events-none"></div>
 
       {/* Greeting and user session telemetry */}
@@ -250,15 +256,194 @@ export const ClientSpace: React.FC = () => {
           </p>
         </div>
 
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={logout}
+            className="px-4 py-2.5 text-xs font-mono bg-white/5 hover:bg-red-500/10 text-red-400 hover:text-white rounded-xl border border-red-500/20 transition-all cursor-none uppercase"
+          >
+            {t.clientLogout}
+          </button>
+        </div>
+      </div>
+
+      {/* Subnavigation Tabs */}
+      <div className="max-w-6xl mx-auto flex flex-wrap gap-2 relative z-10 text-left">
         <button
-          onClick={logout}
-          className="px-4 py-2.5 text-xs font-mono bg-white/5 hover:bg-red-500/10 text-red-400 hover:text-white rounded-xl border border-red-500/20 transition-all cursor-none uppercase"
+          onClick={() => { setActiveTab('overview'); playSound('click'); }}
+          className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-orbitron font-bold uppercase transition-all cursor-none ${
+            activeTab === 'overview'
+              ? 'bg-purple-600 text-white shadow-lg'
+              : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+          }`}
         >
-          {t.clientLogout}
+          <BarChart2 className="w-3.5 h-3.5" />
+          <span>Vue d'ensemble</span>
+        </button>
+
+        <button
+          onClick={() => { setActiveTab('messages'); playSound('click'); }}
+          className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-orbitron font-bold uppercase transition-all cursor-none ${
+            activeTab === 'messages'
+              ? 'bg-purple-600 text-white shadow-lg'
+              : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+          }`}
+        >
+          <MessageSquare className="w-3.5 h-3.5" />
+          <span>Échanges Équipage ({partnerMessages.length})</span>
+        </button>
+
+        <button
+          onClick={() => { setActiveTab('downloads'); playSound('click'); }}
+          className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-orbitron font-bold uppercase transition-all cursor-none ${
+            activeTab === 'downloads'
+              ? 'bg-purple-600 text-white shadow-lg'
+              : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+          }`}
+        >
+          <Download className="w-3.5 h-3.5" />
+          <span>Factures &amp; Documents</span>
+        </button>
+
+        <button
+          onClick={() => { setActiveTab('resources'); playSound('click'); }}
+          className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-orbitron font-bold uppercase transition-all cursor-none ${
+            activeTab === 'resources'
+              ? 'bg-purple-600 text-white shadow-lg'
+              : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+          }`}
+        >
+          <Code className="w-3.5 h-3.5" />
+          <span>Ressources &amp; API</span>
         </button>
       </div>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10 text-left">
+      {/* Tab: Messages / Crew Chat */}
+      {activeTab === 'messages' && (
+        <div className="max-w-4xl mx-auto glass-panel p-6 rounded-3xl border border-purple-500/30 space-y-4 relative z-10 text-left">
+          <div className="flex items-center justify-between border-b border-white/5 pb-3">
+            <h3 className="font-orbitron font-bold text-sm uppercase text-purple-400 flex items-center space-x-2">
+              <MessageSquare className="w-4 h-4" />
+              <span>Canal de Transmission Directe avec l'Équipage IMUIA</span>
+            </h3>
+            <span className="text-[10px] font-mono text-green-400 animate-pulse">// CANAL SÉCURISÉ ACTIF</span>
+          </div>
+
+          <div className="space-y-3 max-h-80 overflow-y-auto p-2">
+            {partnerMessages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
+              >
+                <div
+                  className={`p-3.5 rounded-2xl max-w-md text-xs leading-relaxed ${
+                    msg.sender === 'user'
+                      ? 'bg-purple-600 text-white rounded-br-none'
+                      : 'bg-white/10 text-gray-200 rounded-bl-none border border-white/10'
+                  }`}
+                >
+                  <p>{msg.text}</p>
+                </div>
+                <span className="text-[9px] font-mono text-gray-500 mt-1 px-1">
+                  {msg.sender === 'user' ? 'Vous' : 'Passerelle IMUIA'} • {msg.time}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!chatInput.trim()) return;
+              sendPartnerMessage(chatInput);
+              setChatInput('');
+            }}
+            className="flex gap-2 pt-2 border-t border-white/5"
+          >
+            <input
+              type="text"
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              placeholder="Écrivez votre message à l'équipage IMUIA..."
+              className="flex-1 bg-black/60 border border-white/15 focus:border-purple-500 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-orbitron font-bold uppercase tracking-wider flex items-center space-x-1.5 transition-all cursor-none"
+            >
+              <Send className="w-3.5 h-3.5" />
+              <span>Transmettre</span>
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* Tab: Downloads / Invoices */}
+      {activeTab === 'downloads' && (
+        <div className="max-w-4xl mx-auto glass-panel p-6 rounded-3xl border border-white/5 space-y-4 relative z-10 text-left">
+          <h3 className="font-orbitron font-bold text-sm uppercase text-cyan-400 flex items-center space-x-2 border-b border-white/5 pb-3">
+            <Download className="w-4 h-4" />
+            <span>Factures, Reçus et Documents Téléchargeables</span>
+          </h3>
+
+          <div className="space-y-3">
+            {[
+              { id: 'inv-1', title: 'Facture Partenariat Q1-2026 — Licence Hub Stellaire', size: '210 Ko', date: '2026-03-01' },
+              { id: 'inv-2', title: 'Reçu d\'honoraires d\'accréditation R&D', size: '145 Ko', date: '2026-02-15' },
+              { id: 'inv-3', title: 'Certificat de Séquestre Bancaire eIDAS', size: '380 Ko', date: '2026-01-28' },
+            ].map((doc) => (
+              <div key={doc.id} className="p-4 rounded-xl bg-black/40 border border-white/5 flex items-center justify-between">
+                <div>
+                  <span className="block text-sm font-bold text-white">{doc.title}</span>
+                  <span className="block text-[10px] text-gray-500 font-mono">Date : {doc.date} • {doc.size}</span>
+                </div>
+                <button
+                  onClick={() => playSound('success')}
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-purple-600 hover:text-white border border-white/10 text-xs font-mono transition-all cursor-none"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Télécharger</span>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Reserved Resources */}
+      {activeTab === 'resources' && (
+        <div className="max-w-4xl mx-auto glass-panel p-6 rounded-3xl border border-white/5 space-y-4 relative z-10 text-left">
+          <h3 className="font-orbitron font-bold text-sm uppercase text-pink-400 flex items-center space-x-2 border-b border-white/5 pb-3">
+            <Code className="w-4 h-4" />
+            <span>Ressources Réservées aux Partenaires &amp; Clés d'API</span>
+          </h3>
+
+          <div className="space-y-4 text-xs text-gray-300">
+            <div className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2">
+              <span className="block font-bold text-white">Clé d'API Passerelle Réservation (Production)</span>
+              <code className="block p-2 rounded bg-black text-cyan-400 font-mono text-[11px] border border-cyan-500/20">
+                imuia_live_sec_7a89f92e3d994801ba90
+              </code>
+              <p className="text-[10px] text-gray-400">
+                Permet la synchronisation des plannings d'amarrage (MonPonton) et la réception automatique des leads de qualification.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2">
+              <span className="block font-bold text-white">SDK Client TypeScript / Node.js</span>
+              <p className="text-[11px] text-gray-400">
+                Installez le package officiel pour connecter votre CRM interne à l'écosystème IMUIA.
+              </p>
+              <code className="block p-2 rounded bg-black text-purple-300 font-mono text-[11px]">
+                npm install @imuia/core-sdk
+              </code>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Default Overview Tab */}
+      {activeTab === 'overview' && (
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10 text-left">
 
         {/* Alerts and Contract signer list (Col 1 & 2) */}
         <div className="lg:col-span-2 space-y-8">
@@ -380,6 +565,7 @@ export const ClientSpace: React.FC = () => {
         </div>
 
       </div>
+      )}
 
       {/* Signature Pad Modal Drawer */}
       {signingContractId && (

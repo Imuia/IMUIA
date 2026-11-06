@@ -32,9 +32,16 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/01_landing_page.png")
             print("Screenshot 01 written.")
 
+            # Scroll down to verify the Contact Earth Section on Home
+            print("Scrolling to Contact Earth Section on Landing...")
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/01_landing_contact_earth.png")
+            print("Screenshot 01_landing_contact_earth written.")
+
             # Click Explorer notre univers (navigates to Map/Galaxy)
             print("Navigating to Galaxy Map...")
-            page.get_by_text("Explorer notre univers").click()
+            page.get_by_text("L'univers IMUIA").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/02_galaxy_map.png")
             print("Screenshot 02 written.")
@@ -68,12 +75,19 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/06_vision_method.png")
             print("Screenshot 06 written.")
 
-            # Navigate to Partnerships
-            print("Navigating to Partnership space...")
-            page.get_by_text("Partenariats").first.click()
+            # Navigate to Contact Page directly
+            print("Navigating to standalone Contact Page...")
+            page.get_by_text("Contact").first.click()
             page.wait_for_timeout(1000)
-            page.screenshot(path="/home/jules/verification/07_partners_form.png")
-            print("Screenshot 07 written.")
+            page.screenshot(path="/home/jules/verification/07_contact_page.png")
+            print("Screenshot 07_contact_page written.")
+
+            # Click on 'Investir dans un univers' to test prefilling
+            print("Clicking 'Investir dans un univers'...")
+            page.get_by_text("Investir dans un univers").click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/08_partners_prefilled.png")
+            print("Screenshot 08_partners_prefilled written.")
 
             # Navigate to Espace Client Space & Login
             print("Navigating to secure Client Space...")
@@ -84,15 +98,22 @@ def run_verification():
             page.get_by_placeholder("••••••••").fill("password")
             page.get_by_role("button", name="S'amarrer à la station").click()
             page.wait_for_timeout(1500)
-            page.screenshot(path="/home/jules/verification/08_client_space_dashboard.png")
-            print("Screenshot 08 written.")
+            page.screenshot(path="/home/jules/verification/09_client_space_dashboard.png")
+            print("Screenshot 09 written.")
+
+            # Click on Messages tab in Client Space
+            print("Testing crew messages tab...")
+            page.get_by_text("Échanges Équipage").click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/10_client_crew_chat.png")
+            print("Screenshot 10 written.")
 
             # Navigate to CRM Cockpit
             print("Navigating to Central CRM Cockpit Dashboard...")
             page.get_by_text("Cockpit CRM").first.click()
             page.wait_for_timeout(1000)
-            page.screenshot(path="/home/jules/verification/09_crm_cockpit.png")
-            print("Screenshot 09 written.")
+            page.screenshot(path="/home/jules/verification/11_crm_cockpit.png")
+            print("Screenshot 11 written.")
 
             # Close browser
             browser.close()

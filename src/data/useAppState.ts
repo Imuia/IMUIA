@@ -34,6 +34,10 @@ export interface AppStateContextType {
   setCookieConsent: (v: 'accepted' | 'declined' | 'pending') => void;
   activePlatformForDetail: string | null;
   setActivePlatformForDetail: (id: string | null) => void;
+  partnerIntent: string | null;
+  setPartnerIntent: (intent: string | null) => void;
+  partnerMessages: { id: string; sender: 'user' | 'crew'; text: string; time: string }[];
+  sendPartnerMessage: (text: string) => void;
 }
 
 export const AppStateContext = createContext<AppStateContextType | undefined>(undefined);

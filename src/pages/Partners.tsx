@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
 
 export const Partners: React.FC = () => {
-  const { language, addContact, playSound } = useAppState();
+  const { language, addContact, playSound, partnerIntent, setPartnerIntent } = useAppState();
   const t = translations[language];
 
   // Form Fields State
@@ -16,6 +16,26 @@ export const Partners: React.FC = () => {
   const [phone, setPhone] = useState('');
   const [country, setCountry] = useState('');
   const [partnerType, setPartnerType] = useState('');
+
+  // Handle Intent prefilling from Contact section
+  useEffect(() => {
+    if (partnerIntent) {
+      if (partnerIntent === 'project') {
+        setPartnerType('Creator');
+        setProposal('Proposition de lancement d\'un nouveau concept en incubation au sein de la galaxie IMUIA.');
+      } else if (partnerIntent === 'partner') {
+        setPartnerType('Operator');
+        setProposal('Souhait de devenir partenaire opérateur local ou prestataire technique certifié IMUIA.');
+      } else if (partnerIntent === 'invest') {
+        setPartnerType('Investor');
+        setProposal('Opportunité d\'investissement et participation au capital d\'une ou plusieurs plateformes IMUIA.');
+      } else if (partnerIntent === 'general') {
+        setPartnerType('Other');
+        setProposal('Prise de contact générale avec l\'équipage IMUIA.');
+      }
+      setPartnerIntent(null);
+    }
+  }, [partnerIntent, setPartnerIntent]);
   const [project, setProject] = useState('');
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
