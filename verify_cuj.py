@@ -94,6 +94,13 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/09_crm_cockpit.png")
             print("Screenshot 09 written.")
 
+            # Navigate to Contact Page
+            print("Navigating to Contact Page (Earth view from space)...")
+            page.get_by_text("Contact").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/10_contact_earth.png")
+            print("Screenshot 10 written.")
+
             # Close browser
             browser.close()
             print("All verification steps completed successfully.")
