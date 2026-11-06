@@ -24,12 +24,18 @@ export const Labs: React.FC = () => {
   };
 
   const researchAreas = [
-    { id: 'ai', title: 'Intelligence Artificielle', desc: 'Dispatching algorithmique, qualification automatique de leads et chatbots conversationnels immobiliers.' },
-    { id: 'autom', title: 'Automatisation', desc: 'Génération automatisée d\'accords de partenariat et relance de réservations dormantes.' },
-    { id: 'geo', title: 'Géolocalisation', desc: 'Réseau cartographique vectoriel en temps réel pour l\'amarrage nautique et le repérage de vélos.' },
-    { id: 'booking', title: 'Réservation en Temps Réel', desc: 'Moteurs de synchronisation instantanée de calendriers multidomaines hautement sécurisés.' },
-    { id: 'crm', title: 'Systèmes CRM Propriétaires', desc: 'Gestion d\'opportunités commerciales et centralisation de documents avec signature électronique.' },
-    { id: 'impact', title: 'Projets à Impact Social', desc: 'Réseau d\'acheminement de fournitures solidaires et de dons au profit de refuges animaliers.' }
+    { id: 'ai', title: 'Intelligence Artificielle', desc: 'Dispatching algorithmique, qualification automatique de prospects et moteurs conversationnels neuronaux.' },
+    { id: 'autom', title: 'Automatisation', desc: 'Pipelines d\'orchestration sans friction, génération d\'accords juridiques et synchronisation multicanale.' },
+    { id: 'geo', title: 'Géolocalisation', desc: 'Réseau cartographique vectoriel et suivi satellitaire en temps réel pour la mobilité et l\'amarrage nautique.' },
+    { id: 'booking', title: 'Réservation en Temps Réel', desc: 'Moteurs transactionnels de disponibilité instantanée avec tolérance aux pannes et haute concurrence.' },
+    { id: 'payment', title: 'Paiement en Ligne', desc: 'Passerelles de paiement multi-devises chiffrées, gestion des flux séquestres et micro-transactions sécurisées.' },
+    { id: 'crm', title: 'CRM & Gestion Commerciale', desc: 'Systèmes centralisés de pilotage de clientèle, pipeline de ventes et signature électronique certifiée.' },
+    { id: 'imm', title: 'Expériences Immersives', desc: 'Visites orbitales 3D interactives de propriétés foncières et modélisation lumineuse architecturale WebGL.' },
+    { id: 'affil', title: 'Affiliation & Génération de Prospects', desc: 'Algorithmes prédictifs de capture et qualification de leads ultra-ciblés pour les marchés B2B et B2C.' },
+    { id: 'pro', title: 'Outils pour les Professionnels', desc: 'Suites logicielles sur-mesure pour artisans, wedding planners, conciergeries VIP et promoteurs.' },
+    { id: 'collab', title: 'Plateformes Collaboratives', desc: 'Écosystèmes d\'échange pair-à-pair pour le partage de ressources rares (pontons, flottes, matériels audio).' },
+    { id: 'eco', title: 'Nouveaux Modèles Économiques', desc: 'Modèles hybrides d\'abonnement, commission à la performance et mutualisation de charges d\'infrastructure.' },
+    { id: 'impact', title: 'Projets à Impact Social & Environnemental', desc: 'Tourisme solidaire, écoconception des plateformes et acheminement humanitaire pour les refuges d\'animaux.' }
   ];
 
   const incubatedProjects = [

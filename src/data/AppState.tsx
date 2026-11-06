@@ -53,6 +53,39 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [soundEnabled, setSoundEnabled] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>('home');
   const [activePlatformForDetail, setActivePlatformForDetail] = useState<string | null>(null);
+  const [partnerIntent, setPartnerIntent] = useState<string | null>(null);
+  const [partnerMessages, setPartnerMessages] = useState<{ id: string; sender: 'user' | 'crew'; text: string; time: string }[]>([
+    {
+      id: 'msg-1',
+      sender: 'crew',
+      text: 'Bienvenue sur la liaison sécurisée IMUIA. Un officier de bord examine vos propositions en temps réel.',
+      time: '10:00'
+    }
+  ]);
+
+  const sendPartnerMessage = (text: string) => {
+    if (!text.trim()) return;
+    const newMsg = {
+      id: `msg-${Date.now()}`,
+      sender: 'user' as const,
+      text,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+    setPartnerMessages(prev => [...prev, newMsg]);
+    playSound('space');
+
+    // Simulated automated crew reply
+    setTimeout(() => {
+      const crewReply = {
+        id: `msg-${Date.now() + 1}`,
+        sender: 'crew' as const,
+        text: 'Message reçu par la passerelle de commandement IMUIA. Notre équipe étudie vos éléments.',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setPartnerMessages(prev => [...prev, crewReply]);
+      playSound('success');
+    }, 1200);
+  };
 
   // Custom theme-toggle update inside document element
   useEffect(() => {
@@ -487,6 +520,10 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setCookieConsent,
         activePlatformForDetail,
         setActivePlatformForDetail,
+        partnerIntent,
+        setPartnerIntent,
+        partnerMessages,
+        sendPartnerMessage,
       }}
     >
       {children}

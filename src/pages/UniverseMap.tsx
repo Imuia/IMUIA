@@ -80,28 +80,36 @@ export const UniverseMap: React.FC = () => {
       </div>
 
       {/* Spectacular Canvas Interactive Galaxy Layout (Desktop) */}
-      <div className="hidden md:block relative max-w-6xl mx-auto h-[550px] glass-panel rounded-3xl overflow-hidden border border-white/5">
+      <div className="hidden md:block relative max-w-6xl mx-auto h-[620px] glass-panel rounded-3xl overflow-hidden border border-white/5">
         {/* Subtle grid lines background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
 
+        {/* Holographic orbital concentric rings */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-purple-500/10 pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full border border-dashed border-cyan-400/10 pointer-events-none"></div>
+
         {/* Central Core: IMUIA STATION */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-          <div className="relative w-28 h-28 rounded-full bg-gradient-to-br from-purple-800 to-black border border-purple-500/50 flex flex-col items-center justify-center shadow-[0_0_35px_rgba(168,85,247,0.4)]">
+          <div className="relative w-32 h-32 rounded-full bg-gradient-to-br from-purple-800 to-black border border-purple-500/50 flex flex-col items-center justify-center shadow-[0_0_40px_rgba(168,85,247,0.4)]">
             <div className="absolute inset-0 rounded-full border border-purple-400/20 animate-ping"></div>
             <div className="absolute -inset-4 rounded-full border border-dashed border-cyan-400/20 animate-orbit-reverse"></div>
-            <span className="font-orbitron font-black text-white tracking-widest text-lg">IMUIA</span>
-            <span className="text-[7px] text-cyan-400 font-mono tracking-widest uppercase">LAB BASE</span>
+            <span className="font-orbitron font-black text-white tracking-widest text-xl">IMUIA</span>
+            <span className="text-[8px] text-cyan-400 font-mono tracking-widest uppercase">CORE BASE</span>
           </div>
         </div>
 
-        {/* The 6 Galaxy Sector Nodes - Orbiting or located in 6 distinct angles */}
+        {/* The 6 Galaxy Sector Nodes - Well-spaced around the central station */}
         {sectors.map((sec, idx) => {
-          // Angle in radians
-          const angle = (idx * 2 * Math.PI) / 6;
-          const radiusX = 350; // Elliptical orbit x
-          const radiusY = 190; // Elliptical orbit y
-          const left = 50 + (radiusX * Math.cos(angle)) / 8; // % position
-          const top = 50 + (radiusY * Math.sin(angle)) / 5; // % position
+          // Perfectly balanced coordinates in % to keep all cards within bounds
+          const positions = [
+            { left: '20%', top: '24%' },  // immo (top-left)
+            { left: '50%', top: '15%' },  // tourism (top-center)
+            { left: '80%', top: '24%' },  // events (top-right)
+            { left: '82%', top: '72%' },  // economy (bottom-right)
+            { left: '50%', top: '82%' },  // services (bottom-center)
+            { left: '18%', top: '72%' },  // tech (bottom-left)
+          ];
+          const pos = positions[idx];
 
           const sectorPlats = platforms.filter(p => p.sector === sec.id);
           const isFaded = selectedSector !== null && selectedSector !== sec.id;
@@ -112,19 +120,16 @@ export const UniverseMap: React.FC = () => {
               className={`absolute -translate-x-1/2 -translate-y-1/2 transition-opacity duration-500 z-10 ${
                 isFaded ? 'opacity-20 pointer-events-none' : 'opacity-100'
               }`}
-              style={{ left: `${left}%`, top: `${top}%` }}
+              style={{ left: pos.left, top: pos.top }}
             >
-              {/* Elliptical dashed orbit path for sector */}
-              <div className="absolute -inset-16 rounded-full border border-dashed border-white/5 animate-pulse"></div>
-
               {/* Sector Title Plate */}
-              <div className="relative glass-panel px-4 py-2.5 rounded-xl border border-white/10 text-center min-w-[170px]">
-                <span className={`block text-[9px] font-mono tracking-widest uppercase font-bold ${sec.color}`}>
+              <div className="relative glass-panel px-4 py-3 rounded-2xl border border-white/10 hover:border-purple-500/40 text-center min-w-[200px] shadow-lg transition-all duration-300">
+                <span className={`block text-[10px] font-mono tracking-widest uppercase font-bold mb-1 ${sec.color}`}>
                   {sec.label}
                 </span>
 
                 {/* Orbiting Planets (Platforms of this sector) */}
-                <div className="flex justify-center space-x-1.5 mt-2">
+                <div className="flex justify-center items-center gap-2 mt-2">
                   {sectorPlats.map((plat) => {
                     const isHovered = hoveredPlanet?.id === plat.id;
                     return (
@@ -132,16 +137,16 @@ export const UniverseMap: React.FC = () => {
                         key={plat.id}
                         onClick={() => handlePlanetClick(plat)}
                         onMouseEnter={() => { setHoveredPlanet(plat); playSound('hover'); }}
-                        className={`relative w-8 h-8 rounded-full flex items-center justify-center text-sm border cursor-none transition-all duration-300 clickable-planet ${
+                        className={`relative w-9 h-9 rounded-full flex items-center justify-center text-base border cursor-none transition-all duration-300 clickable-planet ${
                           isHovered
-                            ? 'bg-purple-600 border-purple-400 scale-125 shadow-[0_0_15px_rgba(168,85,247,0.6)]'
-                            : 'bg-black/40 border-white/15 hover:border-white/40'
+                            ? 'bg-purple-600 border-purple-400 scale-125 shadow-[0_0_20px_rgba(168,85,247,0.7)] z-20'
+                            : 'bg-black/60 border-white/20 hover:border-white/50'
                         }`}
                         title={plat.name}
                       >
                         <span>{plat.logo}</span>
                         {/* Interactive dynamic status beacon */}
-                        <span className={`absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-black ${
+                        <span className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-black ${
                           plat.status === 'active' ? 'bg-green-500 animate-pulse' :
                           plat.status === 'development' ? 'bg-amber-500' : 'bg-blue-400'
                         }`} />
