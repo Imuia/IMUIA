@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
+import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock, Orbit } from 'lucide-react';
 
 export const Partners: React.FC = () => {
-  const { language, addContact, playSound } = useAppState();
+  const { language, addContact, platforms, playSound } = useAppState();
   const t = translations[language];
 
   // Form Fields State
@@ -20,6 +20,17 @@ export const Partners: React.FC = () => {
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
+
+  // Check if a preset was stored via the Landing page / Earth contact triggers
+  useEffect(() => {
+    const preset = sessionStorage.getItem('imuia_partner_preset');
+    if (preset) {
+      if (preset === 'Investor') setPartnerType('Investor');
+      if (preset === 'Partner') setPartnerType('Operator');
+      if (preset === 'Project') setPartnerType('Owner');
+      sessionStorage.removeItem('imuia_partner_preset');
+    }
+  }, []);
 
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);
@@ -232,7 +243,7 @@ export const Partners: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Pays */}
             <div className="space-y-1.5">
               <label className="block text-xs font-mono uppercase text-gray-400">
@@ -247,7 +258,7 @@ export const Partners: React.FC = () => {
               />
             </div>
 
-            {/* Catégorie Partenariat */}
+            {/* Catégorie Partenariat complet prompt */}
             <div className="space-y-1.5">
               <label className="block text-xs font-mono uppercase text-gray-400">
                 {t.formPartnerType}
@@ -259,11 +270,36 @@ export const Partners: React.FC = () => {
               >
                 <option value="">{t.formPartnerTypePlaceholder}</option>
                 <option value="Investor">{t.partnerInvestor}</option>
+                <option value="Broker">{t.partnerBroker}</option>
                 <option value="Operator">{t.partnerProvider}</option>
                 <option value="Developer">{t.partnerDeveloper}</option>
-                <option value="Broker">{t.partnerBroker}</option>
                 <option value="Creator">{t.partnerCreator}</option>
+                <option value="Local">{t.partnerLocal}</option>
+                <option value="Owner">{t.partnerOwner}</option>
+                <option value="Ecosystem">{t.partnerEcosystem}</option>
                 <option value="Other">{t.partnerOther}</option>
+              </select>
+            </div>
+
+            {/* Projet IMUIA concerné (Planète cible) */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-mono uppercase text-gray-400 flex items-center space-x-1">
+                <Orbit className="w-3 h-3 text-cyan-400" />
+                <span>{t.formProject}</span>
+              </label>
+              <select
+                value={project}
+                onChange={(e) => setProject(e.target.value)}
+                className="w-full bg-black border border-white/10 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+              >
+                <option value="">{t.formProjectPlaceholder}</option>
+                <option value="all-global">Écosystème IMUIA Global / Multi-univers</option>
+                <option value="labs">IMUIA LABS (Incubation & R&D)</option>
+                {platforms.map(p => (
+                  <option key={p.id} value={p.name}>
+                    {p.name} ({p.sector.toUpperCase()})
+                  </option>
+                ))}
               </select>
             </div>
 

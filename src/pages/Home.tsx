@@ -1,15 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { ArrowRight, Compass, Shield, Rocket, Activity } from 'lucide-react';
+import { ArrowRight, Compass, Shield, Rocket, Activity, Mail, Sparkles } from 'lucide-react';
+import { ContactSection } from '../components/ContactSection';
 
 export const Home: React.FC = () => {
   const { language, playSound, setActiveSection } = useAppState();
   const t = translations[language];
 
+  const slogans = language === 'fr' ? [
+    "Explorez une galaxie de services innovants",
+    "Des idées en orbite, des plateformes en mouvement",
+    "Créateur d'écosystèmes numériques",
+    "L'innovation commence là où l'imagination n'a plus de limites"
+  ] : [
+    "Explore a galaxy of innovative services",
+    "Ideas in orbit, platforms in motion",
+    "Creator of digital ecosystems",
+    "Innovation begins where imagination knows no limits"
+  ];
+
+  const [activeSloganIndex, setActiveSloganIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSloganIndex((prev) => (prev + 1) % slogans.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [slogans.length]);
+
   const handleCTA = (section: string) => {
     setActiveSection(section);
     playSound('space');
+  };
+
+  const scrollToContact = () => {
+    playSound('space');
+    const el = document.getElementById('contact-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      setActiveSection('partners');
+    }
   };
 
   return (
@@ -53,9 +85,16 @@ export const Home: React.FC = () => {
         {/* Headings */}
         <div className="space-y-4">
           <h2 className="text-sm font-orbitron font-bold text-cyan-400 tracking-widest uppercase flex items-center justify-center space-x-2">
-            <Activity className="w-4 h-4 animate-pulse" />
+            <Activity className="w-4 h-4 animate-pulse text-cyan-400" />
             <span>{t.tagline}</span>
           </h2>
+
+          {/* Rotating Cosmic Slogan Badge */}
+          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-white/5 border border-purple-500/20 text-xs font-mono text-purple-300">
+            <Sparkles className="w-3.5 h-3.5 text-purple-400 animate-spin-slow" />
+            <span className="transition-all duration-500">{slogans[activeSloganIndex]}</span>
+          </div>
+
           <h1 className="text-4xl md:text-6xl font-black font-orbitron text-white tracking-tight leading-tight uppercase">
             {t.introTitle}
           </h1>
@@ -64,12 +103,12 @@ export const Home: React.FC = () => {
           </p>
         </div>
 
-        {/* High-end Glowing Rounded Action Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 pt-4 max-w-3xl mx-auto">
+        {/* 4 High-end Glowing Rounded Action Buttons from prompt */}
+        <div className="flex flex-wrap justify-center gap-4 pt-4 max-w-4xl mx-auto">
           <button
             onClick={() => handleCTA('universe')}
             onMouseEnter={() => playSound('hover')}
-            className="flex items-center space-x-2.5 px-7 py-4 bg-purple-600 hover:bg-purple-500 text-white font-orbitron font-bold text-sm tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] cursor-none hover:translate-y-[-2px]"
+            className="flex items-center space-x-2.5 px-6 py-3.5 bg-purple-600 hover:bg-purple-500 text-white font-orbitron font-bold text-xs tracking-widest uppercase rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] cursor-none hover:translate-y-[-2px]"
           >
             <Compass className="w-4 h-4" />
             <span>{t.exploreUniverse}</span>
@@ -79,7 +118,7 @@ export const Home: React.FC = () => {
           <button
             onClick={() => handleCTA('platforms')}
             onMouseEnter={() => playSound('hover')}
-            className="flex items-center space-x-2.5 px-7 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-sm tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+            className="flex items-center space-x-2.5 px-6 py-3.5 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-xs tracking-widest uppercase rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
           >
             <Shield className="w-4 h-4" />
             <span>{t.discoverPlatforms}</span>
@@ -88,10 +127,19 @@ export const Home: React.FC = () => {
           <button
             onClick={() => handleCTA('partners')}
             onMouseEnter={() => playSound('hover')}
-            className="flex items-center space-x-2.5 px-7 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-sm tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+            className="flex items-center space-x-2.5 px-6 py-3.5 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-xs tracking-widest uppercase rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
           >
             <Rocket className="w-4 h-4" />
             <span>{t.proposePartnership}</span>
+          </button>
+
+          <button
+            onClick={scrollToContact}
+            onMouseEnter={() => playSound('hover')}
+            className="flex items-center space-x-2.5 px-6 py-3.5 bg-white/5 hover:bg-cyan-500/15 text-white hover:text-cyan-300 font-orbitron font-bold text-xs tracking-widest uppercase rounded-full border border-white/10 hover:border-cyan-400/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+          >
+            <Mail className="w-4 h-4" />
+            <span>{t.contactUs}</span>
           </button>
         </div>
 
@@ -114,6 +162,11 @@ export const Home: React.FC = () => {
             <div className="text-[10px] text-gray-400 font-mono tracking-widest uppercase">INNOVATION LABS</div>
           </div>
         </div>
+      </div>
+
+      {/* Earth & Orbital Contact Section embedded on Landing Page */}
+      <div className="w-full">
+        <ContactSection />
       </div>
     </div>
   );

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { Cpu, Lock, Unlock, AlertTriangle, Sparkles } from 'lucide-react';
+import {
+  Cpu, Lock, Unlock, AlertTriangle, Sparkles,
+  Bot, Cog, Compass, CalendarCheck, CreditCard,
+  Briefcase, Layers, Share2, Wrench, Users,
+  TrendingUp, HeartHandshake
+} from 'lucide-react';
 
 export const Labs: React.FC = () => {
   const { language, playSound } = useAppState();
@@ -23,13 +28,20 @@ export const Labs: React.FC = () => {
     }
   };
 
+  // Full 12 research domains explicitly required by prompt
   const researchAreas = [
-    { id: 'ai', title: 'Intelligence Artificielle', desc: 'Dispatching algorithmique, qualification automatique de leads et chatbots conversationnels immobiliers.' },
-    { id: 'autom', title: 'Automatisation', desc: 'Génération automatisée d\'accords de partenariat et relance de réservations dormantes.' },
-    { id: 'geo', title: 'Géolocalisation', desc: 'Réseau cartographique vectoriel en temps réel pour l\'amarrage nautique et le repérage de vélos.' },
-    { id: 'booking', title: 'Réservation en Temps Réel', desc: 'Moteurs de synchronisation instantanée de calendriers multidomaines hautement sécurisés.' },
-    { id: 'crm', title: 'Systèmes CRM Propriétaires', desc: 'Gestion d\'opportunités commerciales et centralisation de documents avec signature électronique.' },
-    { id: 'impact', title: 'Projets à Impact Social', desc: 'Réseau d\'acheminement de fournitures solidaires et de dons au profit de refuges animaliers.' }
+    { id: 'ai', title: language === 'fr' ? 'Intelligence Artificielle' : 'Artificial Intelligence', icon: Bot, desc: language === 'fr' ? 'Dispatching algorithmique, qualification sémantique de prospects et modèles prédictifs.' : 'Algorithmic routing, semantic prospect qualification, and predictive machine learning models.' },
+    { id: 'autom', title: language === 'fr' ? 'Automatisation' : 'Automation', icon: Cog, desc: language === 'fr' ? 'Génération automatisée de mandats, relances et synchronisation multi-plateformes.' : 'Automated contract authoring, notification dispatching, and multi-platform sync.' },
+    { id: 'geo', title: language === 'fr' ? 'Géolocalisation' : 'Geolocation', icon: Compass, desc: language === 'fr' ? 'Cartographie spatiale vectorielle, télémétrie nautique et localisation de flottes de vélos.' : 'Vector geospatial maps, nautical telemetry tracking, and smart bike fleet positioning.' },
+    { id: 'booking', title: language === 'fr' ? 'Réservation en temps réel' : 'Real-time Booking', icon: CalendarCheck, desc: language === 'fr' ? 'Moteurs de synchronisation instantanée de calendriers haute disponibilité sans collision.' : 'Zero-latency calendar sync engines engineered for heavy multi-tenant booking peaks.' },
+    { id: 'payment', title: language === 'fr' ? 'Paiement en ligne' : 'Online Payment', icon: CreditCard, desc: language === 'fr' ? 'Passerelles sécurisées multidevises, séquestre numérique et fractionnement d\'acomptes.' : 'Multi-currency secured gateways, digital escrow escrow holding, and automated splits.' },
+    { id: 'crm', title: language === 'fr' ? 'CRM & Gestion commerciale' : 'CRM & Commercial Ops', icon: Briefcase, desc: language === 'fr' ? 'Pipeline d\'affaires centralisé, signature électronique eIDAS et fiches partenaires 360°.' : 'Centralized business pipeline, legal e-signature certified under eIDAS, 360° CRM records.' },
+    { id: 'immersive', title: language === 'fr' ? 'Expériences immersives' : 'Immersive Experiences', icon: Layers, desc: language === 'fr' ? 'Modélisation 3D WebGL de biens immobiliers, visites spatiales et interfaces holographiques.' : '3D WebGL architectural visualization, virtual property tours, and holographic design systems.' },
+    { id: 'affiliation', title: language === 'fr' ? 'Affiliation & Leads' : 'Affiliation & Lead Gen', icon: Share2, desc: language === 'fr' ? 'Génération de prospects ultra-qualifiés et programmes d\'apporteurs d\'affaires distribués.' : 'High-intent lead generation networks and transparent multi-tier commission structures.' },
+    { id: 'pro_tools', title: language === 'fr' ? 'Outils pour professionnels' : 'Pro Tools & Portals', icon: Wrench, desc: language === 'fr' ? 'Tableaux de bord d\'artisans, conciergeries connectées et gestionnaires de parcs.' : 'Dedicated craftsman cockpits, connected concierge tools, and operational management portals.' },
+    { id: 'collab', title: language === 'fr' ? 'Plateformes collaboratives' : 'Collaborative Platforms', icon: Users, desc: language === 'fr' ? 'Partage communautaire de pontons, entraide touristique et économie de partage équitable.' : 'Community boat slip sharing, cooperative traveler assistance, and peer-to-peer marketplaces.' },
+    { id: 'models', title: language === 'fr' ? 'Nouveaux modèles économiques' : 'New Economic Models', icon: TrendingUp, desc: language === 'fr' ? 'Micro-abonnements SaaS flexibles, monétisation à la performance et royalties de marques.' : 'Micro-SaaS models, performance-based commission payouts, and digital brand royalties.' },
+    { id: 'impact', title: language === 'fr' ? 'Impact social & environnement' : 'Social & Eco Impact', icon: HeartHandshake, desc: language === 'fr' ? 'Mobilité douce décarbonée et acheminement solidaire au profit de refuges animaliers.' : 'Low-carbon green micromobility and solidarity couriering for isolated animal rescue sanctuaries.' },
   ];
 
   const incubatedProjects = [
@@ -70,27 +82,35 @@ export const Labs: React.FC = () => {
         </p>
       </div>
 
-      {/* Research Areas Matrix Grid */}
+      {/* Research Areas Matrix Grid - All 12 domains */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10 text-left">
-        {researchAreas.map((area, idx) => (
-          <div
-            key={area.id}
-            onMouseEnter={() => playSound('hover')}
-            className="glass-panel p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300"
-          >
-            <div className="flex items-center space-x-2.5 mb-3">
-              <span className="text-xs font-mono text-cyan-400 font-bold bg-cyan-400/10 px-2 py-0.5 rounded">
-                0{idx + 1}
-              </span>
-              <h3 className="font-orbitron font-bold text-white text-base">
-                {area.title}
-              </h3>
+        {researchAreas.map((area, idx) => {
+          const Icon = area.icon;
+          return (
+            <div
+              key={area.id}
+              onMouseEnter={() => playSound('hover')}
+              className="glass-panel p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300 group hover:translate-y-[-2px]"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-2.5">
+                  <span className="text-xs font-mono text-cyan-400 font-bold bg-cyan-400/10 px-2 py-0.5 rounded">
+                    {idx < 9 ? `0${idx + 1}` : idx + 1}
+                  </span>
+                  <h3 className="font-orbitron font-bold text-white text-sm md:text-base group-hover:text-cyan-300 transition-colors">
+                    {area.title}
+                  </h3>
+                </div>
+                <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400">
+                  <Icon className="w-4 h-4" />
+                </div>
+              </div>
+              <p className="text-xs text-gray-400 leading-relaxed font-light">
+                {area.desc}
+              </p>
             </div>
-            <p className="text-xs text-gray-400 leading-relaxed">
-              {area.desc}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Incubation locked/unlocked center */}
