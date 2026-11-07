@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
 import type { Contact } from '../data/AppState';
 import { translations } from '../data/translations';
-import { LayoutDashboard, Plus, Mail, CheckSquare, Trash2, Users, Send, Radio } from 'lucide-react';
+import {
+  LayoutDashboard, Plus, Mail, CheckSquare, Trash2, Users, Send,
+  Radio, PieChart, Globe, Filter
+} from 'lucide-react';
 
 export const AdminCockpit: React.FC = () => {
   const {
@@ -31,6 +34,10 @@ export const AdminCockpit: React.FC = () => {
   const [newPlatZone, setNewPlatZone] = useState('');
   const [newPlatUrl, setNewPlatUrl] = useState('');
   const [newPlatStatus, setNewPlatStatus] = useState<'active' | 'development' | 'soon'>('active');
+
+  // Contact filtering
+  const [contactFilterStatus, setContactFilterStatus] = useState<string>('all');
+  const [contactSearch, setContactSearch] = useState<string>('');
 
   const [mailSubject, setMailSubject] = useState('');
   const [mailBody, setMailBody] = useState('');
@@ -78,6 +85,35 @@ export const AdminCockpit: React.FC = () => {
     setTaskText('');
     playSound('success');
   };
+
+  // Filtered contacts
+  const filteredContacts = contacts.filter(c => {
+    const matchStatus = contactFilterStatus === 'all' || c.status === contactFilterStatus;
+    const matchSearch =
+      c.firstName.toLowerCase().includes(contactSearch.toLowerCase()) ||
+      c.lastName.toLowerCase().includes(contactSearch.toLowerCase()) ||
+      c.company.toLowerCase().includes(contactSearch.toLowerCase()) ||
+      c.email.toLowerCase().includes(contactSearch.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+
+  // Sector revenue breakdown calculations
+  const sectorRevenues = [
+    { sector: 'Immobilier (Corse & Mada)', percent: 38, amount: '540 000 €', color: 'bg-purple-500' },
+    { sector: 'Tourisme & Mariages', percent: 27, amount: '385 000 €', color: 'bg-pink-500' },
+    { sector: 'Événementiel & Audio', percent: 15, amount: '215 000 €', color: 'bg-blue-500' },
+    { sector: 'Mobilité & Nautisme', percent: 12, amount: '170 000 €', color: 'bg-cyan-500' },
+    { sector: 'Tech, LED & Services Pro', percent: 8, amount: '110 000 €', color: 'bg-amber-500' },
+  ];
+
+  // Geographical distribution
+  const geoBreakdown = [
+    { region: 'France métropolitaine & Cannes', count: 4, share: '33%' },
+    { region: 'Corse (Bastia & Ajaccio)', count: 2, share: '17%' },
+    { region: 'Maroc (Taghazout & Agadir)', count: 2, share: '17%' },
+    { region: 'Madagascar (Nosy Be & Tana)', count: 2, share: '17%' },
+    { region: 'Europe & International', count: 2, share: '16%' },
+  ];
 
   return (
     <div className="relative min-h-[calc(100vh-80px)] py-12 px-4 space-y-12">
@@ -132,6 +168,60 @@ export const AdminCockpit: React.FC = () => {
         </div>
       </div>
 
+      {/* Analytical Visual Breakdown: Revenues by Galaxy & Geographic Telemetry */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto relative z-10 text-left">
+        {/* Revenues by Activity */}
+        <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
+          <div className="flex items-center justify-between border-b border-white/5 pb-3">
+            <h3 className="font-orbitron font-bold text-sm text-purple-400 uppercase flex items-center space-x-2">
+              <PieChart className="w-4 h-4" />
+              <span>Répartition des Revenus par Activité</span>
+            </h3>
+            <span className="text-[10px] font-mono text-gray-500">Exercice 2026</span>
+          </div>
+
+          <div className="space-y-3 pt-2">
+            {sectorRevenues.map((item, idx) => (
+              <div key={idx} className="space-y-1">
+                <div className="flex justify-between text-xs font-mono">
+                  <span className="text-gray-300">{item.sector}</span>
+                  <span className="text-white font-bold">{item.amount} ({item.percent}%)</span>
+                </div>
+                <div className="w-full bg-white/5 rounded-full h-2 overflow-hidden">
+                  <div
+                    className={`${item.color} h-2 rounded-full transition-all duration-700`}
+                    style={{ width: `${item.percent}%` }}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Geographic Fleet & Partner distribution */}
+        <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
+          <div className="flex items-center justify-between border-b border-white/5 pb-3">
+            <h3 className="font-orbitron font-bold text-sm text-cyan-400 uppercase flex items-center space-x-2">
+              <Globe className="w-4 h-4" />
+              <span>Répartition Géographique des Hubs</span>
+            </h3>
+            <span className="text-[10px] font-mono text-cyan-400 animate-pulse">// 5 PÔLES ORBITAUX</span>
+          </div>
+
+          <div className="space-y-2 pt-2">
+            {geoBreakdown.map((geo, idx) => (
+              <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl bg-black/40 border border-white/5 text-xs font-mono">
+                <span className="text-gray-300">{geo.region}</span>
+                <div className="flex items-center space-x-2">
+                  <span className="text-cyan-400 font-bold">{geo.count} plateformes</span>
+                  <span className="text-gray-500">({geo.share})</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Grid containing contacts lists and Platform registry */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto relative z-10 text-left items-start">
 
@@ -140,56 +230,90 @@ export const AdminCockpit: React.FC = () => {
 
           {/* Incoming Partner Proposals leads table */}
           <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
-            <div className="flex items-center justify-between border-b border-white/5 pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-3">
               <h3 className="font-orbitron font-bold text-sm text-pink-400 uppercase flex items-center space-x-2">
                 <Users className="w-4.5 h-4.5" />
                 <span>{t.crmContactsList}</span>
               </h3>
-              <span className="text-[10px] font-mono text-gray-500">{contacts.length} Leads</span>
+              <span className="text-[10px] font-mono text-gray-500">{filteredContacts.length} / {contacts.length} Leads</span>
+            </div>
+
+            {/* Leads Search & Status Filter bar */}
+            <div className="flex flex-wrap gap-2 text-xs">
+              <input
+                type="text"
+                placeholder="Rechercher nom, société..."
+                value={contactSearch}
+                onChange={(e) => setContactSearch(e.target.value)}
+                className="bg-black/50 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white flex-1 min-w-[150px] focus:outline-none focus:border-purple-500"
+              />
+
+              <div className="flex items-center space-x-1.5">
+                <Filter className="w-3.5 h-3.5 text-gray-400" />
+                <select
+                  value={contactFilterStatus}
+                  onChange={(e) => setContactFilterStatus(e.target.value)}
+                  className="bg-black text-[11px] font-mono border border-white/10 text-gray-300 rounded px-2.5 py-1.5 focus:outline-none"
+                >
+                  <option value="all">Tous les statuts</option>
+                  <option value="New">Nouveau (New)</option>
+                  <option value="In Discussion">En discussion</option>
+                  <option value="Partnered">Partenaire signé</option>
+                  <option value="Closed">Fermé</option>
+                </select>
+              </div>
             </div>
 
             <div className="space-y-4 max-h-[450px] overflow-y-auto pr-1">
-              {contacts.map((c) => (
-                <div key={c.id} className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-3">
-                  <div className="flex flex-wrap items-start justify-between gap-2">
-                    <div>
-                      <span className="block text-sm font-bold text-white">
-                        {c.firstName} {c.lastName}
-                      </span>
-                      <span className="text-[10px] text-cyan-400 font-mono block">
-                        {c.company} ({c.function})
-                      </span>
-                    </div>
-
-                    {/* Status badge toggler */}
-                    <div className="flex items-center space-x-1">
-                      <select
-                        value={c.status}
-                        onChange={(e) => {
-                          updateContactStatus(c.id, e.target.value as Contact['status']);
-                          playSound('click');
-                        }}
-                        className="bg-black text-[10px] font-mono border border-white/10 text-gray-300 rounded px-2 py-1 focus:outline-none focus:border-purple-500"
-                      >
-                        <option value="New">NEW</option>
-                        <option value="In Discussion">IN DISCUSSION</option>
-                        <option value="Partnered">PARTNERED</option>
-                        <option value="Closed">CLOSED</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-gray-400 italic bg-black/50 p-3 rounded-lg border border-white/5 leading-relaxed">
-                    "{c.proposal}"
-                  </p>
-
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-[9px] font-mono text-gray-500">
-                    <span>E-mail: <strong className="text-gray-300">{c.email}</strong></span>
-                    {c.phone && <span>Tel: <strong className="text-gray-300">{c.phone}</strong></span>}
-                    <span>Pays: <strong className="text-gray-300">{c.country || 'Global'}</strong></span>
-                  </div>
+              {filteredContacts.length === 0 ? (
+                <div className="p-6 text-center text-xs text-gray-500 font-mono">
+                  Aucun dossier ne correspond à ce filtre.
                 </div>
-              ))}
+              ) : (
+                filteredContacts.map((c) => (
+                  <div key={c.id} className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-3">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div>
+                        <span className="block text-sm font-bold text-white">
+                          {c.firstName} {c.lastName}
+                        </span>
+                        <span className="text-[10px] text-cyan-400 font-mono block">
+                          {c.company} ({c.function})
+                        </span>
+                      </div>
+
+                      {/* Status badge toggler */}
+                      <div className="flex items-center space-x-1">
+                        <select
+                          value={c.status}
+                          onChange={(e) => {
+                            updateContactStatus(c.id, e.target.value as Contact['status']);
+                            playSound('click');
+                          }}
+                          className="bg-black text-[10px] font-mono border border-white/10 text-gray-300 rounded px-2 py-1 focus:outline-none focus:border-purple-500"
+                        >
+                          <option value="New">NEW</option>
+                          <option value="In Discussion">IN DISCUSSION</option>
+                          <option value="Partnered">PARTNERED</option>
+                          <option value="Closed">CLOSED</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-gray-400 italic bg-black/50 p-3 rounded-lg border border-white/5 leading-relaxed">
+                      "{c.proposal}"
+                    </p>
+
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-[9px] font-mono text-gray-500">
+                      <span>Projet: <strong className="text-purple-300">{c.project || 'Global'}</strong></span>
+                      <span>Type: <strong className="text-cyan-300">{c.partnerType}</strong></span>
+                      <span>E-mail: <strong className="text-gray-300">{c.email}</strong></span>
+                      {c.phone && <span>Tel: <strong className="text-gray-300">{c.phone}</strong></span>}
+                      <span>Pays: <strong className="text-gray-300">{c.country || 'Global'}</strong></span>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 

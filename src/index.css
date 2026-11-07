@@ -93,11 +93,32 @@ h1, h2, h3, .font-orbitron {
 }
 
 .light .glass-panel {
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  color: #0f172a;
+}
+
+.light h1, .light h2, .light h3, .light h4, .light .text-white {
+  color: #0f172a !important;
+}
+
+.light .text-gray-300, .light .text-gray-400 {
+  color: #475569 !important;
+}
+
+.light .bg-black, .light .bg-black\/40, .light .bg-black\/50, .light .bg-black\/60, .light .bg-black\/80 {
+  background-color: rgba(241, 245, 249, 0.8) !important;
+  color: #0f172a !important;
+  border-color: rgba(203, 213, 225, 0.8) !important;
+}
+
+.light input, .light textarea, .light select {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
 }
 
 /* Hologram glows */

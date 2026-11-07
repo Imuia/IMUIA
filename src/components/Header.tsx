@@ -34,6 +34,7 @@ export const Header: React.FC = () => {
     { id: 'vision', label: t.navVision, icon: HelpCircle },
     { id: 'news', label: t.navNews, icon: BookOpen },
     { id: 'partners', label: t.navPartners, icon: User },
+    { id: 'contact', label: t.navContact, icon: Rocket },
   ];
 
   return (

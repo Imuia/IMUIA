@@ -75,6 +75,13 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/07_partners_form.png")
             print("Screenshot 07 written.")
 
+            # Navigate to Contact Earth Orbit
+            print("Navigating to Contact Section...")
+            page.get_by_text("Contact").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/08_contact_orbital_earth.png")
+            print("Screenshot 08 written.")
+
             # Navigate to Espace Client Space & Login
             print("Navigating to secure Client Space...")
             page.get_by_text("Espace Client").first.click()
@@ -84,15 +91,22 @@ def run_verification():
             page.get_by_placeholder("••••••••").fill("password")
             page.get_by_role("button", name="S'amarrer à la station").click()
             page.wait_for_timeout(1500)
-            page.screenshot(path="/home/jules/verification/08_client_space_dashboard.png")
-            print("Screenshot 08 written.")
+            page.screenshot(path="/home/jules/verification/09_client_space_dashboard.png")
+            print("Screenshot 09 written.")
+
+            # Test Messaging in Client Space
+            print("Checking Crew Messaging...")
+            page.get_by_text("Échanges avec l'équipe").click()
+            page.wait_for_timeout(800)
+            page.screenshot(path="/home/jules/verification/10_client_messaging.png")
+            print("Screenshot 10 written.")
 
             # Navigate to CRM Cockpit
             print("Navigating to Central CRM Cockpit Dashboard...")
             page.get_by_text("Cockpit CRM").first.click()
             page.wait_for_timeout(1000)
-            page.screenshot(path="/home/jules/verification/09_crm_cockpit.png")
-            print("Screenshot 09 written.")
+            page.screenshot(path="/home/jules/verification/11_crm_cockpit_full.png")
+            print("Screenshot 11 written.")
 
             # Close browser
             browser.close()

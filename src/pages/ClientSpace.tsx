@@ -1,7 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { CheckCircle, Bell, BarChart2, UploadCloud, FileSignature, ShieldCheck } from 'lucide-react';
+import {
+  CheckCircle, Bell, BarChart2, UploadCloud, FileSignature,
+  ShieldCheck, MessageSquare, Download, Send, FileText
+} from 'lucide-react';
 
 export const ClientSpace: React.FC = () => {
   const {
@@ -23,6 +26,24 @@ export const ClientSpace: React.FC = () => {
   const [name, setName] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [authError, setAuthError] = useState(false);
+
+  // Active sub-tab in client dashboard
+  const [activeTab, setActiveTab] = useState<'overview' | 'messages' | 'billing'>('overview');
+
+  // Messages with IMUIA Crew State
+  const [messages, setMessages] = useState([
+    { id: 1, sender: 'Équipage IMUIA', time: '10:45', text: 'Bienvenue à bord de la station IMUIA ! Votre dossier de partenariat a été validé par la passerelle de commandement.' },
+    { id: 2, sender: 'Vous', time: '11:12', text: 'Merci commandant. Pouvons-nous planifier une revue technique sur l\'intégration API de nos services ?' },
+    { id: 3, sender: 'Ingénieur R&D', time: '11:30', text: 'Absolument. Un accès sandbox dédié a été ouvert dans IMUIA LABS sous votre identifiant.' }
+  ]);
+  const [newMessageText, setNewMessageText] = useState('');
+
+  // Mock Official Invoices and Documents available for download
+  const downloadableDocs = [
+    { id: 'inv-01', title: 'Facture d\'amarrage #FAC-2026-089', type: 'Facture', date: '01/03/2026', size: '142 Ko' },
+    { id: 'doc-02', title: 'Cahier des charges API V2 - IMUIA Cloud', type: 'Documentation', date: '25/02/2026', size: '1.2 Mo' },
+    { id: 'cert-03', title: 'Certificat d\'Accréditation Partenaire Officiel', type: 'Certificat', date: '18/02/2026', size: '380 Ko' }
+  ];
 
   // File Upload local list simulator
   const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: string; date: string }[]>([
@@ -46,6 +67,46 @@ export const ClientSpace: React.FC = () => {
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     register(email, name);
+  };
+
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMessageText.trim()) return;
+    const msg = {
+      id: Date.now(),
+      sender: 'Vous',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      text: newMessageText.trim()
+    };
+    setMessages(prev => [...prev, msg]);
+    setNewMessageText('');
+    playSound('space');
+
+    // Simulate Crew auto-acknowledgment
+    setTimeout(() => {
+      setMessages(prev => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          sender: 'Officier de Liaison',
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: 'Transmission reçue 5 sur 5. Notre équipe examine votre message et revient vers vous sous peu.'
+        }
+      ]);
+      playSound('success');
+    }, 1200);
+  };
+
+  const handleDownloadDoc = (docTitle: string) => {
+    playSound('click');
+    // Create quick client-side blob download
+    const blob = new Blob([`IMUIA OFFICIAL SECURE DOCUMENT\nTitle: ${docTitle}\nGenerated for: ${userSession?.name}\nTimestamp: ${new Date().toISOString()}`], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${docTitle.toLowerCase().replace(/[^a-z0-9]/g, '_')}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleFileLocalUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -258,6 +319,46 @@ export const ClientSpace: React.FC = () => {
         </button>
       </div>
 
+      {/* Navigation tabs */}
+      <div className="max-w-6xl mx-auto flex items-center space-x-2 border-b border-white/10 pb-4 relative z-10 text-xs font-orbitron font-bold">
+        <button
+          onClick={() => { setActiveTab('overview'); playSound('click'); }}
+          className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all cursor-none ${
+            activeTab === 'overview'
+              ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/30'
+              : 'bg-white/5 text-gray-400 hover:text-white'
+          }`}
+        >
+          <BarChart2 className="w-4 h-4" />
+          <span>Tableau de bord</span>
+        </button>
+
+        <button
+          onClick={() => { setActiveTab('messages'); playSound('click'); }}
+          className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all cursor-none ${
+            activeTab === 'messages'
+              ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/30'
+              : 'bg-white/5 text-gray-400 hover:text-white'
+          }`}
+        >
+          <MessageSquare className="w-4 h-4" />
+          <span>Échanges avec l'équipe ({messages.length})</span>
+        </button>
+
+        <button
+          onClick={() => { setActiveTab('billing'); playSound('click'); }}
+          className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all cursor-none ${
+            activeTab === 'billing'
+              ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/30'
+              : 'bg-white/5 text-gray-400 hover:text-white'
+          }`}
+        >
+          <Download className="w-4 h-4" />
+          <span>Factures &amp; Documents</span>
+        </button>
+      </div>
+
+      {activeTab === 'overview' && (
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10 text-left">
 
         {/* Alerts and Contract signer list (Col 1 & 2) */}
@@ -380,6 +481,116 @@ export const ClientSpace: React.FC = () => {
         </div>
 
       </div>
+      )}
+
+      {/* Messages Tab */}
+      {activeTab === 'messages' && (
+        <div className="max-w-4xl mx-auto glass-panel p-6 rounded-3xl border border-purple-500/30 space-y-6 relative z-10 text-left">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <div className="flex items-center space-x-3">
+              <MessageSquare className="w-5 h-5 text-purple-400" />
+              <div>
+                <h3 className="font-orbitron font-bold text-white text-base">
+                  Canal de Communication Sécurisé IMUIA
+                </h3>
+                <p className="text-xs text-gray-400">Échangez en direct avec la direction de vol et les ingénieurs.</p>
+              </div>
+            </div>
+            <span className="text-[10px] font-mono text-green-400 px-2 py-0.5 rounded bg-green-500/10 border border-green-500/20">
+              EN LIGNE
+            </span>
+          </div>
+
+          {/* Conversation history */}
+          <div className="space-y-4 max-h-80 overflow-y-auto pr-2">
+            {messages.map((m) => {
+              const isMe = m.sender === 'Vous';
+              return (
+                <div
+                  key={m.id}
+                  className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}
+                >
+                  <div className="flex items-center space-x-2 text-[10px] font-mono text-gray-400 mb-1">
+                    <span className="font-bold text-purple-300">{m.sender}</span>
+                    <span>• {m.time}</span>
+                  </div>
+                  <div
+                    className={`max-w-md p-3.5 rounded-2xl text-xs leading-relaxed ${
+                      isMe
+                        ? 'bg-purple-600 text-white rounded-br-none'
+                        : 'bg-black/60 border border-white/10 text-gray-200 rounded-bl-none'
+                    }`}
+                  >
+                    {m.text}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Input message form */}
+          <form onSubmit={handleSendMessage} className="flex gap-3 pt-2 border-t border-white/10">
+            <input
+              type="text"
+              value={newMessageText}
+              onChange={(e) => setNewMessageText(e.target.value)}
+              placeholder="Écrivez votre message à l'équipage IMUIA..."
+              className="flex-1 bg-black/50 border border-white/10 focus:border-purple-500 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-orbitron font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-none flex items-center space-x-1.5"
+            >
+              <Send className="w-3.5 h-3.5" />
+              <span>Transmettre</span>
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* Invoices & Documents Download Tab */}
+      {activeTab === 'billing' && (
+        <div className="max-w-4xl mx-auto glass-panel p-6 rounded-3xl border border-white/10 space-y-6 relative z-10 text-left">
+          <div className="flex items-center space-x-3 border-b border-white/10 pb-4">
+            <FileText className="w-5 h-5 text-cyan-400" />
+            <div>
+              <h3 className="font-orbitron font-bold text-white text-base">
+                Factures et Documents Légaux Téléchargeables
+              </h3>
+              <p className="text-xs text-gray-400">Consultez et téléchargez vos justificatifs, contrats et factures d'honoraires.</p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {downloadableDocs.map((doc) => (
+              <div
+                key={doc.id}
+                className="flex items-center justify-between p-4 rounded-xl bg-black/40 border border-white/5 hover:border-cyan-500/30 transition-all"
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="p-2.5 rounded-lg bg-cyan-500/10 text-cyan-400">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white leading-tight">{doc.title}</h4>
+                    <span className="text-[10px] font-mono text-gray-400">
+                      {doc.type} • Émis le {doc.date} • {doc.size}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => handleDownloadDoc(doc.title)}
+                  className="flex items-center space-x-1.5 px-3 py-1.5 bg-white/5 hover:bg-cyan-500/20 text-cyan-300 hover:text-white rounded-lg text-xs font-mono border border-cyan-500/30 transition-colors cursor-none"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Télécharger</span>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Signature Pad Modal Drawer */}
       {signingContractId && (
