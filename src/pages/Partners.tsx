@@ -15,7 +15,17 @@ export const Partners: React.FC = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [country, setCountry] = useState('');
-  const [partnerType, setPartnerType] = useState('');
+  const [partnerType, setPartnerType] = useState(() => {
+    try {
+      const intent = sessionStorage.getItem('imuia_intent');
+      if (intent === 'invest') return 'Investor';
+      if (intent === 'partner') return 'Operator';
+      if (intent === 'project') return 'Creator';
+      return '';
+    } catch {
+      return '';
+    }
+  });
   const [project, setProject] = useState('');
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');

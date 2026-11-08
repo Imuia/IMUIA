@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
-import type { Contact } from '../data/AppState';
+import type { Contact, Platform } from '../data/AppState';
 import { translations } from '../data/translations';
-import { LayoutDashboard, Plus, Mail, CheckSquare, Trash2, Users, Send, Radio } from 'lucide-react';
+import {
+  LayoutDashboard, Plus, Mail, CheckSquare, Trash2, Users, Send, Radio,
+  Eye, EyeOff, ArrowUp, ArrowDown, Globe, PieChart, ShieldAlert, Edit3, X
+} from 'lucide-react';
 
 export const AdminCockpit: React.FC = () => {
   const {
@@ -11,6 +14,8 @@ export const AdminCockpit: React.FC = () => {
     addPlatform,
     updatePlatform,
     deletePlatform,
+    togglePlatformVisibility,
+    movePlatformOrder,
     contacts,
     updateContactStatus,
     emailCampaigns,
@@ -39,6 +44,7 @@ export const AdminCockpit: React.FC = () => {
   const [taskText, setTaskText] = useState('');
 
   const [isAddingPlat, setIsAddingPlat] = useState(false);
+  const [editingPlat, setEditingPlat] = useState<Platform | null>(null);
 
   const handleAddPlatform = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,12 +57,29 @@ export const AdminCockpit: React.FC = () => {
       status: newPlatStatus,
       url: newPlatUrl || 'https://imuia.com',
       shortDescKey: 'platRSSDesc', // references fallback
-      fullDescKey: 'platRSSFull'
+      fullDescKey: 'platRSSFull',
+      hidden: false,
+      order: platforms.length + 1
     });
     setNewPlatName('');
     setNewPlatZone('');
     setNewPlatUrl('');
     setIsAddingPlat(false);
+    playSound('success');
+  };
+
+  const handleSaveEditPlatform = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingPlat) return;
+    updatePlatform(editingPlat.id, {
+      name: editingPlat.name,
+      logo: editingPlat.logo,
+      zone: editingPlat.zone,
+      url: editingPlat.url,
+      sector: editingPlat.sector,
+      status: editingPlat.status
+    });
+    setEditingPlat(null);
     playSound('success');
   };
 
@@ -97,14 +120,14 @@ export const AdminCockpit: React.FC = () => {
         </p>
       </div>
 
-      {/* Key Stats metrics display (Revenues, Platforms, Leads) */}
+      {/* Key Stats metrics display (Revenues, Platforms, Leads, Invoices) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto relative z-10 text-left">
         <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-2">
           <div className="text-xs font-mono text-gray-500 uppercase">{t.statActivePlats}</div>
           <div className="text-3xl font-black font-orbitron text-white">
-            {platforms.filter(p => p.status === 'active').length}
+            {platforms.filter(p => p.status === 'active' && !p.hidden).length}
           </div>
-          <span className="text-[10px] text-green-400 font-mono">100% opérationnels</span>
+          <span className="text-[10px] text-green-400 font-mono">100% opérationnels en orbite</span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-2">
@@ -112,7 +135,7 @@ export const AdminCockpit: React.FC = () => {
           <div className="text-3xl font-black font-orbitron text-cyan-400">
             {platforms.filter(p => p.status === 'development' || p.status === 'soon').length}
           </div>
-          <span className="text-[10px] text-gray-400 font-mono">Modélisation moléculaire</span>
+          <span className="text-[10px] text-gray-400 font-mono">En R&amp;D et incubation</span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-2">
@@ -120,7 +143,7 @@ export const AdminCockpit: React.FC = () => {
           <div className="text-3xl font-black font-orbitron text-pink-400">
             {contacts.length}
           </div>
-          <span className="text-[10px] text-pink-300 font-mono">Nécessite examen</span>
+          <span className="text-[10px] text-pink-300 font-mono">{contacts.filter(c => c.status === 'New').length} dossiers non traités</span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-purple-500/20 bg-purple-950/5 space-y-2">
@@ -129,6 +152,95 @@ export const AdminCockpit: React.FC = () => {
             1 420 000 €
           </div>
           <span className="text-[10px] text-purple-300 font-mono">+12.4% ce trimestre</span>
+        </div>
+      </div>
+
+      {/* Visual Analytics: Geographic & Sector Revenues */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto relative z-10 text-left">
+        {/* Sector Revenues Breakdown */}
+        <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
+          <h3 className="font-orbitron font-bold text-sm text-cyan-400 uppercase flex items-center space-x-2">
+            <PieChart className="w-4.5 h-4.5" />
+            <span>{t.crmAnalyticsSector}</span>
+          </h3>
+
+          <div className="space-y-3 font-mono text-xs">
+            <div>
+              <div className="flex justify-between text-gray-300 mb-1">
+                <span>Immobilier (Corse &amp; Madagascar)</span>
+                <span className="text-purple-400 font-bold">42% (596k€)</span>
+              </div>
+              <div className="w-full h-2 bg-black/60 rounded-full overflow-hidden">
+                <div className="h-full bg-purple-500 rounded-full" style={{ width: '42%' }}></div>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between text-gray-300 mb-1">
+                <span>Tourisme &amp; Conciergerie (Maroc &amp; Nosy Be)</span>
+                <span className="text-pink-400 font-bold">28% (398k€)</span>
+              </div>
+              <div className="w-full h-2 bg-black/60 rounded-full overflow-hidden">
+                <div className="h-full bg-pink-500 rounded-full" style={{ width: '28%' }}></div>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between text-gray-300 mb-1">
+                <span>Événementiel &amp; Sonorisation (Europe)</span>
+                <span className="text-blue-400 font-bold">16% (227k€)</span>
+              </div>
+              <div className="w-full h-2 bg-black/60 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-500 rounded-full" style={{ width: '16%' }}></div>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between text-gray-300 mb-1">
+                <span>Collaboratif &amp; Mobilité Verte</span>
+                <span className="text-cyan-400 font-bold">14% (199k€)</span>
+              </div>
+              <div className="w-full h-2 bg-black/60 rounded-full overflow-hidden">
+                <div className="h-full bg-cyan-400 rounded-full" style={{ width: '14%' }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Geographic Distribution & Alerts */}
+        <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
+          <h3 className="font-orbitron font-bold text-sm text-purple-400 uppercase flex items-center space-x-2">
+            <Globe className="w-4.5 h-4.5" />
+            <span>Répartition Géographique &amp; Alertes de Vol</span>
+          </h3>
+
+          <div className="grid grid-cols-2 gap-3 text-xs font-mono mb-4">
+            <div className="p-3 bg-black/40 rounded-xl border border-white/5">
+              <span className="text-gray-500 block text-[10px]">FRANCE &amp; CORSE</span>
+              <span className="text-white font-bold text-sm">6 Plateformes</span>
+              <span className="text-green-400 text-[10px] block">Opérationnel</span>
+            </div>
+            <div className="p-3 bg-black/40 rounded-xl border border-white/5">
+              <span className="text-gray-500 block text-[10px]">MAROC</span>
+              <span className="text-white font-bold text-sm">2 Plateformes</span>
+              <span className="text-green-400 text-[10px] block">Forte croissance</span>
+            </div>
+            <div className="p-3 bg-black/40 rounded-xl border border-white/5">
+              <span className="text-gray-500 block text-[10px]">MADAGASCAR</span>
+              <span className="text-white font-bold text-sm">2 Plateformes</span>
+              <span className="text-cyan-400 text-[10px] block">Expansion</span>
+            </div>
+            <div className="p-3 bg-black/40 rounded-xl border border-white/5">
+              <span className="text-gray-500 block text-[10px]">EUROPE / GLOBAL</span>
+              <span className="text-white font-bold text-sm">2 Plateformes</span>
+              <span className="text-amber-400 text-[10px] block">Tests bêta</span>
+            </div>
+          </div>
+
+          <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-start space-x-2.5 text-xs text-amber-300">
+            <ShieldAlert className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-400" />
+            <span>Alerte Système : Clôture fiscale du 1er trimestre et renouvellement des certificats SSL d'amarrage MonPonton.</span>
+          </div>
         </div>
       </div>
 
@@ -313,19 +425,42 @@ export const AdminCockpit: React.FC = () => {
               </form>
             )}
 
-            {/* List registry grid table */}
+            {/* List registry grid table with Reorder, Hide/Show and Edit */}
             <div className="space-y-2">
-              {platforms.map((p) => (
-                <div key={p.id} className="p-3 rounded-xl bg-black/40 border border-white/5 flex items-center justify-between text-xs">
+              {platforms.map((p, idx) => (
+                <div key={p.id} className={`p-3 rounded-xl bg-black/40 border border-white/5 flex flex-wrap items-center justify-between text-xs gap-2 ${p.hidden ? 'opacity-40' : ''}`}>
                   <div className="flex items-center space-x-3">
+                    {/* Order adjustment buttons */}
+                    <div className="flex flex-col space-y-0.5">
+                      <button
+                        disabled={idx === 0}
+                        onClick={() => movePlatformOrder(p.id, 'up')}
+                        className="text-gray-500 hover:text-white disabled:opacity-20 cursor-none p-0.5"
+                        title="Monter"
+                      >
+                        <ArrowUp className="w-3 h-3" />
+                      </button>
+                      <button
+                        disabled={idx === platforms.length - 1}
+                        onClick={() => movePlatformOrder(p.id, 'down')}
+                        className="text-gray-500 hover:text-white disabled:opacity-20 cursor-none p-0.5"
+                        title="Descendre"
+                      >
+                        <ArrowDown className="w-3 h-3" />
+                      </button>
+                    </div>
+
                     <span className="text-xl">{p.logo}</span>
                     <div>
-                      <span className="block font-bold text-white">{p.name}</span>
-                      <span className="block text-[10px] text-gray-500 font-mono">ID: {p.id}</span>
+                      <span className="block font-bold text-white flex items-center space-x-1.5">
+                        <span>{p.name}</span>
+                        {p.hidden && <span className="text-[9px] font-mono text-red-400">[MASQUÉE]</span>}
+                      </span>
+                      <span className="block text-[10px] text-gray-500 font-mono">{p.zone} • {p.sector.toUpperCase()}</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2">
                     <span className={`text-[10px] font-mono px-2 py-0.5 border rounded-full uppercase ${
                       p.status === 'active' ? 'text-green-400 border-green-500/20 bg-green-500/5' :
                       p.status === 'development' ? 'text-amber-400 border-amber-500/20 bg-amber-500/5' :
@@ -334,7 +469,25 @@ export const AdminCockpit: React.FC = () => {
                       {p.status}
                     </span>
 
-                    {/* Quick status switch simulator */}
+                    {/* Hide / Show Toggle */}
+                    <button
+                      onClick={() => togglePlatformVisibility(p.id)}
+                      className={`p-1.5 rounded text-xs cursor-none ${p.hidden ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30' : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'}`}
+                      title={p.hidden ? "Afficher sur le site" : "Masquer du site"}
+                    >
+                      {p.hidden ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                    </button>
+
+                    {/* Edit Platform Modal Trigger */}
+                    <button
+                      onClick={() => { setEditingPlat(p); playSound('click'); }}
+                      className="p-1.5 rounded bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white cursor-none"
+                      title="Modifier les informations"
+                    >
+                      <Edit3 className="w-3.5 h-3.5" />
+                    </button>
+
+                    {/* Quick status switch */}
                     <button
                       onClick={() => {
                         const nextStatus = p.status === 'active' ? 'development' : p.status === 'development' ? 'soon' : 'active';
@@ -342,7 +495,7 @@ export const AdminCockpit: React.FC = () => {
                         playSound('click');
                       }}
                       className="p-1.5 rounded bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white cursor-none"
-                      title="Changer le statut"
+                      title="Basculer le statut"
                     >
                       <Radio className="w-3.5 h-3.5" />
                     </button>
@@ -486,6 +639,116 @@ export const AdminCockpit: React.FC = () => {
         </div>
 
       </div>
+
+      {/* Edit Platform Modal */}
+      {editingPlat && (
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
+          <div className="glass-panel max-w-md w-full rounded-3xl border border-cyan-500/40 p-6 space-y-4 relative text-left">
+            <button
+              onClick={() => setEditingPlat(null)}
+              className="absolute top-6 right-6 p-1 text-gray-400 hover:text-white cursor-none"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <h3 className="font-orbitron font-bold text-white text-base uppercase">
+              Modifier {editingPlat.name}
+            </h3>
+
+            <form onSubmit={handleSaveEditPlatform} className="space-y-3">
+              <div className="space-y-1">
+                <label className="block text-[10px] font-mono uppercase text-gray-400">Nom</label>
+                <input
+                  type="text"
+                  required
+                  value={editingPlat.name}
+                  onChange={(e) => setEditingPlat({ ...editingPlat, name: e.target.value })}
+                  className="w-full bg-black border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="block text-[10px] font-mono uppercase text-gray-400">Logo Icon</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingPlat.logo}
+                    onChange={(e) => setEditingPlat({ ...editingPlat, logo: e.target.value })}
+                    className="w-full bg-black border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="block text-[10px] font-mono uppercase text-gray-400">Zone</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingPlat.zone}
+                    onChange={(e) => setEditingPlat({ ...editingPlat, zone: e.target.value })}
+                    className="w-full bg-black border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="block text-[10px] font-mono uppercase text-gray-400">Secteur</label>
+                  <select
+                    value={editingPlat.sector}
+                    onChange={(e) => setEditingPlat({ ...editingPlat, sector: e.target.value as any })}
+                    className="w-full bg-black border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white"
+                  >
+                    <option value="immo">IMMOBILIER</option>
+                    <option value="tourism">TOURISME</option>
+                    <option value="events">ÉVÉNEMENTIEL</option>
+                    <option value="economy">COLLABORATIF</option>
+                    <option value="services">SERVICES PRO</option>
+                    <option value="tech">TECH / INNOVATION</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="block text-[10px] font-mono uppercase text-gray-400">Statut</label>
+                  <select
+                    value={editingPlat.status}
+                    onChange={(e) => setEditingPlat({ ...editingPlat, status: e.target.value as any })}
+                    className="w-full bg-black border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white"
+                  >
+                    <option value="active">ACTIF</option>
+                    <option value="development">EN DEV</option>
+                    <option value="soon">SOON</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-[10px] font-mono uppercase text-gray-400">URL</label>
+                <input
+                  type="url"
+                  value={editingPlat.url}
+                  onChange={(e) => setEditingPlat({ ...editingPlat, url: e.target.value })}
+                  className="w-full bg-black border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white"
+                />
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingPlat(null)}
+                  className="px-3 py-1.5 text-xs text-gray-400 bg-white/5 rounded-lg"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-1.5 text-xs bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg"
+                >
+                  Sauvegarder
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

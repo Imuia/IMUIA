@@ -1,19 +1,31 @@
 import React from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { ArrowRight, Compass, Shield, Rocket, Activity } from 'lucide-react';
+import { ArrowRight, Compass, Shield, Rocket, Activity, Mail } from 'lucide-react';
+import { Contact } from '../components/Contact';
 
 export const Home: React.FC = () => {
   const { language, playSound, setActiveSection } = useAppState();
   const t = translations[language];
 
   const handleCTA = (section: string) => {
+    if (section === 'contact') {
+      const contactEl = document.getElementById('contact-section');
+      if (contactEl) {
+        contactEl.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        setActiveSection('partners');
+      }
+      playSound('space');
+      return;
+    }
     setActiveSection(section);
     playSound('space');
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-80px)] flex flex-col items-center justify-center py-12 px-4 overflow-hidden">
+    <div className="space-y-16">
+      <div className="relative min-h-[calc(100vh-140px)] flex flex-col items-center justify-center py-12 px-4 overflow-hidden">
       {/* Background atmosphere elements */}
       <div className="absolute inset-0 stars-bg opacity-40 pointer-events-none"></div>
 
@@ -93,6 +105,15 @@ export const Home: React.FC = () => {
             <Rocket className="w-4 h-4" />
             <span>{t.proposePartnership}</span>
           </button>
+
+          <button
+            onClick={() => handleCTA('contact')}
+            onMouseEnter={() => playSound('hover')}
+            className="flex items-center space-x-2.5 px-7 py-4 bg-cyan-600/20 hover:bg-cyan-600 text-cyan-300 hover:text-white font-orbitron font-bold text-sm tracking-widest rounded-full border border-cyan-500/40 hover:border-cyan-400 transition-all duration-300 cursor-none hover:translate-y-[-2px] shadow-[0_0_15px_rgba(34,211,238,0.2)]"
+          >
+            <Mail className="w-4 h-4" />
+            <span>{t.contactUs}</span>
+          </button>
         </div>
 
         {/* Digital Hud Footer Stat indicators */}
@@ -116,5 +137,9 @@ export const Home: React.FC = () => {
         </div>
       </div>
     </div>
+
+    {/* Dedicated Final Earth / IMUIA Contact Section */}
+    <Contact />
+  </div>
   );
 };

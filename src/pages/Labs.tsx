@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { Cpu, Lock, Unlock, AlertTriangle, Sparkles } from 'lucide-react';
+import {
+  Cpu, Lock, Unlock, AlertTriangle, Sparkles,
+  Bot, RefreshCw, MapPin, Calendar, CreditCard,
+  Users, Eye, Share2, Briefcase, Network, TrendingUp, HeartHandshake
+} from 'lucide-react';
 
 export const Labs: React.FC = () => {
   const { language, playSound } = useAppState();
@@ -23,13 +27,20 @@ export const Labs: React.FC = () => {
     }
   };
 
+  // Complete 12 Research Areas from the user specification
   const researchAreas = [
-    { id: 'ai', title: 'Intelligence Artificielle', desc: 'Dispatching algorithmique, qualification automatique de leads et chatbots conversationnels immobiliers.' },
-    { id: 'autom', title: 'Automatisation', desc: 'Génération automatisée d\'accords de partenariat et relance de réservations dormantes.' },
-    { id: 'geo', title: 'Géolocalisation', desc: 'Réseau cartographique vectoriel en temps réel pour l\'amarrage nautique et le repérage de vélos.' },
-    { id: 'booking', title: 'Réservation en Temps Réel', desc: 'Moteurs de synchronisation instantanée de calendriers multidomaines hautement sécurisés.' },
-    { id: 'crm', title: 'Systèmes CRM Propriétaires', desc: 'Gestion d\'opportunités commerciales et centralisation de documents avec signature électronique.' },
-    { id: 'impact', title: 'Projets à Impact Social', desc: 'Réseau d\'acheminement de fournitures solidaires et de dons au profit de refuges animaliers.' }
+    { id: 'ai', title: t.domainAI, desc: t.domainAIDesc, icon: Bot, color: 'text-purple-400' },
+    { id: 'autom', title: t.domainAutom, desc: t.domainAutomDesc, icon: RefreshCw, color: 'text-cyan-400' },
+    { id: 'geo', title: t.domainGeo, desc: t.domainGeoDesc, icon: MapPin, color: 'text-blue-400' },
+    { id: 'booking', title: t.domainBooking, desc: t.domainBookingDesc, icon: Calendar, color: 'text-pink-400' },
+    { id: 'payment', title: t.domainPayment, desc: t.domainPaymentDesc, icon: CreditCard, color: 'text-amber-400' },
+    { id: 'crm', title: t.domainCRM, desc: t.domainCRMDesc, icon: Users, color: 'text-emerald-400' },
+    { id: 'immersive', title: t.domainImmersive, desc: t.domainImmersiveDesc, icon: Eye, color: 'text-indigo-400' },
+    { id: 'affiliation', title: t.domainAffiliation, desc: t.domainAffiliationDesc, icon: Share2, color: 'text-teal-400' },
+    { id: 'pro_tools', title: t.domainProTools, desc: t.domainProToolsDesc, icon: Briefcase, color: 'text-rose-400' },
+    { id: 'collab', title: t.domainCollab, desc: t.domainCollabDesc, icon: Network, color: 'text-cyan-300' },
+    { id: 'models', title: t.domainNewModels, desc: t.domainNewModelsDesc, icon: TrendingUp, color: 'text-purple-300' },
+    { id: 'impact', title: t.domainImpact, desc: t.domainImpactDesc, icon: HeartHandshake, color: 'text-green-400' }
   ];
 
   const incubatedProjects = [
@@ -70,27 +81,42 @@ export const Labs: React.FC = () => {
         </p>
       </div>
 
-      {/* Research Areas Matrix Grid */}
+      {/* Research Areas Matrix Grid: All 12 Fields */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10 text-left">
-        {researchAreas.map((area, idx) => (
-          <div
-            key={area.id}
-            onMouseEnter={() => playSound('hover')}
-            className="glass-panel p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300"
-          >
-            <div className="flex items-center space-x-2.5 mb-3">
-              <span className="text-xs font-mono text-cyan-400 font-bold bg-cyan-400/10 px-2 py-0.5 rounded">
-                0{idx + 1}
-              </span>
-              <h3 className="font-orbitron font-bold text-white text-base">
-                {area.title}
-              </h3>
+        {researchAreas.map((area, idx) => {
+          const Icon = area.icon;
+          return (
+            <div
+              key={area.id}
+              onMouseEnter={() => playSound('hover')}
+              className="glass-panel p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300 flex flex-col justify-between space-y-3 group"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className={`p-2.5 rounded-xl bg-white/5 border border-white/10 group-hover:scale-110 transition-transform ${area.color}`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-mono text-gray-500 font-bold bg-white/5 px-2 py-0.5 rounded border border-white/5">
+                    #{idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
+                  </span>
+                </div>
+
+                <h3 className="font-orbitron font-bold text-white text-base group-hover:text-cyan-300 transition-colors">
+                  {area.title}
+                </h3>
+
+                <p className="text-xs text-gray-400 leading-relaxed font-light">
+                  {area.desc}
+                </p>
+              </div>
+
+              <div className="pt-2 border-t border-white/5 text-[10px] font-mono text-gray-500 flex items-center justify-between">
+                <span>R&amp;D STATUS</span>
+                <span className="text-cyan-400 font-bold">EXPÉRIMENTAL</span>
+              </div>
             </div>
-            <p className="text-xs text-gray-400 leading-relaxed">
-              {area.desc}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Incubation locked/unlocked center */}
