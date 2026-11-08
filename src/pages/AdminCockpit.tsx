@@ -2,7 +2,19 @@ import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
 import type { Contact } from '../data/AppState';
 import { translations } from '../data/translations';
-import { LayoutDashboard, Plus, Mail, CheckSquare, Trash2, Users, Send, Radio } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Plus,
+  Mail,
+  CheckSquare,
+  Trash2,
+  Users,
+  Send,
+  Radio,
+  BarChart3,
+  Globe,
+  BellRing
+} from 'lucide-react';
 
 export const AdminCockpit: React.FC = () => {
   const {
@@ -37,8 +49,10 @@ export const AdminCockpit: React.FC = () => {
   const [mailSuccess, setMailSuccess] = useState(false);
 
   const [taskText, setTaskText] = useState('');
-
   const [isAddingPlat, setIsAddingPlat] = useState(false);
+
+  // CRM Segmentation filter
+  const [contactFilter, setContactFilter] = useState<'all' | 'Investor' | 'Operator' | 'Developer' | 'Other'>('all');
 
   const handleAddPlatform = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +64,7 @@ export const AdminCockpit: React.FC = () => {
       zone: newPlatZone,
       status: newPlatStatus,
       url: newPlatUrl || 'https://imuia.com',
-      shortDescKey: 'platRSSDesc', // references fallback
+      shortDescKey: 'platRSSDesc',
       fullDescKey: 'platRSSFull'
     });
     setNewPlatName('');
@@ -79,6 +93,19 @@ export const AdminCockpit: React.FC = () => {
     playSound('success');
   };
 
+  const filteredContacts = contactFilter === 'all'
+    ? contacts
+    : contacts.filter(c => c.partnerType === contactFilter);
+
+  // Revenue Breakdown by Activity
+  const revenueBreakdown = [
+    { label: 'Immobilier (Corse & Mada)', pct: '42%', value: '596 400 €', color: 'bg-purple-500' },
+    { label: 'Tourisme & Mariages de Luxe', pct: '28%', value: '397 600 €', color: 'bg-pink-500' },
+    { label: 'Événementiel & Audiovisuel', pct: '15%', value: '213 000 €', color: 'bg-blue-500' },
+    { label: 'Mobilité & Partage Nautique', pct: '10%', value: '142 000 €', color: 'bg-cyan-500' },
+    { label: 'Tech & Architecture LED', pct: '5%', value: '71 000 €', color: 'bg-amber-500' }
+  ];
+
   return (
     <div className="relative min-h-[calc(100vh-80px)] py-12 px-4 space-y-12">
       <div className="absolute inset-0 stars-bg opacity-25 pointer-events-none"></div>
@@ -93,18 +120,18 @@ export const AdminCockpit: React.FC = () => {
           IMUIA Administration Cockpit
         </h1>
         <p className="text-sm text-gray-400 font-mono leading-relaxed">
-          Centralisez la visibilité de l'univers, examinez les candidatures d'investissement et pilotez le dispatching e-mail des lancements.
+          {t.adminSubtitle} : centralisez la gouvernance des 12 plateformes, traitez les candidatures de partenariat et gérez les flux commerciaux.
         </p>
       </div>
 
-      {/* Key Stats metrics display (Revenues, Platforms, Leads) */}
+      {/* Key Stats metrics display */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto relative z-10 text-left">
         <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-2">
           <div className="text-xs font-mono text-gray-500 uppercase">{t.statActivePlats}</div>
           <div className="text-3xl font-black font-orbitron text-white">
             {platforms.filter(p => p.status === 'active').length}
           </div>
-          <span className="text-[10px] text-green-400 font-mono">100% opérationnels</span>
+          <span className="text-[10px] text-green-400 font-mono">100% opérationnels en orbite</span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-2">
@@ -112,7 +139,7 @@ export const AdminCockpit: React.FC = () => {
           <div className="text-3xl font-black font-orbitron text-cyan-400">
             {platforms.filter(p => p.status === 'development' || p.status === 'soon').length}
           </div>
-          <span className="text-[10px] text-gray-400 font-mono">Modélisation moléculaire</span>
+          <span className="text-[10px] text-cyan-300 font-mono">Incubation IMUIA Labs</span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-2">
@@ -120,7 +147,7 @@ export const AdminCockpit: React.FC = () => {
           <div className="text-3xl font-black font-orbitron text-pink-400">
             {contacts.length}
           </div>
-          <span className="text-[10px] text-pink-300 font-mono">Nécessite examen</span>
+          <span className="text-[10px] text-pink-300 font-mono">Leads en cours d'examen</span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-purple-500/20 bg-purple-950/5 space-y-2">
@@ -128,7 +155,31 @@ export const AdminCockpit: React.FC = () => {
           <div className="text-3xl font-black font-orbitron text-purple-400">
             1 420 000 €
           </div>
-          <span className="text-[10px] text-purple-300 font-mono">+12.4% ce trimestre</span>
+          <span className="text-[10px] text-purple-300 font-mono">+12.4% ce trimestre fiscal</span>
+        </div>
+      </div>
+
+      {/* Revenue by Activity Breakdown Section */}
+      <div className="max-w-6xl mx-auto glass-panel p-6 rounded-3xl border border-white/5 relative z-10 text-left space-y-4">
+        <div className="flex items-center justify-between border-b border-white/5 pb-3">
+          <h3 className="font-orbitron font-bold text-sm text-cyan-400 uppercase flex items-center space-x-2">
+            <BarChart3 className="w-4.5 h-4.5" />
+            <span>{t.crmAnalyticsSector}</span>
+          </h3>
+          <span className="text-[10px] font-mono text-gray-400">Période : Année en cours</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {revenueBreakdown.map((rev, i) => (
+            <div key={i} className="p-3 rounded-xl bg-black/40 border border-white/5 space-y-1">
+              <span className="block text-[10px] text-gray-400 font-mono truncate">{rev.label}</span>
+              <span className="block text-lg font-orbitron font-bold text-white">{rev.value}</span>
+              <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                <div className={`h-full ${rev.color}`} style={{ width: rev.pct }}></div>
+              </div>
+              <span className="block text-[9px] text-gray-500 text-right">{rev.pct} du total</span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -140,16 +191,30 @@ export const AdminCockpit: React.FC = () => {
 
           {/* Incoming Partner Proposals leads table */}
           <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
-            <div className="flex items-center justify-between border-b border-white/5 pb-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/5 pb-3">
               <h3 className="font-orbitron font-bold text-sm text-pink-400 uppercase flex items-center space-x-2">
                 <Users className="w-4.5 h-4.5" />
                 <span>{t.crmContactsList}</span>
               </h3>
-              <span className="text-[10px] font-mono text-gray-500">{contacts.length} Leads</span>
+
+              {/* Segmentation Filter Tabs */}
+              <div className="flex items-center space-x-1">
+                {(['all', 'Investor', 'Operator', 'Developer', 'Other'] as const).map(f => (
+                  <button
+                    key={f}
+                    onClick={() => setContactFilter(f)}
+                    className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors cursor-none ${
+                      contactFilter === f ? 'bg-pink-600 text-white' : 'bg-white/5 text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-4 max-h-[450px] overflow-y-auto pr-1">
-              {contacts.map((c) => (
+              {filteredContacts.map((c) => (
                 <div key={c.id} className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-3">
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div>
@@ -157,7 +222,10 @@ export const AdminCockpit: React.FC = () => {
                         {c.firstName} {c.lastName}
                       </span>
                       <span className="text-[10px] text-cyan-400 font-mono block">
-                        {c.company} ({c.function})
+                        {c.company} ({c.function}) • {c.partnerType}
+                      </span>
+                      <span className="text-[10px] text-purple-300 font-mono block">
+                        Projet : {c.project}
                       </span>
                     </div>
 
@@ -187,13 +255,14 @@ export const AdminCockpit: React.FC = () => {
                     <span>E-mail: <strong className="text-gray-300">{c.email}</strong></span>
                     {c.phone && <span>Tel: <strong className="text-gray-300">{c.phone}</strong></span>}
                     <span>Pays: <strong className="text-gray-300">{c.country || 'Global'}</strong></span>
+                    {c.budget && <span>Budget: <strong className="text-green-400">{c.budget} €</strong></span>}
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Platforms lists & Hide/Show controls */}
+          {/* Platforms lists & Admin controls */}
           <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
             <div className="flex items-center justify-between border-b border-white/5 pb-3">
               <h3 className="font-orbitron font-bold text-sm text-cyan-400 uppercase flex items-center space-x-2">
@@ -210,7 +279,7 @@ export const AdminCockpit: React.FC = () => {
               </button>
             </div>
 
-            {/* Platform Incubator Form Panel */}
+            {/* Platform Add Form Panel */}
             {isAddingPlat && (
               <form onSubmit={handleAddPlatform} className="p-4 rounded-xl bg-black/60 border border-cyan-500/30 space-y-4">
                 <h4 className="text-xs font-mono text-cyan-400 uppercase">Configuration du nouveau monde</h4>
@@ -321,7 +390,9 @@ export const AdminCockpit: React.FC = () => {
                     <span className="text-xl">{p.logo}</span>
                     <div>
                       <span className="block font-bold text-white">{p.name}</span>
-                      <span className="block text-[10px] text-gray-500 font-mono">ID: {p.id}</span>
+                      <span className="block text-[10px] text-gray-500 font-mono">
+                        {p.zone} • {p.sector.toUpperCase()}
+                      </span>
                     </div>
                   </div>
 
@@ -380,7 +451,7 @@ export const AdminCockpit: React.FC = () => {
             {mailSuccess && (
               <div className="p-3 bg-green-500/10 border border-green-500/30 text-green-400 rounded-xl text-xs flex items-center space-x-2">
                 <CheckSquare className="w-4 h-4 text-green-400" />
-                <span>E-mail propagé avec succès !</span>
+                <span>Campagne e-mail diffusée avec succès !</span>
               </div>
             )}
 
@@ -392,7 +463,7 @@ export const AdminCockpit: React.FC = () => {
                   required
                   value={mailSubject}
                   onChange={(e) => setMailSubject(e.target.value)}
-                  placeholder="Ex: Grand ralliement des investisseurs IMUIA"
+                  placeholder="Ex: Lancement officiel d'un nouveau monde IMUIA"
                   className="w-full bg-black border border-white/10 focus:border-purple-500 rounded-lg px-3 py-2 text-xs text-white"
                 />
               </div>
@@ -414,7 +485,7 @@ export const AdminCockpit: React.FC = () => {
                 className="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold font-orbitron text-xs tracking-widest uppercase rounded-lg transition-colors cursor-none flex items-center justify-center space-x-2"
               >
                 <Send className="w-3.5 h-3.5" />
-                <span>Diffuser</span>
+                <span>Diffuser dans la galaxie</span>
               </button>
             </form>
 
@@ -425,7 +496,7 @@ export const AdminCockpit: React.FC = () => {
                 {emailCampaigns.map((log) => (
                   <div key={log.id} className="p-2 rounded bg-black/40 text-[9px] font-mono border border-white/5 flex items-center justify-between text-gray-400">
                     <span className="truncate max-w-[150px]">{log.subject}</span>
-                    <span className="text-green-400">SENT</span>
+                    <span className="text-green-400">DIFFUSÉ</span>
                   </div>
                 ))}
               </div>
@@ -434,10 +505,13 @@ export const AdminCockpit: React.FC = () => {
 
           {/* Checklist team Tasks system */}
           <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
-            <h3 className="font-orbitron font-bold text-sm text-gray-300 flex items-center space-x-2">
-              <CheckSquare className="w-4.5 h-4.5" />
-              <span>{t.crmTaskTitle}</span>
-            </h3>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-orbitron font-bold text-sm text-gray-300 flex items-center space-x-2">
+                <CheckSquare className="w-4.5 h-4.5 text-cyan-400" />
+                <span>{t.crmTaskTitle}</span>
+              </h3>
+              <BellRing className="w-4 h-4 text-purple-400 animate-pulse" />
+            </div>
 
             <form onSubmit={handleAddTask} className="flex gap-2">
               <input
@@ -481,6 +555,20 @@ export const AdminCockpit: React.FC = () => {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Quick Hub Node Telemetry */}
+          <div className="glass-panel p-5 rounded-3xl border border-white/5 space-y-2 text-xs font-mono text-gray-400">
+            <div className="flex items-center justify-between text-white font-orbitron font-bold">
+              <span className="flex items-center space-x-1.5">
+                <Globe className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Nœuds d'Infrastructure</span>
+              </span>
+              <span className="text-green-400">100% ONLINE</span>
+            </div>
+            <p className="text-[10px] text-gray-500 leading-normal">
+              Serveurs distribués à Paris, Agadir, Antananarivo et Nice avec basculement automatique et réplication chiffrée.
+            </p>
           </div>
 
         </div>

@@ -1,7 +1,25 @@
 import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { Cpu, Lock, Unlock, AlertTriangle, Sparkles } from 'lucide-react';
+import {
+  Cpu,
+  Lock,
+  Unlock,
+  AlertTriangle,
+  Sparkles,
+  Bot,
+  Zap,
+  MapPin,
+  Clock,
+  CreditCard,
+  Users,
+  Eye,
+  TrendingUp,
+  Briefcase,
+  Share2,
+  Coins,
+  Leaf
+} from 'lucide-react';
 
 export const Labs: React.FC = () => {
   const { language, playSound } = useAppState();
@@ -23,33 +41,40 @@ export const Labs: React.FC = () => {
     }
   };
 
+  // The 12 Domains mandated by the prompt
   const researchAreas = [
-    { id: 'ai', title: 'Intelligence Artificielle', desc: 'Dispatching algorithmique, qualification automatique de leads et chatbots conversationnels immobiliers.' },
-    { id: 'autom', title: 'Automatisation', desc: 'Génération automatisée d\'accords de partenariat et relance de réservations dormantes.' },
-    { id: 'geo', title: 'Géolocalisation', desc: 'Réseau cartographique vectoriel en temps réel pour l\'amarrage nautique et le repérage de vélos.' },
-    { id: 'booking', title: 'Réservation en Temps Réel', desc: 'Moteurs de synchronisation instantanée de calendriers multidomaines hautement sécurisés.' },
-    { id: 'crm', title: 'Systèmes CRM Propriétaires', desc: 'Gestion d\'opportunités commerciales et centralisation de documents avec signature électronique.' },
-    { id: 'impact', title: 'Projets à Impact Social', desc: 'Réseau d\'acheminement de fournitures solidaires et de dons au profit de refuges animaliers.' }
+    { id: 'ai', title: t.domain1Title, desc: t.domain1Desc, icon: Bot, color: 'text-purple-400' },
+    { id: 'autom', title: t.domain2Title, desc: t.domain2Desc, icon: Zap, color: 'text-cyan-400' },
+    { id: 'geo', title: t.domain3Title, desc: t.domain3Desc, icon: MapPin, color: 'text-pink-400' },
+    { id: 'booking', title: t.domain4Title, desc: t.domain4Desc, icon: Clock, color: 'text-green-400' },
+    { id: 'payment', title: t.domain5Title, desc: t.domain5Desc, icon: CreditCard, color: 'text-blue-400' },
+    { id: 'crm', title: t.domain6Title, desc: t.domain6Desc, icon: Users, color: 'text-amber-400' },
+    { id: 'immersive', title: t.domain7Title, desc: t.domain7Desc, icon: Eye, color: 'text-indigo-400' },
+    { id: 'affiliation', title: t.domain8Title, desc: t.domain8Desc, icon: TrendingUp, color: 'text-rose-400' },
+    { id: 'pro', title: t.domain9Title, desc: t.domain9Desc, icon: Briefcase, color: 'text-teal-400' },
+    { id: 'collab', title: t.domain10Title, desc: t.domain10Desc, icon: Share2, color: 'text-violet-400' },
+    { id: 'models', title: t.domain11Title, desc: t.domain11Desc, icon: Coins, color: 'text-yellow-400' },
+    { id: 'impact', title: t.domain12Title, desc: t.domain12Desc, icon: Leaf, color: 'text-emerald-400' }
   ];
 
   const incubatedProjects = [
     {
       codename: 'PROJECT NEBULA',
-      aim: 'AI-driven Real Estate Dispatcher',
-      tech: 'Neural Nets & Geo Clustering',
+      aim: 'AI-driven Real Estate & Lead Dispatcher',
+      tech: 'Neural Nets, NLP & Geo-Clustering',
       desc: 'Distribution instantanée de prospects immobiliers qualifiés aux agents locaux selon la performance historique et la réactivité en millisecondes.'
     },
     {
       codename: 'PROJECT POSEIDON',
-      aim: 'Smart Yacht-Berth Sharing',
-      tech: 'IoT Sensors & Solidity Blocks',
-      desc: 'Capteurs d\'amarrage connectés d\'un yacht pour relouer automatiquement l\'emplacement à un bateau en détresse.'
+      aim: 'Smart Yacht-Berth Dynamic Sharing',
+      tech: 'IoT Sensors & Automated Smart Pontoons',
+      desc: 'Capteurs d\'amarrage connectés permettant aux marinas et particuliers de relouer automatiquement leur anneau d\'amarrage en temps réel.'
     },
     {
       codename: 'PROJECT ANUBIS',
-      aim: 'Solidarity Companion Courier',
-      tech: 'Routing Node Optima',
-      desc: 'Optimisation de trajets touristiques pour minimiser l\'empreinte carbone lors du covoiturage solidaire d\'animaux sauvés de refuges.'
+      aim: 'Solidarity Companion Courier & Rescue Node',
+      tech: 'Routing Node Optima & Carbon Compensation',
+      desc: 'Optimisation des trajets touristiques pour minimiser l\'empreinte carbone lors du transport solidaire de fournitures au profit des refuges animaliers.'
     }
   ];
 
@@ -66,34 +91,59 @@ export const Labs: React.FC = () => {
           {t.labsTitle}
         </h1>
         <p className="text-sm md:text-base text-gray-400 leading-relaxed font-light">
-          {t.labsDesc} Nous explorons en continu les dernières frontières de la technologie pour maximiser les performances de nos plateformes éditées.
+          {t.labsDesc}
         </p>
       </div>
 
-      {/* Research Areas Matrix Grid */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10 text-left">
-        {researchAreas.map((area, idx) => (
-          <div
-            key={area.id}
-            onMouseEnter={() => playSound('hover')}
-            className="glass-panel p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300"
-          >
-            <div className="flex items-center space-x-2.5 mb-3">
-              <span className="text-xs font-mono text-cyan-400 font-bold bg-cyan-400/10 px-2 py-0.5 rounded">
-                0{idx + 1}
-              </span>
-              <h3 className="font-orbitron font-bold text-white text-base">
-                {area.title}
-              </h3>
-            </div>
-            <p className="text-xs text-gray-400 leading-relaxed">
-              {area.desc}
-            </p>
-          </div>
-        ))}
+      {/* Research Areas Matrix Grid: 12 Domains */}
+      <div className="max-w-6xl mx-auto space-y-4 relative z-10 text-left">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3">
+          <h3 className="font-orbitron font-bold text-sm text-white uppercase tracking-wider flex items-center space-x-2">
+            <Sparkles className="w-4 h-4 text-cyan-400" />
+            <span>{t.areasTitle}</span>
+          </h3>
+          <span className="text-[10px] font-mono text-cyan-400 font-bold">12 DOMAINES EN EXPLORATION</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {researchAreas.map((area, idx) => {
+            const Icon = area.icon;
+            return (
+              <div
+                key={area.id}
+                onMouseEnter={() => playSound('hover')}
+                className="glass-panel p-6 rounded-2xl border border-white/5 hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all duration-300 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-2.5">
+                      <div className={`p-2 rounded-xl bg-white/5 border border-white/10 ${area.color}`}>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <span className="text-xs font-mono text-gray-400 font-bold">
+                        DOMAIN {idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
+                      </span>
+                    </div>
+                  </div>
+                  <h4 className="font-orbitron font-bold text-white text-base mb-2">
+                    {area.title}
+                  </h4>
+                  <p className="text-xs text-gray-400 leading-relaxed font-light">
+                    {area.desc}
+                  </p>
+                </div>
+
+                <div className="border-t border-white/5 pt-3 mt-4 flex items-center justify-between text-[10px] font-mono text-gray-500">
+                  <span>STATUS: R&amp;D ACTIVE</span>
+                  <span className="text-cyan-400">DEPLOYABLE</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Incubation locked/unlocked center */}
+      {/* Incubation locked/unlocked chamber */}
       <div className="max-w-4xl mx-auto glass-panel p-6 md:p-8 rounded-3xl border border-purple-500/30 relative z-10 text-center space-y-8">
         <div className="space-y-3">
           <div className="flex items-center justify-center space-x-2.5">
