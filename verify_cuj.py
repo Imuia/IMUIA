@@ -32,6 +32,13 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/01_landing_page.png")
             print("Screenshot 01 written.")
 
+            # Scroll to and capture Earth Contact Section
+            print("Scrolling to Earth Contact Section...")
+            page.evaluate("document.getElementById('contact-section').scrollIntoView({ behavior: 'instant' })")
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/01_contact_earth_section.png")
+            print("Screenshot 01b (contact) written.")
+
             # Click Explorer notre univers (navigates to Map/Galaxy)
             print("Navigating to Galaxy Map...")
             page.get_by_text("Explorer notre univers").click()
@@ -86,6 +93,20 @@ def run_verification():
             page.wait_for_timeout(1500)
             page.screenshot(path="/home/jules/verification/08_client_space_dashboard.png")
             print("Screenshot 08 written.")
+
+            # Click Invoices tab in Client Space
+            print("Navigating to Invoices tab in Client Space...")
+            page.get_by_text("Factures & Règlements").click()
+            page.wait_for_timeout(800)
+            page.screenshot(path="/home/jules/verification/08b_client_invoices.png")
+            print("Screenshot 08b (invoices) written.")
+
+            # Click Direct Comms tab in Client Space
+            print("Navigating to Direct Comms tab in Client Space...")
+            page.get_by_text("Canal Équipage Direct").click()
+            page.wait_for_timeout(800)
+            page.screenshot(path="/home/jules/verification/08c_client_messaging.png")
+            print("Screenshot 08c (messaging) written.")
 
             # Navigate to CRM Cockpit
             print("Navigating to Central CRM Cockpit Dashboard...")

@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import type { Platform, Contact, EmailCampaign, Task } from './AppState';
+import type { Platform, Contact, EmailCampaign, Task, Invoice, ClientMessage } from './AppState';
 
 export interface AppStateContextType {
   language: 'fr' | 'en';
@@ -15,6 +15,11 @@ export interface AppStateContextType {
   addPlatform: (p: Omit<Platform, 'id'>) => void;
   updatePlatform: (id: string, updated: Partial<Platform>) => void;
   deletePlatform: (id: string) => void;
+  togglePlatformVisibility: (id: string) => void;
+  movePlatformOrder: (id: string, direction: 'up' | 'down') => void;
+  invoices: Invoice[];
+  clientMessages: ClientMessage[];
+  sendClientMessage: (text: string) => void;
   contacts: Contact[];
   addContact: (c: Omit<Contact, 'id' | 'date' | 'status' | 'source'>) => void;
   updateContactStatus: (id: string, status: Contact['status']) => void;

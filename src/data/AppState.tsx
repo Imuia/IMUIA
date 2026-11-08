@@ -12,6 +12,24 @@ export interface Platform {
   url: string;
   shortDescKey: string; // references inside translations
   fullDescKey: string;
+  hidden?: boolean;
+  order?: number;
+}
+
+export interface Invoice {
+  id: string;
+  reference: string;
+  platform: string;
+  amount: string;
+  date: string;
+  status: 'Paid' | 'Pending';
+}
+
+export interface ClientMessage {
+  id: string;
+  sender: 'user' | 'crew';
+  text: string;
+  time: string;
 }
 
 // Contacts/leads
@@ -138,7 +156,7 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   // Platforms State initialized with the 12 core projects
-  const [platforms, setPlatforms] = useState<Platform[]>([
+  const initialPlatforms: Platform[] = [
     {
       id: 'rent-sound',
       name: 'RentSoundSystem.com',
@@ -148,7 +166,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'active',
       url: 'https://rentsoundsystem.com',
       shortDescKey: 'platRSSDesc',
-      fullDescKey: 'platRSSFull'
+      fullDescKey: 'platRSSFull',
+      hidden: false,
+      order: 1
     },
     {
       id: 'mariage-mada',
@@ -159,7 +179,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'active',
       url: 'https://mariage-madagascar.com',
       shortDescKey: 'platMMDesc',
-      fullDescKey: 'platMMFull'
+      fullDescKey: 'platMMFull',
+      hidden: false,
+      order: 2
     },
     {
       id: 'taghazout-prestige',
@@ -170,7 +192,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'active',
       url: 'https://taghazout-prestige.com',
       shortDescKey: 'platTPDesc',
-      fullDescKey: 'platTPFull'
+      fullDescKey: 'platTPFull',
+      hidden: false,
+      order: 3
     },
     {
       id: 'mon-ponton',
@@ -181,7 +205,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'development',
       url: 'https://monponton.com',
       shortDescKey: 'platMPDesc',
-      fullDescKey: 'platMPFull'
+      fullDescKey: 'platMPFull',
+      hidden: false,
+      order: 4
     },
     {
       id: 'ebike-maroc',
@@ -192,7 +218,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'active',
       url: 'https://ebikemaroc.bike',
       shortDescKey: 'platEMDesc',
-      fullDescKey: 'platEMFull'
+      fullDescKey: 'platEMFull',
+      hidden: false,
+      order: 5
     },
     {
       id: 'architect-led',
@@ -203,7 +231,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'active',
       url: 'https://architect-du-led.com',
       shortDescKey: 'platALDesc',
-      fullDescKey: 'platALFull'
+      fullDescKey: 'platALFull',
+      hidden: false,
+      order: 6
     },
     {
       id: 'devis-pro',
@@ -214,7 +244,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'active',
       url: 'https://devisprogratuit.com',
       shortDescKey: 'platDPGDesc',
-      fullDescKey: 'platDPGFull'
+      fullDescKey: 'platDPGFull',
+      hidden: false,
+      order: 7
     },
     {
       id: 'miaou-ouaf',
@@ -225,7 +257,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'soon',
       url: 'https://miaoumiaou-ouafouaf.com',
       shortDescKey: 'platMMOWDesc',
-      fullDescKey: 'platMMOWFull'
+      fullDescKey: 'platMMOWFull',
+      hidden: false,
+      order: 8
     },
     {
       id: 'immo-neuf-corse',
@@ -236,7 +270,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'active',
       url: 'https://immo-neuf-corse.com',
       shortDescKey: 'platINCDesc',
-      fullDescKey: 'platINCFull'
+      fullDescKey: 'platINCFull',
+      hidden: false,
+      order: 9
     },
     {
       id: 'invest-immo-corse',
@@ -247,7 +283,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'active',
       url: 'https://investir-immobilier-corse.com',
       shortDescKey: 'platIICDesc',
-      fullDescKey: 'platIICFull'
+      fullDescKey: 'platIICFull',
+      hidden: false,
+      order: 10
     },
     {
       id: 'mada-immo',
@@ -258,7 +296,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'active',
       url: 'https://madaimmo.com',
       shortDescKey: 'platMIDesc',
-      fullDescKey: 'platMIFull'
+      fullDescKey: 'platMIFull',
+      hidden: false,
+      order: 11
     },
     {
       id: 'parking-cannes',
@@ -269,8 +309,25 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       status: 'development',
       url: 'https://parking-cannes.com',
       shortDescKey: 'platPCDesc',
-      fullDescKey: 'platPCFull'
+      fullDescKey: 'platPCFull',
+      hidden: false,
+      order: 12
     }
+  ];
+
+  const [platforms, setPlatforms] = useState<Platform[]>(initialPlatforms);
+
+  // Mock Invoices
+  const [invoices] = useState<Invoice[]>([
+    { id: 'inv-1', reference: 'FAC-2026-089', platform: 'RentSoundSystem.com', amount: '2 400 €', date: '2026-02-28', status: 'Paid' },
+    { id: 'inv-2', reference: 'FAC-2026-112', platform: 'Taghazout Prestige', amount: '4 850 €', date: '2026-03-02', status: 'Paid' },
+    { id: 'inv-3', reference: 'FAC-2026-145', platform: 'MadaImmo.com', amount: '1 200 €', date: '2026-03-05', status: 'Pending' }
+  ]);
+
+  // Mock Client Messages
+  const [clientMessages, setClientMessages] = useState<ClientMessage[]>([
+    { id: 'msg-1', sender: 'crew', text: 'Bienvenue à bord de la station IMUIA ! Votre dossier de partenariat est en cours d\'orchestration.', time: '09:30' },
+    { id: 'msg-2', sender: 'user', text: 'Merci Capitaine ! Nous préparons les documents légaux pour le prochain raccordement.', time: '10:15' }
   ]);
 
   // Lead Contacts State
@@ -396,6 +453,49 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     playSound('click');
   };
 
+  const togglePlatformVisibility = (id: string) => {
+    setPlatforms(prev => prev.map(item => item.id === id ? { ...item, hidden: !item.hidden } : item));
+    playSound('click');
+  };
+
+  const movePlatformOrder = (id: string, direction: 'up' | 'down') => {
+    setPlatforms(prev => {
+      const index = prev.findIndex(p => p.id === id);
+      if (index === -1) return prev;
+      const targetIndex = direction === 'up' ? index - 1 : index + 1;
+      if (targetIndex < 0 || targetIndex >= prev.length) return prev;
+      const updated = [...prev];
+      const temp = updated[index];
+      updated[index] = updated[targetIndex];
+      updated[targetIndex] = temp;
+      return updated;
+    });
+    playSound('click');
+  };
+
+  const sendClientMessage = (text: string) => {
+    if (!text.trim()) return;
+    const userMsg: ClientMessage = {
+      id: `msg-${Date.now()}`,
+      sender: 'user',
+      text,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+    setClientMessages(prev => [...prev, userMsg]);
+    playSound('click');
+
+    setTimeout(() => {
+      const crewReply: ClientMessage = {
+        id: `msg-reply-${Date.now()}`,
+        sender: 'crew',
+        text: 'Message reçu par la passerelle IMUIA. Un officier de liaison examine vos coordonnées.',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setClientMessages(prev => [...prev, crewReply]);
+      playSound('success');
+    }, 1200);
+  };
+
   const addContact = (c: Omit<Contact, 'id' | 'date' | 'status' | 'source'>) => {
     const newContact: Contact = {
       ...c,
@@ -468,6 +568,11 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         addPlatform,
         updatePlatform,
         deletePlatform,
+        togglePlatformVisibility,
+        movePlatformOrder,
+        invoices,
+        clientMessages,
+        sendClientMessage,
         contacts,
         addContact,
         updateContactStatus,
