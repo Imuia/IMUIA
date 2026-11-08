@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
 import type { Platform } from '../data/AppState';
 import { translations } from '../data/translations';
-import { MapPin, ExternalLink, ArrowLeft, ShieldCheck, Heart, Cpu } from 'lucide-react';
+import { MapPin, ExternalLink, ArrowLeft, ShieldCheck, Heart, Cpu, Globe, Rocket, HelpCircle } from 'lucide-react';
 
 export const Platforms: React.FC = () => {
   const {
@@ -18,7 +18,6 @@ export const Platforms: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'immo' | 'tourism' | 'events' | 'economy' | 'services' | 'tech'>('all');
   const [favorites, setFavorites] = useState<string[]>([]);
 
-  // Open detailing modal directly if configured in state (e.g., from galaxy map clicks)
   const detailPlatform = platforms.find(p => p.id === activePlatformForDetail);
 
   const toggleFavorite = (id: string, e: React.MouseEvent) => {
@@ -33,6 +32,7 @@ export const Platforms: React.FC = () => {
     setActiveSection(section);
     setActivePlatformForDetail(null);
     playSound('space');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const filteredPlatforms = filter === 'all'
@@ -74,10 +74,10 @@ export const Platforms: React.FC = () => {
           <span>Éditeur de Services Autonomes</span>
         </h2>
         <h1 className="text-3xl md:text-5xl font-black font-orbitron uppercase text-white leading-tight">
-          Notre Flotte de Plateformes
+          Notre Flotte de 12 Plateformes
         </h1>
         <p className="text-sm md:text-base text-gray-400 leading-relaxed font-light">
-          IMUIA n'est pas une agence web classique. Nous imaginons, concevons, finançons et exploitons en propre nos propres marques et écosystèmes.
+          IMUIA n'est pas une agence web classique. Nous imaginons, concevons, finançons et exploitons en propre nos marques, plateformes numériques et concepts innovants.
         </p>
       </div>
 
@@ -93,7 +93,7 @@ export const Platforms: React.FC = () => {
                 : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
             }`}
           >
-            {s === 'all' ? (language === 'fr' ? 'Toutes' : 'All') : s.toUpperCase()}
+            {s === 'all' ? (language === 'fr' ? 'Toutes les flottes' : 'All fleets') : s.toUpperCase()}
           </button>
         ))}
       </div>
@@ -149,14 +149,17 @@ export const Platforms: React.FC = () => {
                   <MapPin className="w-3.5 h-3.5" />
                   <span>{p.zone}</span>
                 </span>
-                <span className="group-hover:translate-x-1 transition-transform">&rarr; Specs</span>
+                <span className="group-hover:translate-x-1 transition-transform flex items-center space-x-1">
+                  <span>Explorer</span>
+                  <span>&rarr;</span>
+                </span>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Beautiful Detailed Specification Sheet Modal */}
+      {/* Detailed Specification Sheet Modal */}
       {detailPlatform && (
         <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
           <div className="glass-panel max-w-3xl w-full rounded-3xl border border-purple-500/40 p-6 md:p-8 space-y-6 relative text-left my-8">
@@ -185,7 +188,7 @@ export const Platforms: React.FC = () => {
                       {detailPlatform.sector}
                     </span>
                     <span className="text-xs text-gray-400 font-mono flex items-center space-x-1">
-                      <MapPin className="w-3.5 h-3.5" />
+                      <Globe className="w-3.5 h-3.5 text-cyan-400" />
                       <span>{detailPlatform.zone}</span>
                     </span>
                   </div>
@@ -203,7 +206,7 @@ export const Platforms: React.FC = () => {
               {/* Main story description */}
               <div className="md:col-span-2 space-y-4">
                 <h4 className="font-orbitron font-bold text-sm text-cyan-400 tracking-wider uppercase">
-                  // Descriptif Spécificationnel
+                  // Descriptif Spécificationnel &amp; Architecture
                 </h4>
                 <p className="text-sm text-gray-300 leading-relaxed font-light">
                   {language === 'fr'
@@ -214,12 +217,12 @@ export const Platforms: React.FC = () => {
                 <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/10 flex items-start space-x-2.5">
                   <ShieldCheck className="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" />
                   <p className="text-xs text-purple-300/90 leading-relaxed">
-                    Ce projet est opéré de manière 100% indépendante. L'infrastructure de réservation, la passerelle de paiement sécurisée et le CRM de gestion de clientèle sont développés en interne par le pôle d'ingénierie IMUIA.
+                    Ce projet est opéré de manière 100% indépendante. L'infrastructure logicielle, la passerelle de réservation et le CRM de gestion de clientèle sont développés en interne par le pôle d'ingénierie IMUIA.
                   </p>
                 </div>
               </div>
 
-              {/* Telemetries / Performance (Mocks) */}
+              {/* Telemetries / Performance */}
               <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-4 text-xs font-mono">
                 <h4 className="font-orbitron font-bold text-xs text-white uppercase tracking-wider mb-2">
                   Télémétries Système
@@ -227,22 +230,22 @@ export const Platforms: React.FC = () => {
 
                 <div className="border-b border-white/5 pb-2">
                   <div className="text-gray-500 uppercase text-[10px]">Temps de Chargement</div>
-                  <div className="text-sm font-bold text-green-400">0.32s (Excellent)</div>
+                  <div className="text-sm font-bold text-green-400">0.28s (Optimisé)</div>
                 </div>
 
                 <div className="border-b border-white/5 pb-2">
                   <div className="text-gray-500 uppercase text-[10px]">Active Nodes (Global)</div>
-                  <div className="text-sm font-bold text-white">12 Clusters DNS</div>
+                  <div className="text-sm font-bold text-white">12 Clusters Edge</div>
                 </div>
 
                 <div className="border-b border-white/5 pb-2">
                   <div className="text-gray-500 uppercase text-[10px]">Modèle de Monétisation</div>
-                  <div className="text-sm font-bold text-white">SaaS / Comm. de Commission</div>
+                  <div className="text-sm font-bold text-white">SaaS / Commission directe</div>
                 </div>
 
                 <div>
                   <div className="text-gray-500 uppercase text-[10px]">Sécurité Cloud</div>
-                  <div className="text-sm font-bold text-cyan-400">SSL / WAF Cloudflare</div>
+                  <div className="text-sm font-bold text-cyan-400">SSL 256 bits / WAF Edge</div>
                 </div>
               </div>
             </div>
@@ -256,22 +259,24 @@ export const Platforms: React.FC = () => {
                 onClick={() => playSound('click')}
                 className="flex items-center space-x-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl text-sm border border-white/10 transition-colors cursor-none"
               >
-                <span>Visiter {detailPlatform.name.replace('.com','')}</span>
+                <span>Accéder à {detailPlatform.name}</span>
                 <ExternalLink className="w-4 h-4" />
               </a>
 
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => handleCTA('partners')}
-                  className="px-4 py-2 text-xs bg-purple-600 hover:bg-purple-500 text-white font-bold font-orbitron uppercase tracking-widest rounded-xl transition-all cursor-none"
+                  className="flex items-center space-x-1.5 px-4 py-2 text-xs bg-purple-600 hover:bg-purple-500 text-white font-bold font-orbitron uppercase tracking-widest rounded-xl transition-all cursor-none"
                 >
-                  {t.becomePartner}
+                  <Rocket className="w-3.5 h-3.5" />
+                  <span>{t.becomePartner}</span>
                 </button>
                 <button
-                  onClick={() => handleCTA('client')}
-                  className="px-4 py-2 text-xs bg-cyan-600/20 hover:bg-cyan-600 text-cyan-300 hover:text-white border border-cyan-500/30 rounded-xl transition-all cursor-none"
+                  onClick={() => handleCTA('contact')}
+                  className="flex items-center space-x-1.5 px-4 py-2 text-xs bg-cyan-600/20 hover:bg-cyan-600 text-cyan-300 hover:text-white border border-cyan-500/30 rounded-xl transition-all cursor-none"
                 >
-                  S'amarrer (Client)
+                  <HelpCircle className="w-3.5 h-3.5" />
+                  <span>Nous contacter</span>
                 </button>
               </div>
             </div>

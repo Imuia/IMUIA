@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
 import type { Platform } from '../data/AppState';
 import { translations } from '../data/translations';
-import { Orbit, Info } from 'lucide-react';
+import { Orbit, Info, Globe } from 'lucide-react';
 
 export const UniverseMap: React.FC = () => {
   const {
@@ -28,7 +28,7 @@ export const UniverseMap: React.FC = () => {
 
   const handlePlanetClick = (p: Platform) => {
     setActivePlatformForDetail(p.id);
-    setActiveSection('platforms'); // redirect to platforms layout to open sheet
+    setActiveSection('platforms');
     playSound('space');
   };
 
@@ -41,13 +41,13 @@ export const UniverseMap: React.FC = () => {
       <div className="text-center max-w-3xl mx-auto space-y-4 relative z-10">
         <h2 className="text-xs font-orbitron font-bold text-purple-400 tracking-widest uppercase flex items-center justify-center space-x-2">
           <Orbit className="w-4 h-4 animate-spin-slow" />
-          <span>Cartographie de la Galaxie IMUIA</span>
+          <span>Cartographie de l'Univers IMUIA</span>
         </h2>
         <h1 className="text-3xl md:text-5xl font-black font-orbitron uppercase text-white leading-tight">
-          Explorez nos Mondes de Services
+          Explorez nos 6 Galaxies de Services
         </h1>
         <p className="text-sm md:text-base text-gray-400 leading-relaxed font-light">
-          Chaque secteur d'activité représente une galaxie de concepts en orbite. Survolez ou cliquez sur les planètes indépendantes pour découvrir les plateformes gérées par IMUIA.
+          Chaque projet, plateforme ou service constitue une planète, une station orbitale ou un monde indépendant. Survolez ou cliquez sur les planètes pour afficher leurs spécifications.
         </p>
       </div>
 
@@ -81,7 +81,6 @@ export const UniverseMap: React.FC = () => {
 
       {/* Spectacular Canvas Interactive Galaxy Layout (Desktop) */}
       <div className="hidden md:block relative max-w-6xl mx-auto h-[550px] glass-panel rounded-3xl overflow-hidden border border-white/5">
-        {/* Subtle grid lines background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
 
         {/* Central Core: IMUIA STATION */}
@@ -94,14 +93,13 @@ export const UniverseMap: React.FC = () => {
           </div>
         </div>
 
-        {/* The 6 Galaxy Sector Nodes - Orbiting or located in 6 distinct angles */}
+        {/* The 6 Galaxy Sector Nodes */}
         {sectors.map((sec, idx) => {
-          // Angle in radians
           const angle = (idx * 2 * Math.PI) / 6;
-          const radiusX = 350; // Elliptical orbit x
-          const radiusY = 190; // Elliptical orbit y
-          const left = 50 + (radiusX * Math.cos(angle)) / 8; // % position
-          const top = 50 + (radiusY * Math.sin(angle)) / 5; // % position
+          const radiusX = 350;
+          const radiusY = 190;
+          const left = 50 + (radiusX * Math.cos(angle)) / 8;
+          const top = 50 + (radiusY * Math.sin(angle)) / 5;
 
           const sectorPlats = platforms.filter(p => p.sector === sec.id);
           const isFaded = selectedSector !== null && selectedSector !== sec.id;
@@ -114,7 +112,6 @@ export const UniverseMap: React.FC = () => {
               }`}
               style={{ left: `${left}%`, top: `${top}%` }}
             >
-              {/* Elliptical dashed orbit path for sector */}
               <div className="absolute -inset-16 rounded-full border border-dashed border-white/5 animate-pulse"></div>
 
               {/* Sector Title Plate */}
@@ -132,15 +129,14 @@ export const UniverseMap: React.FC = () => {
                         key={plat.id}
                         onClick={() => handlePlanetClick(plat)}
                         onMouseEnter={() => { setHoveredPlanet(plat); playSound('hover'); }}
-                        className={`relative w-8 h-8 rounded-full flex items-center justify-center text-sm border cursor-none transition-all duration-300 clickable-planet ${
+                        className={`relative w-9 h-9 rounded-full flex items-center justify-center text-sm border cursor-none transition-all duration-300 clickable-planet ${
                           isHovered
                             ? 'bg-purple-600 border-purple-400 scale-125 shadow-[0_0_15px_rgba(168,85,247,0.6)]'
-                            : 'bg-black/40 border-white/15 hover:border-white/40'
+                            : 'bg-black/50 border-white/15 hover:border-white/40'
                         }`}
                         title={plat.name}
                       >
                         <span>{plat.logo}</span>
-                        {/* Interactive dynamic status beacon */}
                         <span className={`absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-black ${
                           plat.status === 'active' ? 'bg-green-500 animate-pulse' :
                           plat.status === 'development' ? 'bg-amber-500' : 'bg-blue-400'
@@ -159,7 +155,7 @@ export const UniverseMap: React.FC = () => {
           <div className="absolute bottom-4 left-4 z-30 max-w-sm glass-panel p-5 rounded-2xl border border-purple-500/30 shadow-2xl animate-fade-in text-left">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-widest">
-                // PLATFORM telemetry
+                // PLANET TELEMETRY
               </span>
               <button
                 onClick={() => setHoveredPlanet(null)}
@@ -174,11 +170,12 @@ export const UniverseMap: React.FC = () => {
                 {hoveredPlanet.logo}
               </span>
               <div>
-                <h3 className="font-orbitron font-bold text-white text-lg leading-tight">
+                <h3 className="font-orbitron font-bold text-white text-base leading-tight">
                   {hoveredPlanet.name}
                 </h3>
-                <span className="text-xs text-gray-400 font-mono">
-                  {hoveredPlanet.zone}
+                <span className="text-xs text-gray-400 font-mono flex items-center space-x-1">
+                  <Globe className="w-3 h-3 text-cyan-400" />
+                  <span>{hoveredPlanet.zone}</span>
                 </span>
               </div>
             </div>
@@ -212,11 +209,11 @@ export const UniverseMap: React.FC = () => {
         )}
       </div>
 
-      {/* Elegant Mobile Cards View Fallback */}
+      {/* Mobile Animated Vertical Cards */}
       <div className="block md:hidden space-y-4 max-w-md mx-auto relative z-10">
         <div className="flex items-center space-x-2 text-xs text-purple-400 font-mono justify-center mb-2">
           <Info className="w-3.5 h-3.5" />
-          <span>Tap on any card to view detailed specifications</span>
+          <span>Touchez une planète pour explorer ses spécifications</span>
         </div>
 
         {sectors.map((sec) => {
@@ -226,7 +223,7 @@ export const UniverseMap: React.FC = () => {
 
           return (
             <div key={sec.id} className="glass-panel p-5 rounded-2xl border border-white/10 space-y-4">
-              <div className="border-b border-white/5 pb-2">
+              <div className="border-b border-white/5 pb-2 text-left">
                 <h3 className={`font-orbitron font-bold text-sm uppercase tracking-wider ${sec.color}`}>
                   {sec.label}
                 </h3>
@@ -240,7 +237,7 @@ export const UniverseMap: React.FC = () => {
                   <button
                     key={plat.id}
                     onClick={() => handlePlanetClick(plat)}
-                    className="w-full flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:border-purple-500/30 text-left transition-all"
+                    className="w-full flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:border-purple-500/30 text-left transition-all cursor-none"
                   >
                     <div className="flex items-center space-x-3">
                       <span className="text-xl">{plat.logo}</span>

@@ -15,6 +15,7 @@ import { VisionMethod } from './pages/VisionMethod';
 import { Territories } from './pages/Territories';
 import { Partners } from './pages/Partners';
 import { Journal } from './pages/Journal';
+import { Contact } from './pages/Contact';
 import { ClientSpace } from './pages/ClientSpace';
 import { AdminCockpit } from './pages/AdminCockpit';
 import { Legals } from './pages/Legals';
@@ -35,13 +36,17 @@ const MainLayout: React.FC = () => {
       case 'labs':
         return <Labs />;
       case 'vision':
-        return <VisionMethod />;
+        return <VisionMethod initialTab="vision" />;
+      case 'method':
+        return <VisionMethod initialTab="method" />;
       case 'territories':
         return <Territories />;
       case 'partners':
         return <Partners />;
       case 'news':
         return <Journal />;
+      case 'contact':
+        return <Contact />;
       case 'client':
         return <ClientSpace />;
       case 'admin':

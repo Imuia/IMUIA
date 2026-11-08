@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { Shield, Lock, Eye, ArrowUp } from 'lucide-react';
+import { Shield, Lock, Eye, ArrowUp, Mail, Globe, Orbit, Rocket } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const { language, setActiveSection, playSound } = useAppState();
@@ -14,12 +14,12 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="glass-panel border-t border-white/10 mt-auto py-12 relative overflow-hidden">
+    <footer className="glass-panel border-t border-white/10 mt-auto py-12 relative overflow-hidden text-left">
       {/* Subtle bottom glows */}
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-900/10 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-left">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center space-x-2">
               <span className="font-orbitron font-black text-2xl tracking-widest text-white dark:text-white light:text-slate-900">
@@ -36,12 +36,19 @@ export const Footer: React.FC = () => {
 
           <div>
             <h4 className="font-orbitron font-bold text-sm text-white dark:text-white light:text-slate-900 tracking-wider uppercase mb-4">
-              Universes
+              Univers &amp; Plateformes
             </h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-xs text-gray-400">
               <li>
-                <button onClick={() => handleNav('universe')} className="hover:text-purple-400 transition-colors cursor-none text-left">
-                  {t.navUniverse}
+                <button onClick={() => handleNav('home')} className="hover:text-purple-400 transition-colors cursor-none text-left flex items-center space-x-1.5">
+                  <Rocket className="w-3 h-3 text-purple-400" />
+                  <span>{t.navHome}</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('universe')} className="hover:text-purple-400 transition-colors cursor-none text-left flex items-center space-x-1.5">
+                  <Orbit className="w-3 h-3 text-purple-400" />
+                  <span>{t.navUniverse}</span>
                 </button>
               </li>
               <li>
@@ -59,29 +66,51 @@ export const Footer: React.FC = () => {
                   {t.navVision}
                 </button>
               </li>
+              <li>
+                <button onClick={() => handleNav('method')} className="hover:text-purple-400 transition-colors cursor-none text-left">
+                  {t.navMethod}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('territories')} className="hover:text-purple-400 transition-colors cursor-none text-left flex items-center space-x-1.5">
+                  <Globe className="w-3 h-3 text-cyan-400" />
+                  <span>{t.navTerritories}</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('partners')} className="hover:text-purple-400 transition-colors cursor-none text-left">
+                  {t.navPartners}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('contact')} className="hover:text-purple-400 transition-colors cursor-none text-left flex items-center space-x-1.5">
+                  <Mail className="w-3 h-3 text-pink-400" />
+                  <span>{t.navContact}</span>
+                </button>
+              </li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-orbitron font-bold text-sm text-white dark:text-white light:text-slate-900 tracking-wider uppercase mb-4">
-              Légal
+              Informations Légales
             </h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-xs text-gray-400">
               <li>
                 <button onClick={() => handleNav('legal')} className="hover:text-purple-400 transition-colors cursor-none text-left flex items-center space-x-1.5">
-                  <Shield className="w-3.5 h-3.5" />
+                  <Shield className="w-3.5 h-3.5 text-purple-400" />
                   <span>{t.legalNotice}</span>
                 </button>
               </li>
               <li>
                 <button onClick={() => handleNav('privacy')} className="hover:text-purple-400 transition-colors cursor-none text-left flex items-center space-x-1.5">
-                  <Lock className="w-3.5 h-3.5" />
+                  <Lock className="w-3.5 h-3.5 text-purple-400" />
                   <span>{t.privacyPolicy}</span>
                 </button>
               </li>
               <li>
                 <button onClick={() => handleNav('cookies')} className="hover:text-purple-400 transition-colors cursor-none text-left flex items-center space-x-1.5">
-                  <Eye className="w-3.5 h-3.5" />
+                  <Eye className="w-3.5 h-3.5 text-purple-400" />
                   <span>{t.cookiesManage}</span>
                 </button>
               </li>

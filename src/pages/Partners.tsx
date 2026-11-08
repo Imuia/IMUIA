@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
+import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock, Sparkles, Building2, UserCheck } from 'lucide-react';
 
 export const Partners: React.FC = () => {
-  const { language, addContact, playSound } = useAppState();
+  const { language, addContact, playSound, platforms } = useAppState();
   const t = translations[language];
 
   // Form Fields State
@@ -51,7 +51,7 @@ export const Partners: React.FC = () => {
     setError(false);
     setSuccess(false);
 
-    // Validation
+    // Strict validation of mandatory fields & GDPR
     if (!firstName || !lastName || !email || !proposal || !consent) {
       setError(true);
       playSound('click');
@@ -62,17 +62,16 @@ export const Partners: React.FC = () => {
     playSound('space');
 
     setTimeout(() => {
-      // Create contact object in local state
       addContact({
         firstName,
         lastName,
-        company,
-        function: jobTitle,
+        company: company || 'Indépendant',
+        function: jobTitle || 'Partenaire',
         email,
         phone,
-        country,
+        country: country || 'International',
         partnerType: partnerType || 'Other',
-        project: project || 'General',
+        project: project || 'Global Universe',
         budget: budget || '0',
         proposal
       });
@@ -81,7 +80,7 @@ export const Partners: React.FC = () => {
       setSuccess(true);
       playSound('success');
 
-      // Reset form fields
+      // Reset form
       setFirstName('');
       setLastName('');
       setCompany('');
@@ -95,7 +94,7 @@ export const Partners: React.FC = () => {
       setProposal('');
       setFileName(null);
       setConsent(false);
-    }, 1500);
+    }, 1400);
   };
 
   return (
@@ -110,8 +109,11 @@ export const Partners: React.FC = () => {
         <h1 className="text-3xl md:text-5xl font-black font-orbitron uppercase text-white leading-tight">
           {t.partnerSubtitle}
         </h1>
-        <p className="text-sm md:text-base text-gray-400 leading-relaxed font-light">
+        <p className="text-sm md:text-base text-gray-300 leading-relaxed font-light italic">
           {t.partnerIntro}
+        </p>
+        <p className="text-xs text-purple-300/80 font-mono">
+          {t.partnerTargetAudience}
         </p>
       </div>
 
@@ -121,7 +123,7 @@ export const Partners: React.FC = () => {
           <div className="mb-6 p-4 rounded-xl bg-green-500/10 border border-green-500/30 text-green-400 flex items-start space-x-3 text-left">
             <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-bold text-sm">Transmission réussie !</p>
+              <p className="font-bold text-sm">Transmission orbitale réussie !</p>
               <p className="text-xs text-green-300">{t.formSuccess}</p>
             </div>
           </div>
@@ -247,7 +249,7 @@ export const Partners: React.FC = () => {
               />
             </div>
 
-            {/* Catégorie Partenariat */}
+            {/* Type de partenariat */}
             <div className="space-y-1.5">
               <label className="block text-xs font-mono uppercase text-gray-400">
                 {t.formPartnerType}
@@ -258,16 +260,41 @@ export const Partners: React.FC = () => {
                 className="w-full bg-black border border-white/10 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
               >
                 <option value="">{t.formPartnerTypePlaceholder}</option>
-                <option value="Investor">{t.partnerInvestor}</option>
-                <option value="Operator">{t.partnerProvider}</option>
-                <option value="Developer">{t.partnerDeveloper}</option>
-                <option value="Broker">{t.partnerBroker}</option>
-                <option value="Creator">{t.partnerCreator}</option>
-                <option value="Other">{t.partnerOther}</option>
+                <option value="investor">{t.partnerInvestor}</option>
+                <option value="broker">{t.partnerBroker}</option>
+                <option value="provider">{t.partnerProvider}</option>
+                <option value="developer">{t.partnerDeveloper}</option>
+                <option value="creator">{t.partnerCreator}</option>
+                <option value="local">{t.partnerLocal}</option>
+                <option value="project_owner">{t.partnerProjectOwner}</option>
+                <option value="company">{t.partnerCompany}</option>
+                <option value="other">{t.partnerOther}</option>
               </select>
             </div>
 
-            {/* Budget */}
+            {/* Projet IMUIA concerné (mandated by prompt) */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-mono uppercase text-gray-400">
+                {t.formProject}
+              </label>
+              <select
+                value={project}
+                onChange={(e) => setProject(e.target.value)}
+                className="w-full bg-black border border-white/10 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+              >
+                <option value="">{t.formProjectPlaceholder}</option>
+                <option value="global">{t.formProjectGeneral}</option>
+                {platforms.map((p) => (
+                  <option key={p.id} value={p.name}>
+                    {p.name} ({p.zone})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Budget ou capacité d'investissement */}
             <div className="space-y-1.5">
               <label className="block text-xs font-mono uppercase text-gray-400">
                 {t.formBudget}
@@ -280,9 +307,19 @@ export const Partners: React.FC = () => {
                 className="w-full bg-black/40 border border-white/10 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
               />
             </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-mono uppercase text-gray-400">
+                Accompagnement souhaité
+              </label>
+              <div className="flex items-center space-x-2 pt-2 text-xs text-gray-400">
+                <Sparkles className="w-4 h-4 text-purple-400" />
+                <span>Incubation, co-édition, développement ou intégration écosystème.</span>
+              </div>
+            </div>
           </div>
 
-          {/* Proposition détaillée */}
+          {/* Description de la proposition */}
           <div className="space-y-1.5">
             <label className="block text-xs font-mono uppercase text-gray-400">
               {t.formProposal} <span className="text-red-400">*</span>
@@ -297,7 +334,7 @@ export const Partners: React.FC = () => {
             />
           </div>
 
-          {/* Pièce jointe simulateur */}
+          {/* Documents joints */}
           <div className="space-y-1.5">
             <label className="block text-xs font-mono uppercase text-gray-400">
               {t.formFile}
@@ -319,10 +356,10 @@ export const Partners: React.FC = () => {
               <label htmlFor="file-attachment" className="cursor-none flex flex-col items-center justify-center space-y-2">
                 <UploadCloud className="w-8 h-8 text-purple-400" />
                 <span className="text-xs text-gray-300 font-bold">
-                  {fileName ? `Fichier sélectionné : ${fileName}` : "Glissez-déposez vos fichiers ici, ou cliquez pour parcourir"}
+                  {fileName ? `Document sélectionné : ${fileName}` : "Glissez-déposez vos documents ici, ou cliquez pour parcourir"}
                 </span>
                 <span className="text-[10px] text-gray-500">
-                  Fichiers acceptés: PDF, DOCX, ZIP, PNG, JPG (Max 15 Mo)
+                  Formats acceptés : PDF, DOC, ZIP, PNG, JPG (Max 25 Mo)
                 </span>
               </label>
             </div>
@@ -356,9 +393,19 @@ export const Partners: React.FC = () => {
 
         </form>
 
-        <div className="mt-8 border-t border-white/5 pt-6 flex items-center justify-center space-x-2 text-[11px] font-mono text-gray-500">
-          <Lock className="w-3.5 h-3.5" />
-          <span>Données cryptées via SSL 256 bits et stockées conformément au RGPD de l'Union Européenne.</span>
+        <div className="mt-8 border-t border-white/5 pt-6 flex flex-wrap items-center justify-center gap-4 text-[11px] font-mono text-gray-500">
+          <span className="flex items-center space-x-1.5">
+            <Lock className="w-3.5 h-3.5 text-purple-400" />
+            <span>Cryptage SSL 256 bits</span>
+          </span>
+          <span className="flex items-center space-x-1.5">
+            <UserCheck className="w-3.5 h-3.5 text-green-400" />
+            <span>Conformité RGPD garantie</span>
+          </span>
+          <span className="flex items-center space-x-1.5">
+            <Building2 className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Accompagnement direct par la direction IMUIA</span>
+          </span>
         </div>
 
       </div>
