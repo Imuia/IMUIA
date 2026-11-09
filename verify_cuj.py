@@ -26,34 +26,35 @@ def run_verification():
             context = browser.new_context(viewport={"width": 1280, "height": 800})
             page = context.new_page()
 
+            # 1. Landing Page
             print("Navigating to IMUIA Landing Page...")
             page.goto("http://localhost:5173", timeout=15000)
             page.wait_for_timeout(1500)
             page.screenshot(path="/home/jules/verification/01_landing_page.png")
             print("Screenshot 01 written.")
 
-            # Click Explorer notre univers (navigates to Map/Galaxy)
+            # 2. Galaxy Map
             print("Navigating to Galaxy Map...")
             page.get_by_text("Explorer notre univers").click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/02_galaxy_map.png")
             print("Screenshot 02 written.")
 
-            # Navigate to Platforms
+            # 3. Platforms Registry
             print("Navigating to Platforms Registry...")
             page.get_by_text("Nos plateformes").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/03_platforms.png")
             print("Screenshot 03 written.")
 
-            # Navigate to IMUIA Labs
+            # 4. IMUIA Labs
             print("Navigating to IMUIA Labs...")
             page.get_by_text("IMUIA Labs").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/04_labs_locked.png")
             print("Screenshot 04 written.")
 
-            # Unlock incubator with credentials
+            # 5. Unlock incubator
             print("Unlocking Incubation chamber with key 'IMUIALAB'...")
             page.get_by_placeholder("Ex: IMUIALAB").fill("IMUIALAB")
             page.get_by_text("Déverrouiller les Concepts").click()
@@ -61,38 +62,44 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/05_labs_unlocked.png")
             print("Screenshot 05 written.")
 
-            # Navigate to Vision / Method
+            # 6. Vision & Method Space Path
             print("Navigating to Vision & Method Space Path...")
             page.get_by_text("Notre vision").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/06_vision_method.png")
             print("Screenshot 06 written.")
 
-            # Navigate to Partnerships
-            print("Navigating to Partnership space...")
-            page.get_by_text("Partenariats").first.click()
+            # 7. Contact Section with 3D Earth view from Space
+            print("Navigating to Contact Earth Space section...")
+            page.get_by_text("Contact").first.click()
             page.wait_for_timeout(1000)
-            page.screenshot(path="/home/jules/verification/07_partners_form.png")
+            page.screenshot(path="/home/jules/verification/07_contact_earth.png")
             print("Screenshot 07 written.")
 
-            # Navigate to Espace Client Space & Login
+            # Click on "Devenir partenaire" CTA from Contact page to test prefill intent
+            print("Clicking 'Devenir partenaire' on Contact Earth...")
+            page.get_by_text("Devenir partenaire").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/08_partners_form.png")
+            print("Screenshot 08 written.")
+
+            # 9. Client Space & Login
             print("Navigating to secure Client Space...")
             page.get_by_text("Espace Client").first.click()
             page.wait_for_timeout(1000)
-            # Login
             page.get_by_placeholder("partner@imuia.com").fill("partner@imuia.com")
             page.get_by_placeholder("••••••••").fill("password")
             page.get_by_role("button", name="S'amarrer à la station").click()
             page.wait_for_timeout(1500)
-            page.screenshot(path="/home/jules/verification/08_client_space_dashboard.png")
-            print("Screenshot 08 written.")
+            page.screenshot(path="/home/jules/verification/09_client_space_dashboard.png")
+            print("Screenshot 09 written.")
 
-            # Navigate to CRM Cockpit
+            # 10. Central CRM Cockpit Dashboard
             print("Navigating to Central CRM Cockpit Dashboard...")
             page.get_by_text("Cockpit CRM").first.click()
             page.wait_for_timeout(1000)
-            page.screenshot(path="/home/jules/verification/09_crm_cockpit.png")
-            print("Screenshot 09 written.")
+            page.screenshot(path="/home/jules/verification/10_crm_cockpit.png")
+            print("Screenshot 10 written.")
 
             # Close browser
             browser.close()

@@ -98,8 +98,8 @@ export const UniverseMap: React.FC = () => {
         {sectors.map((sec, idx) => {
           // Angle in radians
           const angle = (idx * 2 * Math.PI) / 6;
-          const radiusX = 350; // Elliptical orbit x
-          const radiusY = 190; // Elliptical orbit y
+          const radiusX = 290; // Balanced elliptical orbit x
+          const radiusY = 145; // Balanced elliptical orbit y
           const left = 50 + (radiusX * Math.cos(angle)) / 8; // % position
           const top = 50 + (radiusY * Math.sin(angle)) / 5; // % position
 

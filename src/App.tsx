@@ -18,6 +18,7 @@ import { Journal } from './pages/Journal';
 import { ClientSpace } from './pages/ClientSpace';
 import { AdminCockpit } from './pages/AdminCockpit';
 import { Legals } from './pages/Legals';
+import { Contact } from './pages/Contact';
 
 import './App.css';
 
@@ -46,6 +47,8 @@ const MainLayout: React.FC = () => {
         return <ClientSpace />;
       case 'admin':
         return <AdminCockpit />;
+      case 'contact':
+        return <Contact />;
       case 'privacy':
         return <Legals mode="privacy" />;
       case 'legal':

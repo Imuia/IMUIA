@@ -4,7 +4,7 @@ import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
 
 export const Partners: React.FC = () => {
-  const { language, addContact, playSound } = useAppState();
+  const { language, platforms, addContact, playSound } = useAppState();
   const t = translations[language];
 
   // Form Fields State
@@ -15,7 +15,13 @@ export const Partners: React.FC = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [country, setCountry] = useState('');
-  const [partnerType, setPartnerType] = useState('');
+  const [partnerType, setPartnerType] = useState(() => {
+    const saved = sessionStorage.getItem('imuia_partner_intent');
+    if (saved === 'invest') return 'Investor';
+    if (saved === 'partner') return 'Operator';
+    if (saved === 'project') return 'Developer';
+    return '';
+  });
   const [project, setProject] = useState('');
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
@@ -232,7 +238,7 @@ export const Partners: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Pays */}
             <div className="space-y-1.5">
               <label className="block text-xs font-mono uppercase text-gray-400">
@@ -264,6 +270,26 @@ export const Partners: React.FC = () => {
                 <option value="Broker">{t.partnerBroker}</option>
                 <option value="Creator">{t.partnerCreator}</option>
                 <option value="Other">{t.partnerOther}</option>
+              </select>
+            </div>
+
+            {/* Projet IMUIA concerné */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-mono uppercase text-gray-400">
+                {t.formProject}
+              </label>
+              <select
+                value={project}
+                onChange={(e) => setProject(e.target.value)}
+                className="w-full bg-black border border-white/10 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+              >
+                <option value="">{t.formProjectPlaceholder}</option>
+                <option value="General">Écosystème Global / Tous univers</option>
+                {platforms.map(p => (
+                  <option key={p.id} value={p.id}>
+                    {p.name} ({p.zone})
+                  </option>
+                ))}
               </select>
             </div>
 
