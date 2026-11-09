@@ -114,6 +114,19 @@ export const translations = {
     territoriesTitle: "Nos Territoires & Déploiement Mondial",
     territoriesDesc: "IMUIA est ancré localement et rayonne globalement. Nos plateformes desservent de multiples zones clés, connectant utilisateurs et prestataires.",
 
+    // Contact Section
+    contactSectionTitle: "Terre & Hubs Connectés",
+    contactHeading: "Vous avez une idée à mettre en orbite ?",
+    contactText: "« Projet innovant, partenariat, investissement ou proposition de collaboration : entrez en contact avec l'équipage IMUIA. »",
+    contactBtnPresent: "Présenter mon projet",
+    contactBtnPresentSub: "Incubation & Partenariat Tech",
+    contactBtnPartner: "Devenir partenaire",
+    contactBtnPartnerSub: "Prestataire & Opérateur local",
+    contactBtnInvest: "Investir dans un univers",
+    contactBtnInvestSub: "Capital & Co-financement",
+    contactBtnContact: "Contacter IMUIA",
+    contactBtnContactSub: "Échange direct & Informations",
+
     // Partner Space & Forms
     partnerTitle: "Espace Partenaires",
     partnerSubtitle: "Vous avez une idée à mettre en orbite ?",
@@ -375,6 +388,19 @@ export const translations = {
     // Territories
     territoriesTitle: "Territories & Global Reach",
     territoriesDesc: "IMUIA bridges hyper-local focus with international scale. Our platform networks span high-growth territories worldwide.",
+
+    // Contact Section
+    contactSectionTitle: "Earth & Connected Hubs",
+    contactHeading: "Have an innovative concept to launch into orbit?",
+    contactText: "« Innovative project, strategic partnership, investment or joint collaboration: get in touch with the IMUIA flight crew. »",
+    contactBtnPresent: "Submit My Project",
+    contactBtnPresentSub: "Incubation & Tech Partnership",
+    contactBtnPartner: "Become a Partner",
+    contactBtnPartnerSub: "Local Operator & Contractor",
+    contactBtnInvest: "Invest in a Universe",
+    contactBtnInvestSub: "Venture Capital & Co-funding",
+    contactBtnContact: "Contact IMUIA",
+    contactBtnContactSub: "Direct Inquiries & Crew Link",
 
     // Partner Space
     partnerTitle: "Partnership Center",
