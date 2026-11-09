@@ -32,9 +32,16 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/01_landing_page.png")
             print("Screenshot 01 written.")
 
+            # Scroll down to bottom of landing page to check Earth Contact view
+            print("Scrolling to embedded Earth Contact view on Home...")
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/01b_home_contact_earth.png")
+            print("Screenshot 01b written.")
+
             # Click Explorer notre univers (navigates to Map/Galaxy)
             print("Navigating to Galaxy Map...")
-            page.get_by_text("Explorer notre univers").click()
+            page.get_by_text("Explorer notre univers").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/02_galaxy_map.png")
             print("Screenshot 02 written.")
@@ -68,12 +75,26 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/06_vision_method.png")
             print("Screenshot 06 written.")
 
+            # Navigate to Nos territoires
+            print("Navigating to Territories...")
+            page.get_by_text("Nos territoires").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/06b_territories.png")
+            print("Screenshot 06b written.")
+
             # Navigate to Partnerships
             print("Navigating to Partnership space...")
             page.get_by_text("Partenariats").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/07_partners_form.png")
             print("Screenshot 07 written.")
+
+            # Navigate to Contact Page
+            print("Navigating to Dedicated Contact Page...")
+            page.get_by_text("Contact").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/07b_contact_page.png")
+            print("Screenshot 07b written.")
 
             # Navigate to Espace Client Space & Login
             print("Navigating to secure Client Space...")
