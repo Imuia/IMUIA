@@ -253,6 +253,7 @@ export const translations = {
     platINCFull: "Immo Neuf Corse compile l'intégralité des programmes de construction neuve sur l'Île de Beauté. Des résidences de haut standing à Bastia jusqu'aux opportunités exceptionnelles à Ajaccio, la plateforme offre un accès direct aux promoteurs, des maquettes 3D immersives et une assistance fiscale personnalisée.",
 
     platIICDesc: "Accompagnement patrimonial sur mesure et opportunités d'investissement immobilier de prestige en Corse.",
+    platIICLead: "Investir Immobilier Corse est le cabinet de conseil digital de référence pour bâtir son patrimoine immobilier en Corse. Nous analysons la rentabilité locative, les avantages fiscaux (Loi Pinel, LMNP) et sélectionnons des propriétés d'exception à fort rendement pour nos investisseurs internationaux.",
     platIICFull: "Investir Immobilier Corse est le cabinet de conseil digital de référence pour bâtir son patrimoine immobilier en Corse. Nous analysons la rentabilité locative, les avantages fiscaux (Loi Pinel, LMNP) et sélectionnons des propriétés d'exception à fort rendement pour nos investisseurs internationaux.",
 
     platMIDesc: "Location saisonnière, vente de propriétés exclusives et réservations de domaines d'exception à Madagascar.",
