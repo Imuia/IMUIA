@@ -114,6 +114,11 @@ export const translations = {
     territoriesTitle: "Nos Territoires & Déploiement Mondial",
     territoriesDesc: "IMUIA est ancré localement et rayonne globalement. Nos plateformes desservent de multiples zones clés, connectant utilisateurs et prestataires.",
 
+    // Contact Section
+    contactTitle: "Vous avez une idée à mettre en orbite ?",
+    contactIntro: "Projet innovant, partenariat, investissement ou proposition de collaboration : entrez en contact avec l’équipage IMUIA.",
+    contactCrew: "Contacter IMUIA",
+
     // Partner Space & Forms
     partnerTitle: "Espace Partenaires",
     partnerSubtitle: "Vous avez une idée à mettre en orbite ?",
@@ -375,6 +380,11 @@ export const translations = {
     // Territories
     territoriesTitle: "Territories & Global Reach",
     territoriesDesc: "IMUIA bridges hyper-local focus with international scale. Our platform networks span high-growth territories worldwide.",
+
+    // Contact Section
+    contactTitle: "Have an idea to launch into orbit?",
+    contactIntro: "Innovative project, partnership, investment, or collaboration proposal: get in touch with the IMUIA flight crew.",
+    contactCrew: "Contact IMUIA",
 
     // Partner Space
     partnerTitle: "Partnership Center",

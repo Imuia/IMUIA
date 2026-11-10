@@ -40,12 +40,16 @@ const MainLayout: React.FC = () => {
         return <Territories />;
       case 'partners':
         return <Partners />;
+      case 'contact':
+        return <Partners />;
       case 'news':
         return <Journal />;
       case 'client':
         return <ClientSpace />;
       case 'admin':
         return <AdminCockpit />;
+      case 'method':
+        return <VisionMethod />;
       case 'privacy':
         return <Legals mode="privacy" />;
       case 'legal':

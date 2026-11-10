@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
@@ -20,6 +20,25 @@ export const Partners: React.FC = () => {
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
+
+  // Check prefill intent from sessionStorage on mount
+  useEffect(() => {
+    try {
+      const intentType = sessionStorage.getItem('imuia_intent_type');
+      const intentTopic = sessionStorage.getItem('imuia_intent_topic');
+      if (intentType) {
+        setPartnerType(intentType);
+      }
+      if (intentTopic) {
+        setProposal((prev) => prev || `[Intention: ${intentTopic}] `);
+      }
+      // clear consumed intent
+      sessionStorage.removeItem('imuia_intent_type');
+      sessionStorage.removeItem('imuia_intent_topic');
+    } catch {
+      // ignore
+    }
+  }, []);
 
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);

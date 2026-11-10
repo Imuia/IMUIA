@@ -32,6 +32,24 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/01_landing_page.png")
             print("Screenshot 01 written.")
 
+            # Scroll to Earth Contact Section on Home
+            print("Scrolling down to Earth Contact Section...")
+            page.locator("#contact-section").scroll_into_view_if_needed()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/01b_earth_contact_section.png")
+            print("Screenshot 01b written.")
+
+            # Test CTA on Earth section: "Investir dans un univers" -> prefill intent
+            print("Clicking 'Investir dans un univers' CTA button...")
+            page.get_by_text("Investir dans un univers").click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/01c_intent_prefilled_form.png")
+            print("Screenshot 01c written.")
+
+            # Return to Home
+            page.get_by_text("Accueil").first.click()
+            page.wait_for_timeout(1000)
+
             # Click Explorer notre univers (navigates to Map/Galaxy)
             print("Navigating to Galaxy Map...")
             page.get_by_text("Explorer notre univers").click()
