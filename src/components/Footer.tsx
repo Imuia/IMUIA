@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { Shield, Lock, Eye, ArrowUp } from 'lucide-react';
+import { Shield, Lock, Eye, ArrowUp, Mail, Globe, Sparkles } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const { language, setActiveSection, playSound } = useAppState();
@@ -55,8 +55,21 @@ export const Footer: React.FC = () => {
                 </button>
               </li>
               <li>
-                <button onClick={() => handleNav('vision')} className="hover:text-purple-400 transition-colors cursor-none text-left">
-                  {t.navVision}
+                <button onClick={() => handleNav('vision')} className="hover:text-purple-400 transition-colors cursor-none text-left flex items-center space-x-1.5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>{t.navVision}</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('territories')} className="hover:text-purple-400 transition-colors cursor-none text-left flex items-center space-x-1.5">
+                  <Globe className="w-3.5 h-3.5" />
+                  <span>{t.navTerritories}</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('contact')} className="hover:text-purple-400 transition-colors cursor-none text-left flex items-center space-x-1.5">
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>{t.navContact}</span>
                 </button>
               </li>
             </ul>
