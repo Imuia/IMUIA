@@ -64,22 +64,22 @@ export const Home: React.FC = () => {
           </p>
         </div>
 
-        {/* High-end Glowing Rounded Action Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 pt-4 max-w-3xl mx-auto">
+        {/* High-end Glowing Rounded Action Buttons - 4 required buttons */}
+        <div className="flex flex-wrap justify-center gap-3.5 pt-4 max-w-4xl mx-auto">
           <button
             onClick={() => handleCTA('universe')}
             onMouseEnter={() => playSound('hover')}
-            className="flex items-center space-x-2.5 px-7 py-4 bg-purple-600 hover:bg-purple-500 text-white font-orbitron font-bold text-sm tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] cursor-none hover:translate-y-[-2px]"
+            className="flex items-center space-x-2 px-6 py-3.5 bg-purple-600 hover:bg-purple-500 text-white font-orbitron font-bold text-xs tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] cursor-none hover:translate-y-[-2px]"
           >
             <Compass className="w-4 h-4" />
             <span>{t.exploreUniverse}</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
 
           <button
             onClick={() => handleCTA('platforms')}
             onMouseEnter={() => playSound('hover')}
-            className="flex items-center space-x-2.5 px-7 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-sm tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+            className="flex items-center space-x-2 px-6 py-3.5 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-xs tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
           >
             <Shield className="w-4 h-4" />
             <span>{t.discoverPlatforms}</span>
@@ -88,10 +88,19 @@ export const Home: React.FC = () => {
           <button
             onClick={() => handleCTA('partners')}
             onMouseEnter={() => playSound('hover')}
-            className="flex items-center space-x-2.5 px-7 py-4 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-sm tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+            className="flex items-center space-x-2 px-6 py-3.5 bg-white/5 hover:bg-purple-500/10 text-white hover:text-purple-300 font-orbitron font-bold text-xs tracking-widest rounded-full border border-white/10 hover:border-purple-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
           >
             <Rocket className="w-4 h-4" />
             <span>{t.proposePartnership}</span>
+          </button>
+
+          <button
+            onClick={() => handleCTA('contact')}
+            onMouseEnter={() => playSound('hover')}
+            className="flex items-center space-x-2 px-6 py-3.5 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 hover:text-cyan-200 font-orbitron font-bold text-xs tracking-widest rounded-full border border-cyan-500/40 hover:border-cyan-400 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+          >
+            <Activity className="w-4 h-4" />
+            <span>{t.contactUs}</span>
           </button>
         </div>
 

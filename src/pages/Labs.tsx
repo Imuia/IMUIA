@@ -23,13 +23,32 @@ export const Labs: React.FC = () => {
     }
   };
 
-  const researchAreas = [
-    { id: 'ai', title: 'Intelligence Artificielle', desc: 'Dispatching algorithmique, qualification automatique de leads et chatbots conversationnels immobiliers.' },
-    { id: 'autom', title: 'Automatisation', desc: 'Génération automatisée d\'accords de partenariat et relance de réservations dormantes.' },
-    { id: 'geo', title: 'Géolocalisation', desc: 'Réseau cartographique vectoriel en temps réel pour l\'amarrage nautique et le repérage de vélos.' },
-    { id: 'booking', title: 'Réservation en Temps Réel', desc: 'Moteurs de synchronisation instantanée de calendriers multidomaines hautement sécurisés.' },
-    { id: 'crm', title: 'Systèmes CRM Propriétaires', desc: 'Gestion d\'opportunités commerciales et centralisation de documents avec signature électronique.' },
-    { id: 'impact', title: 'Projets à Impact Social', desc: 'Réseau d\'acheminement de fournitures solidaires et de dons au profit de refuges animaliers.' }
+  const researchAreas = language === 'fr' ? [
+    { id: 'ai', title: 'Intelligence Artificielle', desc: 'Dispatching algorithmique, qualification automatique de leads et prédictions comportementales sur nos plateformes.' },
+    { id: 'autom', title: 'Automatisation', desc: 'Workflows automatisés, génération instantanée d’accords contractuels et relance intelligente de réservations.' },
+    { id: 'geo', title: 'Géolocalisation', desc: 'Cartographie vectorielle dynamique en temps réel, calcul d’itinéraires optimaux et balises connectées.' },
+    { id: 'booking', title: 'Réservation en temps réel', desc: 'Moteurs transactionnels haute performance, gestion de disponibilités croisées et verrous de concurrence.' },
+    { id: 'payment', title: 'Paiement en ligne', desc: 'Passerelles de paiement internationales multi-devises, séquestres sécurisés et fractionnement de commissions.' },
+    { id: 'crm', title: 'CRM et gestion commerciale', desc: 'Centralisation des prospects, historique des échanges, signature électronique et automatisation des pipelines.' },
+    { id: 'immersive', title: 'Expériences immersives', desc: 'Modélisation 3D WebGL, visites spatiales immersives de programmes immobiliers et simulateurs visuels.' },
+    { id: 'affiliation', title: 'Affiliation & génération de prospects', desc: 'Tracking haute précision, moteurs de commissionnement multi-niveaux et scoring algorithmique de conversion.' },
+    { id: 'pro_tools', title: 'Outils pour les professionnels', desc: 'Tableaux de bord d’exploitation dédiés aux prestataires, conciergeries, agences et artisans partenaires.' },
+    { id: 'collab', title: 'Plateformes collaboratives', desc: 'Économie de partage, mise en relation peer-to-peer certifiée et systèmes d’avis authentifiés infalsifiables.' },
+    { id: 'biz_models', title: 'Nouveaux modèles économiques', desc: 'Hybridation freemium, micro-transactions de service et monétisation d’écosystèmes à forte valeur ajoutée.' },
+    { id: 'impact', title: 'Impact social et environnemental', desc: 'Écomobilité décarbonée, mécénat croisé et logistique solidaire au bénéfice des refuges animaliers.' }
+  ] : [
+    { id: 'ai', title: 'Artificial Intelligence', desc: 'Algorithmic dispatching, automated lead qualification, and behavioral forecasting across platform ecosystems.' },
+    { id: 'autom', title: 'Automation', desc: 'Automated workflows, real-time contractual document generation, and intelligent booking reactivation.' },
+    { id: 'geo', title: 'Geolocation & Telemetry', desc: 'Dynamic real-time vector mapping, optimized routing paths, and connected hardware beacons.' },
+    { id: 'booking', title: 'Real-time Reservation', desc: 'High-throughput transactional engines, cross-calendar synchronization, and strict concurrency lock mechanisms.' },
+    { id: 'payment', title: 'Online Payment Infrastructure', desc: 'Multi-currency global checkout gateways, secure escrow vaults, and automated split commissions.' },
+    { id: 'crm', title: 'CRM & Business Management', desc: 'Unified partner pipeline, engagement tracking, eIDAS electronic signing, and automated CRM funnels.' },
+    { id: 'immersive', title: 'Immersive Experiences', desc: 'WebGL 3D architecture modeling, spatial virtual walkthroughs of real estate projects, and interactive tools.' },
+    { id: 'affiliation', title: 'Affiliation & Lead Generation', desc: 'High-precision event tracking, multi-tier commission engines, and algorithmic conversion score models.' },
+    { id: 'pro_tools', title: 'Enterprise & Pro Tools', desc: 'Dedicated operational command cockpits for contractors, luxury concierges, brokers, and local operators.' },
+    { id: 'collab', title: 'Collaborative Platforms', desc: 'Peer-to-peer shared economy models, certified identity matching, and tamper-proof review networks.' },
+    { id: 'biz_models', title: 'Novel Economic Models', desc: 'Freemium hybrids, micro-service subscriptions, and high-margin recurring ecosystem monetization.' },
+    { id: 'impact', title: 'Social & Environmental Impact', desc: 'Zero-emission green mobility, solidarity freight networks, and direct charitable funding for animal shelters.' }
   ];
 
   const incubatedProjects = [
