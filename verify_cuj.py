@@ -68,12 +68,26 @@ def run_verification():
             page.screenshot(path="/home/jules/verification/06_vision_method.png")
             print("Screenshot 06 written.")
 
+            # Navigate to Territories
+            print("Navigating to Territories hub...")
+            page.get_by_text("Nos territoires").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/06b_territories.png")
+            print("Screenshot 06b written.")
+
             # Navigate to Partnerships
             print("Navigating to Partnership space...")
             page.get_by_text("Partenariats").first.click()
             page.wait_for_timeout(1000)
             page.screenshot(path="/home/jules/verification/07_partners_form.png")
             print("Screenshot 07 written.")
+
+            # Navigate to Contact Earth section
+            print("Navigating to Contact Earth Space view...")
+            page.get_by_text("Contact").first.click()
+            page.wait_for_timeout(1000)
+            page.screenshot(path="/home/jules/verification/07b_contact_earth.png")
+            print("Screenshot 07b written.")
 
             # Navigate to Espace Client Space & Login
             print("Navigating to secure Client Space...")

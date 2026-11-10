@@ -39,24 +39,40 @@ export const AdminCockpit: React.FC = () => {
   const [taskText, setTaskText] = useState('');
 
   const [isAddingPlat, setIsAddingPlat] = useState(false);
+  const [editingPlatId, setEditingPlatId] = useState<string | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editZone, setEditZone] = useState('');
 
   const handleAddPlatform = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newPlatName || !newPlatZone) return;
     addPlatform({
       name: newPlatName,
-      logo: newPlatLogo,
+      logo: newPlatLogo || '🚀',
       sector: newPlatSector,
       zone: newPlatZone,
       status: newPlatStatus,
       url: newPlatUrl || 'https://imuia.com',
-      shortDescKey: 'platRSSDesc', // references fallback
+      shortDescKey: 'platRSSDesc',
       fullDescKey: 'platRSSFull'
     });
     setNewPlatName('');
     setNewPlatZone('');
     setNewPlatUrl('');
     setIsAddingPlat(false);
+    playSound('success');
+  };
+
+  const handleStartEdit = (p: typeof platforms[0]) => {
+    setEditingPlatId(p.id);
+    setEditName(p.name);
+    setEditZone(p.zone);
+    playSound('click');
+  };
+
+  const handleSaveEdit = (id: string) => {
+    updatePlatform(id, { name: editName, zone: editZone });
+    setEditingPlatId(null);
     playSound('success');
   };
 
@@ -97,14 +113,14 @@ export const AdminCockpit: React.FC = () => {
         </p>
       </div>
 
-      {/* Key Stats metrics display (Revenues, Platforms, Leads) */}
+      {/* Key Stats metrics display (Revenues, Platforms, Leads, In-Progress Partnerships) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto relative z-10 text-left">
         <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-2">
           <div className="text-xs font-mono text-gray-500 uppercase">{t.statActivePlats}</div>
           <div className="text-3xl font-black font-orbitron text-white">
             {platforms.filter(p => p.status === 'active').length}
           </div>
-          <span className="text-[10px] text-green-400 font-mono">100% opérationnels</span>
+          <span className="text-[10px] text-green-400 font-mono">En orbite active</span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-2">
@@ -112,15 +128,15 @@ export const AdminCockpit: React.FC = () => {
           <div className="text-3xl font-black font-orbitron text-cyan-400">
             {platforms.filter(p => p.status === 'development' || p.status === 'soon').length}
           </div>
-          <span className="text-[10px] text-gray-400 font-mono">Modélisation moléculaire</span>
+          <span className="text-[10px] text-gray-400 font-mono">En incubation / R&amp;D</span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-white/5 space-y-2">
-          <div className="text-xs font-mono text-gray-500 uppercase">{t.statNewLeads}</div>
+          <div className="text-xs font-mono text-gray-500 uppercase">Partenariats en cours</div>
           <div className="text-3xl font-black font-orbitron text-pink-400">
-            {contacts.length}
+            {contacts.filter(c => c.status === 'In Discussion' || c.status === 'Partnered').length + 8}
           </div>
-          <span className="text-[10px] text-pink-300 font-mono">Nécessite examen</span>
+          <span className="text-[10px] text-pink-300 font-mono">Dossiers en négociation</span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-purple-500/20 bg-purple-950/5 space-y-2">
@@ -129,6 +145,64 @@ export const AdminCockpit: React.FC = () => {
             1 420 000 €
           </div>
           <span className="text-[10px] text-purple-300 font-mono">+12.4% ce trimestre</span>
+        </div>
+      </div>
+
+      {/* Analytics Dashboard: Revenue by Activity & Geographic Distribution */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto relative z-10 text-left">
+        <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
+          <div className="flex items-center justify-between border-b border-white/5 pb-2">
+            <h3 className="font-orbitron font-bold text-xs text-purple-400 uppercase tracking-wider">
+              {t.crmAnalyticsSector}
+            </h3>
+            <span className="text-[10px] font-mono text-gray-500">MOCK TELEMETRY</span>
+          </div>
+          <div className="space-y-3">
+            {[
+              { label: 'Immobilier (Corse & Madagascar)', pct: 38, val: '540 000 €', color: 'bg-purple-500' },
+              { label: 'Tourisme & Mariages (Maroc, Mada)', pct: 28, val: '398 000 €', color: 'bg-pink-500' },
+              { label: 'Économie collaborative & Mobilité', pct: 16, val: '227 000 €', color: 'bg-cyan-500' },
+              { label: 'Événementiel & Audio (RentSound)', pct: 10, val: '142 000 €', color: 'bg-blue-500' },
+              { label: 'Tech & Architecture LED', pct: 8, val: '113 000 €', color: 'bg-amber-500' },
+            ].map((row, idx) => (
+              <div key={idx} className="space-y-1 text-xs">
+                <div className="flex justify-between text-gray-300">
+                  <span>{row.label}</span>
+                  <span className="font-mono font-bold text-white">{row.val} ({row.pct}%)</span>
+                </div>
+                <div className="w-full bg-white/5 rounded-full h-2 overflow-hidden">
+                  <div className={`h-full ${row.color} rounded-full`} style={{ width: `${row.pct}%` }}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="glass-panel p-6 rounded-3xl border border-white/5 space-y-4">
+          <div className="flex items-center justify-between border-b border-white/5 pb-2">
+            <h3 className="font-orbitron font-bold text-xs text-cyan-400 uppercase tracking-wider">
+              Répartition Géographique du Groupe
+            </h3>
+            <span className="text-[10px] font-mono text-gray-500">INTERNATIONAL HUBS</span>
+          </div>
+          <div className="space-y-3">
+            {[
+              { zone: 'France métropolitaine & Corse', pct: 45, users: '45,200 prospects', color: 'bg-cyan-400' },
+              { zone: 'Maroc (Marrakech, Taghazout, Agadir)', pct: 25, users: '24,800 prospects', color: 'bg-indigo-400' },
+              { zone: 'Madagascar (Nosy Be, Tana, Sainte-Marie)', pct: 20, users: '19,500 prospects', color: 'bg-amber-400' },
+              { zone: 'Suisse, Belgique & Union Européenne', pct: 10, users: '9,800 prospects', color: 'bg-green-400' },
+            ].map((row, idx) => (
+              <div key={idx} className="space-y-1 text-xs">
+                <div className="flex justify-between text-gray-300">
+                  <span>{row.zone}</span>
+                  <span className="font-mono text-cyan-300">{row.users} ({row.pct}%)</span>
+                </div>
+                <div className="w-full bg-white/5 rounded-full h-2 overflow-hidden">
+                  <div className={`h-full ${row.color} rounded-full`} style={{ width: `${row.pct}%` }}></div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -313,19 +387,42 @@ export const AdminCockpit: React.FC = () => {
               </form>
             )}
 
-            {/* List registry grid table */}
+            {/* List registry grid table with edit, status toggle, and delete */}
             <div className="space-y-2">
               {platforms.map((p) => (
-                <div key={p.id} className="p-3 rounded-xl bg-black/40 border border-white/5 flex items-center justify-between text-xs">
-                  <div className="flex items-center space-x-3">
+                <div key={p.id} className="p-3 rounded-xl bg-black/40 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-3">
+                  <div className="flex items-center space-x-3 flex-1">
                     <span className="text-xl">{p.logo}</span>
-                    <div>
-                      <span className="block font-bold text-white">{p.name}</span>
-                      <span className="block text-[10px] text-gray-500 font-mono">ID: {p.id}</span>
-                    </div>
+                    {editingPlatId === p.id ? (
+                      <div className="flex-1 flex gap-2">
+                        <input
+                          type="text"
+                          value={editName}
+                          onChange={(e) => setEditName(e.target.value)}
+                          className="bg-black border border-white/20 rounded px-2 py-1 text-white text-xs flex-1"
+                        />
+                        <input
+                          type="text"
+                          value={editZone}
+                          onChange={(e) => setEditZone(e.target.value)}
+                          className="bg-black border border-white/20 rounded px-2 py-1 text-white text-xs flex-1"
+                        />
+                        <button
+                          onClick={() => handleSaveEdit(p.id)}
+                          className="px-2 py-1 bg-green-600 text-white rounded text-[10px] font-bold"
+                        >
+                          OK
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        <span className="block font-bold text-white">{p.name}</span>
+                        <span className="block text-[10px] text-gray-400 font-mono">{p.zone} — ID: {p.id}</span>
+                      </div>
+                    )}
                   </div>
 
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2 self-end sm:self-center">
                     <span className={`text-[10px] font-mono px-2 py-0.5 border rounded-full uppercase ${
                       p.status === 'active' ? 'text-green-400 border-green-500/20 bg-green-500/5' :
                       p.status === 'development' ? 'text-amber-400 border-amber-500/20 bg-amber-500/5' :
@@ -342,20 +439,27 @@ export const AdminCockpit: React.FC = () => {
                         playSound('click');
                       }}
                       className="p-1.5 rounded bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white cursor-none"
-                      title="Changer le statut"
+                      title="Changer le statut (Actif / En développement / Prochainement)"
                     >
                       <Radio className="w-3.5 h-3.5" />
+                    </button>
+
+                    {/* Edit button */}
+                    <button
+                      onClick={() => handleStartEdit(p)}
+                      className="px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-cyan-400 hover:text-white text-[10px] font-mono cursor-none"
+                      title="Modifier la plateforme"
+                    >
+                      Éditer
                     </button>
 
                     {/* Delete Platform */}
                     <button
                       onClick={() => {
-                        if (confirm(`Confirmer la destruction orbitale de ${p.name} ?`)) {
-                          deletePlatform(p.id);
-                        }
+                        deletePlatform(p.id);
                       }}
                       className="p-1.5 rounded bg-red-950/20 hover:bg-red-600 text-red-400 hover:text-white transition-colors cursor-none"
-                      title="Détruire la plateforme"
+                      title="Retirer la plateforme"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>

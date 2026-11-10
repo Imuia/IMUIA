@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
+import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock, Orbit } from 'lucide-react';
 
 export const Partners: React.FC = () => {
-  const { language, addContact, playSound } = useAppState();
+  const { language, platforms, addContact, playSound } = useAppState();
   const t = translations[language];
+
+  // Check if an initial intent was stored from the Contact page or previous actions
+  const initialIntent = typeof window !== 'undefined' ? sessionStorage.getItem('imuia_partner_intent') : null;
 
   // Form Fields State
   const [firstName, setFirstName] = useState('');
@@ -15,7 +18,11 @@ export const Partners: React.FC = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [country, setCountry] = useState('');
-  const [partnerType, setPartnerType] = useState('');
+  const [partnerType, setPartnerType] = useState(
+    initialIntent === 'investor' ? 'Investor' :
+    initialIntent === 'partner' ? 'LocalPartner' :
+    initialIntent === 'project' ? 'ProjectOwner' : ''
+  );
   const [project, setProject] = useState('');
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
@@ -232,7 +239,7 @@ export const Partners: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Pays */}
             <div className="space-y-1.5">
               <label className="block text-xs font-mono uppercase text-gray-400">
@@ -242,12 +249,12 @@ export const Partners: React.FC = () => {
                 type="text"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                placeholder="Ex: France, Maroc, Madagascar"
+                placeholder="Ex: France, Maroc, Madagascar, Suisse..."
                 className="w-full bg-black/40 border border-white/10 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
               />
             </div>
 
-            {/* Catégorie Partenariat */}
+            {/* Catégorie Partenariat (exhaustif selon le prompt) */}
             <div className="space-y-1.5">
               <label className="block text-xs font-mono uppercase text-gray-400">
                 {t.formPartnerType}
@@ -259,15 +266,42 @@ export const Partners: React.FC = () => {
               >
                 <option value="">{t.formPartnerTypePlaceholder}</option>
                 <option value="Investor">{t.partnerInvestor}</option>
-                <option value="Operator">{t.partnerProvider}</option>
-                <option value="Developer">{t.partnerDeveloper}</option>
                 <option value="Broker">{t.partnerBroker}</option>
+                <option value="Provider">{t.partnerProvider}</option>
+                <option value="Developer">{t.partnerDeveloper}</option>
                 <option value="Creator">{t.partnerCreator}</option>
+                <option value="LocalPartner">{t.partnerLocal}</option>
+                <option value="ProjectOwner">{t.partnerOwner}</option>
+                <option value="Company">{t.partnerCompany}</option>
                 <option value="Other">{t.partnerOther}</option>
               </select>
             </div>
+          </div>
 
-            {/* Budget */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Projet IMUIA concerné (Tous les 12 projets et option globale) */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-mono uppercase text-gray-400 flex items-center space-x-1">
+                <Orbit className="w-3.5 h-3.5 text-cyan-400" />
+                <span>{t.formProject}</span>
+              </label>
+              <select
+                value={project}
+                onChange={(e) => setProject(e.target.value)}
+                className="w-full bg-black border border-white/10 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+              >
+                <option value="">{t.formProjectPlaceholder}</option>
+                <option value="global">Galaxie IMUIA Global (Multi-projets / Groupe)</option>
+                <option value="imuia-labs">IMUIA Labs (R&amp;D &amp; Incubation)</option>
+                {platforms.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name} ({p.zone})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Budget / Capacité d'investissement */}
             <div className="space-y-1.5">
               <label className="block text-xs font-mono uppercase text-gray-400">
                 {t.formBudget}
