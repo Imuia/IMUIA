@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { Volume2, VolumeX, Sun, Moon, Menu, X, Rocket, Orbit, Cpu, BookOpen, Shield, HelpCircle, User, LayoutDashboard, Languages } from 'lucide-react';
+import { Volume2, VolumeX, Sun, Moon, Menu, X, Rocket, Orbit, Cpu, BookOpen, Shield, HelpCircle, User, LayoutDashboard, Languages, Mail } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const {
@@ -34,6 +34,7 @@ export const Header: React.FC = () => {
     { id: 'vision', label: t.navVision, icon: HelpCircle },
     { id: 'news', label: t.navNews, icon: BookOpen },
     { id: 'partners', label: t.navPartners, icon: User },
+    { id: 'contact', label: t.navContact, icon: Mail },
   ];
 
   return (
