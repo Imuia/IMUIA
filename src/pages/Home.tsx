@@ -1,7 +1,8 @@
 import React from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
-import { ArrowRight, Compass, Shield, Rocket, Activity } from 'lucide-react';
+import { ArrowRight, Compass, Shield, Rocket, Activity, Mail } from 'lucide-react';
+import { Contact } from './Contact';
 
 export const Home: React.FC = () => {
   const { language, playSound, setActiveSection } = useAppState();
@@ -93,6 +94,15 @@ export const Home: React.FC = () => {
             <Rocket className="w-4 h-4" />
             <span>{t.proposePartnership}</span>
           </button>
+
+          <button
+            onClick={() => handleCTA('contact')}
+            onMouseEnter={() => playSound('hover')}
+            className="flex items-center space-x-2.5 px-7 py-4 bg-white/5 hover:bg-cyan-500/10 text-white hover:text-cyan-300 font-orbitron font-bold text-sm tracking-widest rounded-full border border-white/10 hover:border-cyan-500/50 transition-all duration-300 cursor-none hover:translate-y-[-2px]"
+          >
+            <Mail className="w-4 h-4" />
+            <span>{t.contactUs}</span>
+          </button>
         </div>
 
         {/* Digital Hud Footer Stat indicators */}
@@ -113,6 +123,11 @@ export const Home: React.FC = () => {
             <div className="text-2xl font-black font-orbitron text-green-400">100%</div>
             <div className="text-[10px] text-gray-400 font-mono tracking-widest uppercase">INNOVATION LABS</div>
           </div>
+        </div>
+
+        {/* Integrated Contact form landing segment */}
+        <div className="w-full mt-24 border-t border-white/10 pt-16">
+          <Contact />
         </div>
       </div>
     </div>
