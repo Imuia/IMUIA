@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../data/useAppState';
 import { translations } from '../data/translations';
 import { Send, UploadCloud, CheckCircle, AlertCircle, HelpCircle, Lock } from 'lucide-react';
 
 export const Partners: React.FC = () => {
-  const { language, addContact, playSound } = useAppState();
+  const { language, addContact, platforms, playSound } = useAppState();
   const t = translations[language];
 
   // Form Fields State
@@ -20,6 +20,26 @@ export const Partners: React.FC = () => {
   const [budget, setBudget] = useState('');
   const [proposal, setProposal] = useState('');
   const [consent, setConsent] = useState(false);
+
+  // Auto-detect intent stored from Home Contact section
+  useEffect(() => {
+    const intent = sessionStorage.getItem('imuia_partner_intent');
+    if (intent) {
+      if (intent === 'investor') {
+        setPartnerType('Investor');
+        setProposal(language === 'fr' ? "Demande d'investissement ou prise de participation dans un univers IMUIA." : "Investment or equity participation inquiry in an IMUIA universe.");
+      } else if (intent === 'project') {
+        setPartnerType('Developer');
+        setProposal(language === 'fr' ? "Présentation d'un concept innovant ou nouveau service à intégrer à la galaxie IMUIA." : "Presentation of an innovative concept or new service to join the IMUIA galaxy.");
+      } else if (intent === 'partner') {
+        setPartnerType('Operator');
+        setProposal(language === 'fr' ? "Proposition de partenariat opérationnel / prestataire pour l'écosystème IMUIA." : "Proposal for operational partnership or local provider integration.");
+      } else if (intent === 'contact') {
+        setProposal(language === 'fr' ? "Prise de contact générale avec l'équipage IMUIA." : "General contact inquiry with the IMUIA flight crew.");
+      }
+      sessionStorage.removeItem('imuia_partner_intent');
+    }
+  }, [language]);
 
   // Attachment Simulation
   const [fileName, setFileName] = useState<string | null>(null);
@@ -169,6 +189,27 @@ export const Partners: React.FC = () => {
                 className="w-full bg-black/40 border border-white/10 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
               />
             </div>
+          </div>
+
+          {/* Projet IMUIA concerné */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-mono uppercase text-gray-400">
+              {t.formProject}
+            </label>
+            <select
+              value={project}
+              onChange={(e) => setProject(e.target.value)}
+              className="w-full bg-black border border-white/10 focus:border-purple-500 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+            >
+              <option value="">{t.formProjectPlaceholder}</option>
+              {platforms.map((p) => (
+                <option key={p.id} value={p.name}>
+                  {p.logo} {p.name} ({p.zone})
+                </option>
+              ))}
+              <option value="IMUIA Labs">🔬 IMUIA Labs (R&amp;D / Incubation)</option>
+              <option value="Global Group">🌌 Écosystème Global IMUIA</option>
+            </select>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
